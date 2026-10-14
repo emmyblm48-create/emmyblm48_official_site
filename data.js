@@ -15,7 +15,7 @@ window.ERAS = [
   { date: "2025-11-08", img: "2025-11-08-fortune-cookie.jpg", title: "Koisuru Fortune Cookie", jp: "恋するフォーチュンクッキー", sub: "Main Song", tags: ["senbatsu"], release: "1st Special Album · RHYTHM:YOU" },
   { date: "2025-12-25", img: "2025-12-25-noel-no-yoru.jpg", title: "Noel no Yoru", jp: "ノエルの夜", sub: "Christmas Project 2025", tags: ["cw"], release: "Special Single · c/w" },
   { date: "2026-01-30", img: "2026-01-30-bingo.jpg", title: "BINGO!", sub: "Center Position · Thai ver.", tags: ["center", "senbatsu"], release: "9th Single" },
-  { date: "2026-04-04", img: "2026-04-04-celebration.jpg", title: "Celebration", sub: "3rd Generation Special Single", tags: ["senbatsu"], release: "3rd Gen Special Single" },
+  { date: "2026-04-04", img: "2026-04-04-celebration.jpg", title: "Celebration", sub: "3rd Generation Special Single · Center Position", tags: ["center", "senbatsu"], release: "3rd Gen Special Single" },
   { date: "2026-04-24", img: "2026-04-24-sustainable.jpg", title: "Sustainable", jp: "サステナブル", sub: "Main Song · Thai ver.", tags: ["senbatsu"], release: "10th Single" },
   { date: "2026-06-01", img: "2026-06-01-pride-month.jpg", title: "Pride Month 2026", sub: "Special Profile", tags: ["event"] },
 ];
@@ -51,7 +51,7 @@ window.VIDEOS = [
   { date: "2026-02-28", yt: "-rhmBTZoZk0", kind: "song", title: "Eien Pressure", th: "ผูกพันนิรันดร์", ver: "Male ver.", release: "9th Single · c/w" },
   { date: "2026-03-09", yt: "QDCJ1g-m4Ws", kind: "song", title: "Seifuku Resistance", th: "ผู้ต่อต้านชุดนักเรียน", ver: "Male ver.", release: "Team M 1st Stage · RESET" },
   { date: "2026-03-21", yt: "tqFr0QPgqR0", kind: "song", title: "Sekai no Hito e", th: "ถึงบรรเลง..ถ้อยเพลงของเรา", ver: "Thai ver.", release: "9th Single · c/w · Hero Graduation Song" },
-  { date: "2026-04-04", yt: "TAPlWWZMGFQ", kind: "song", title: "Celebration", release: "3rd Generation Special Single" },
+  { date: "2026-04-04", yt: "TAPlWWZMGFQ", kind: "song", title: "Celebration", release: "3rd Generation Special Single", center: true },
   { date: "2026-04-21", yt: "p_46emflLRE", kind: "teaser", title: "Sustainable", th: "Emmy ver.", ver: "Thai ver.", release: "10th Single" },
   { date: "2026-04-25", yt: "1Vwg1iQUDtc", kind: "song", mv: true, title: "Sustainable", ver: "Thai ver.", release: "10th Single" },
   { date: "2026-05-22", yt: "k7tFnIXZhUM", kind: "song", title: "Candy", release: "Team L 1st Stage · Theater no Megami" },
