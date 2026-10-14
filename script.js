@@ -1,6 +1,8 @@
 const ERAS = window.ERAS || [];
 const VIDEOS = (window.VIDEOS || []).slice().sort((a, b) => a.date.localeCompare(b.date));
 const ALBUM = window.ALBUM;
+const EVENTS = window.EVENTS || [];
+const EVENT_LABEL = { team: "TEAM", role: "ROLE", live: "LIVE" };
 const TAG_LABEL = { center: "CENTER", senbatsu: "SENBATSU", under: "UNDER", cw: "C/W", event: "EVENT" };
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const fmtDate = (iso) => iso.split("-").reverse().join(".");
@@ -74,7 +76,7 @@ const sameSong = (v, e) => v.date === e.date && v.title === e.title && v.kind ==
 const historyItems = [
   ...ERAS.map((e) => ({ date: e.date, type: "era", e, v: VIDEOS.find((v) => sameSong(v, e)) })),
   ...VIDEOS.filter((v) => !ERAS.some((e) => sameSong(v, e))).map((v) => ({ date: v.date, type: "video", v })),
-  { date: "2025-07-26", type: "concert" },
+  ...EVENTS.map((ev) => ({ date: ev.date, type: "event", ev })),
 ].sort((a, b) => b.date.localeCompare(a.date));
 
 const historyRow = (it) => {
@@ -95,8 +97,9 @@ const historyRow = (it) => {
     const label = `${esc(v.release)}「${esc(v.title)}」${v.th ? ` <small>${esc(v.th)}</small>` : ""}`;
     title = v.yt ? `<button data-yt="${v.yt}" data-title="${esc(videoTitle(v))}">${label}</button>` : label;
   } else {
-    tags = pill("event", "LIVE");
-    title = `BLM48 1st Solo Concert「RIDE THE RHYTHM」 <small>26–27.07.2025 · Roblox Game · Producer: Emmy &amp; Hero</small>`;
+    const ev = it.ev;
+    tags = pill(ev.tag, EVENT_LABEL[ev.tag] || ev.tag.toUpperCase());
+    title = `${esc(ev.title)}${ev.sub ? ` <small>${esc(ev.sub)}</small>` : ""}`;
   }
   return `<li>
     <p class="sched-date"><b>${day}.${m}</b><span>${DAYS[d.getDay()]}.${y}</span></p>

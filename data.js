@@ -90,3 +90,13 @@ window.ALBUM = {
     { yt: "TKGp8IPuxxQ", title: "Chain of Love" },
   ],
 };
+
+// เหตุการณ์สำคัญ (ทีม ตำแหน่ง คอนเสิร์ต) — แสดงในส่วน HISTORY
+// tag: "team" | "role" | "live"
+window.EVENTS = [
+  { date: "2025-07-26", tag: "live", title: "BLM48 1st Solo Concert「RIDE THE RHYTHM」", sub: "26–27.07.2025 · Roblox Game · Producer: Emmy & Hero" },
+  { date: "2025-10-11", tag: "team", title: "ได้รับคัดเลือกเข้า Team B", sub: "BLM48 Team B 1st Stage「Party ga Hajimaru yo – ปาร์ตี้ในฝัน」" },
+  { date: "2025-10-18", tag: "role", title: "ได้รับแต่งตั้งเป็น BLM48 Vice Shihainin", sub: "รองผู้จัดการทั่วไปวง BLM48" },
+  { date: "2026-04-25", tag: "live", title: "Co-Producer · BLM48 & NPT48 Concert「This Letter Says “Marry Me”」" },
+  { date: "2026-04-25", tag: "team", title: "ก่อตั้ง Team Bloom · ได้รับคัดเลือกเป็นสมาชิก Team Bloom", sub: "ยกเลิกระบบ Team B, Team L และ Team M" },
+];
