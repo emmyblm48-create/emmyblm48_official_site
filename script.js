@@ -124,6 +124,8 @@ if (document.getElementById("video-list")) {
   const VIDEO_LIMIT = 9;
   let videoFilter = "all";
   let videoExpanded = false;
+  let viewData = null;
+  const fmtViews = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, "")}M` : n >= 1e3 ? `${(n / 1e3).toFixed(n >= 1e5 ? 0 : 1).replace(/\.0$/, "")}K` : String(n);
   const videoMatches = (v) => ({
     all: true,
     song: v.kind === "song",
@@ -140,7 +142,7 @@ if (document.getElementById("video-list")) {
         <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
-        <time datetime="${v.date}">${fmtDate(v.date)}</time>
+        <time datetime="${v.date}">${fmtDate(v.date)}</time>${viewData?.views[v.yt] != null ? `<span class="movie-views">${icon("play")}${fmtViews(viewData.views[v.yt])} views</span>` : ""}
         <h3>${esc(v.title)}${v.th ? ` <small>${esc(v.th)}</small>` : ""}</h3>
         <p>${esc(v.release)}</p>
       </div>
@@ -150,7 +152,24 @@ if (document.getElementById("video-list")) {
     videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map(movieCard).join("");
     videoMore.hidden = videoExpanded || list.length <= VIDEO_LIMIT;
     videoMore.textContent = `VIEW MORE (${list.length})`;
+    renderTotal(list);
   };
+  // total views (live from /api/views); follows the current filter
+  const totalBox = document.getElementById("views-total");
+  const renderTotal = (list) => {
+    if (!viewData || !totalBox) return;
+    const counted = list.filter((v) => viewData.views[v.yt] != null);
+    const sum = counted.reduce((a, v) => a + viewData.views[v.yt], 0);
+    totalBox.hidden = false;
+    document.getElementById("views-num").textContent = sum.toLocaleString("en-US");
+    const label = document.querySelector("[data-vfilter].is-on")?.textContent || "ALL";
+    const upd = new Date(viewData.updated);
+    document.getElementById("views-sub").textContent =
+      `${label} · ${counted.length} คลิป · อัปเดต ${fmtDate(viewData.updated.slice(0, 10))} ${String(upd.getHours()).padStart(2, "0")}:${String(upd.getMinutes()).padStart(2, "0")}`;
+  };
+  fetch("/api/views").then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d?.views) { viewData = d; renderVideos(); }
+  }).catch(() => {});
   document.querySelectorAll("[data-vfilter]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll("[data-vfilter]").forEach((b) => b.classList.toggle("is-on", b === btn));

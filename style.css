@@ -265,6 +265,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .movie-thumb .play .ico { width: 16px; height: 16px; }
 .movie:hover .play { background: var(--paper); color: var(--brown); border-color: var(--paper); }
 .movie-meta { margin-top: 14px; }
+.movie-views { display: inline-flex; align-items: center; gap: 4px; margin-left: 12px; font-family: var(--en); font-size: .72rem; letter-spacing: .06em; color: var(--accent); }
+.movie-views .ico { width: .8em; height: .8em; }
+.views-total { text-align: center; margin: -12px auto 44px; padding: 22px 20px 20px; max-width: 520px; background: var(--brown-card); box-shadow: 0 10px 24px -14px #000000b0; }
+.views-total[hidden] { display: none; }
+.views-label { font-family: var(--en); font-size: .75rem; letter-spacing: .3em; padding-left: .3em; color: var(--ink-2); }
+.views-label small { display: block; font-family: var(--th); font-size: .75rem; letter-spacing: .02em; color: var(--ink-3); margin-top: 6px; }
+.views-num { margin-top: 10px; font-family: var(--en); line-height: 1; }
+.views-num b { font-weight: 300; font-size: clamp(2.2rem, 6vw, 3.2rem); letter-spacing: .02em; }
+.views-num span { font-size: .8rem; letter-spacing: .2em; color: var(--accent); margin-left: 8px; }
+.views-sub { margin-top: 10px; font-size: .75rem; color: var(--ink-3); }
 .movie-meta time { font-family: var(--en); font-size: .75rem; letter-spacing: .1em; color: var(--ink-3); }
 .movie-meta h3 { font-weight: 400; font-size: .95rem; line-height: 1.5; margin-top: 4px; }
 .movie-meta p { font-size: .8rem; color: var(--ink-2); line-height: 1.5; }
