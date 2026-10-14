@@ -7,138 +7,64 @@
   <meta name="description" content="เว็บไซต์รวมโปรไฟล์และผลงานของเอ็มมี่ BLM48 รุ่นที่ 3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Josefin+Sans:wght@300;400;600&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/images/logo.jpg">
+  <meta property="og:image" content="https://emmyblm48officialsite.vercel.app/images/logo.jpg">
+  <meta name="theme-color" content="#4a2311">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page page-home">
 
-  <!-- ===== MENU ===== -->
-  <button class="menu-btn" aria-label="เปิดเมนู" aria-expanded="false"><span></span><span></span></button>
-  <nav class="menu" aria-label="เมนู" hidden>
-    <p class="menu-logo">EMMY</p>
-    <ul>
-      <li><a href="#top">HOME<small>หน้าแรก</small></a></li>
-      <li><a href="#profile">PROFILE<small>โปรไฟล์</small></a></li>
-      <li><a href="#history">HISTORY<small>เส้นทางไอดอล</small></a></li>
-      <li><a href="#movie">MOVIE<small>คลิปผลงาน</small></a></li>
-      <li><a href="#photo">PHOTO<small>โปรไฟล์</small></a></li>
-      <li><a href="#message">MESSAGE<small>ข้อความจากเอ็มมี่</small></a></li>
-    </ul>
-  </nav>
-
+  <div class="booth">
   <main id="top">
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== HERO (4 cut photo print) ===== -->
   <section class="hero" aria-label="หน้าแรก">
-    <div class="hero-frame">
-      <div class="hero-text">
-        <p class="hero-logo">EMMY</p>
-        <p class="hero-sub">BLM48 3rd Generation · Team Bloom</p>
+    <span class="corner corner-l"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.2s-8.6-5.3-8.6-11.4C3.4 6.9 5.6 4.8 8.2 4.8c1.6 0 3 .8 3.8 2.1.8-1.3 2.2-2.1 3.8-2.1 2.6 0 4.8 2.1 4.8 5 0 6.1-8.6 11.4-8.6 11.4z"/></svg></span>
+    <span class="corner corner-r"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><circle cx="8.6" cy="8.6" r="4"/><circle cx="15.4" cy="8.6" r="4"/><circle cx="8.6" cy="15.4" r="4"/><circle cx="15.4" cy="15.4" r="4"/></g><path d="M12 12c1.5 3.5 3.5 6.5 6.5 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+    <p class="hero-caption">私じゃなかったんだね。</p>
+    <div class="hero-cuts" data-lb-group="hero">
+      <button class="cut" data-lb data-caption="14.10.2026 — 私じゃなかったんだね。 1/4"><img src="images/gallery/2026-10-14-1.webp" alt="เอ็มมี่ชูสองนิ้ว"></button>
+      <button class="cut" data-lb data-caption="14.10.2026 — 私じゃなかったんだね。 2/4"><img src="images/gallery/2026-10-14-2.webp" alt="เอ็มมี่"></button>
+      <button class="cut" data-lb data-caption="14.10.2026 — 私じゃなかったんだね。 3/4"><img src="images/gallery/2026-10-14-3.webp" alt="เอ็มมี่ทำมินิฮาร์ต"></button>
+      <button class="cut cut-teddy" data-lb data-caption="14.10.2026 — 私じゃなかったんだね。 4 cut photo"><img src="images/gallery/2026-10-14-4cut.webp" alt="ตุ๊กตาหมี"></button>
+    </div>
+    <div class="hero-foot">
+      <p class="cut-label">4 cut<br>photo</p>
+      <div class="hero-name">
+        <h1 class="hero-logo">EMMY</h1>
+        <p class="hero-sub">Nattawat Wongsarat</p>
       </div>
-      <div class="hero-slides" id="hero-slides"></div>
-      <p class="hero-credit">©BLM48</p>
+      <p class="hero-date" id="hero-date">26/03</p>
     </div>
   </section>
 
   <!-- ===== BANNERS ===== -->
   <section class="banners" aria-label="ไฮไลต์">
     <div class="banner-track" id="banner-track">
-      <a class="banner b-pink" href="#photo"><small>9th Single</small><b>BINGO!</b><span>Center Position</span></a>
-      <a class="banner b-white" href="#profile"><small>1st General Election</small><b>No.5</b><span>15.12.2024</span></a>
-      <a class="banner b-white" href="#history"><small>Since 18.10.2025</small><b>Vice Shihainin</b><span>รองผู้จัดการทั่วไปวง BLM48</span></a>
-      <a class="banner b-blue" href="#history"><small>1st Solo Concert</small><b>RIDE THE RHYTHM</b><span>Producer · Emmy &amp; Hero</span></a>
+      <a class="banner b-pink" href="/photo"><small>9th Single</small><b>BINGO!</b><span>Center Position</span></a>
+      <a class="banner b-white" href="/profile"><small>1st General Election</small><b>No.5</b><span>15.12.2024</span></a>
+      <a class="banner b-white" href="/history"><small>Since 18.10.2025</small><b>Vice Shihainin</b><span>รองผู้จัดการทั่วไปวง BLM48</span></a>
+      <a class="banner b-blue" href="/history"><small>1st Solo Concert</small><b>RIDE THE RHYTHM</b><span>Producer · Emmy &amp; Hero</span></a>
       <a class="banner b-lilac" id="banner-album" target="_blank" rel="noopener"><small>1st Special Album</small><b>RHYTHM:YOU</b><span>13 Tracks</span></a>
-      <a class="banner b-cream" href="#movie"><small>Latest Movie</small><b id="banner-latest">MOVIE</b><span id="banner-latest-sub">คลิปล่าสุด</span></a>
+      <a class="banner b-pink" href="/champ"><small>Champ of the Month</small><b id="banner-champ">×3</b><span id="banner-champ-sub">ล่าสุด</span></a>
+      <a class="banner b-cream" href="/movie"><small>Latest Movie</small><b id="banner-latest">MOVIE</b><span id="banner-latest-sub">คลิปล่าสุด</span></a>
     </div>
     <div class="banner-dots" id="banner-dots" aria-label="เลือกแบนเนอร์"></div>
   </section>
 
-  <!-- ===== PROFILE ===== -->
-  <section class="section" id="profile">
-    <h2 class="sec-tit">PROFILE<small>โปรไฟล์</small></h2>
-    <div class="profile">
-      <figure class="profile-photo">
-        <img src="images/profiles/2026-06-01-pride-month.jpg" alt="เอ็มมี่ BLM48" loading="lazy" width="600" height="600">
-      </figure>
-      <div class="profile-body">
-        <p class="profile-name">Emmy<span>エミー</span></p>
-        <p class="profile-th">ณัฐวรรธ์ วงศ์ษารัตน์ · Nattawat Wongsarat</p>
-        <dl class="profile-data">
-          <div><dt>Generation</dt><dd>BLM48 3rd Generation</dd></div>
-          <div><dt>Team</dt><dd>Bloom</dd></div>
-          <div><dt>Position</dt><dd>BLM48 Vice Shihainin (รองผู้จัดการทั่วไป)</dd></div>
-          <div><dt>Debut</dt><dd>26.03.2024</dd></div>
-          <div><dt>Birthday</dt><dd>06 May 2005</dd></div>
-          <div><dt>Oshimark</dt><dd><span class="oshimark" role="img" aria-label="ตุ๊กตาหมี">🧸</span></dd></div>
-          <div><dt>Fandom</dt><dd>คุณหมี</dd></div>
-          <div><dt>Province</dt><dd>Surat Thani</dd></div>
-          <div><dt>Blood Type</dt><dd>B</dd></div>
-          <div><dt>MBTI</dt><dd>ESFJ</dd></div>
-          <div><dt>Election</dt><dd>1st General Election อันดับ 5</dd></div>
-          <div><dt>Center</dt><dd>BINGO! · Boku wa Inai · Rapsodi</dd></div>
-          <div><dt>Producer</dt><dd>1st Solo Concert “RIDE THE RHYTHM” · Co-Producer BLM48 &amp; NPT48 Concert “This Letter Says ‘Marry Me’”</dd></div>
-          <div><dt>Role Model</dt><dd>Sashihara Rino 指原莉乃</dd></div>
-        </dl>
-        <ul class="profile-stats">
-          <li><b data-stat="senbatsu">7</b>Senbatsu</li>
-          <li><b data-stat="center">3</b>Center</li>
-          <li><b data-stat="videos">39</b>Movies</li>
-          <li><b data-stat="eras">16</b>Profiles</li>
-        </ul>
-        <ul class="sns sns-profile">
-          <li><a href="https://www.instagram.com/emmy.blm48official/" target="_blank" rel="noopener" aria-label="Instagram @emmy.blm48official"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></a></li>
-          <li><a href="https://www.tiktok.com/@emmy.blm48official" target="_blank" rel="noopener" aria-label="TikTok @emmy.blm48official"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 3c.3 2.2 1.6 3.7 3.9 3.9v2.9c-1.4.1-2.7-.3-3.9-1v6.4c0 3.3-2.4 5.8-5.7 5.8-3.1 0-5.6-2.4-5.6-5.5 0-3.4 2.9-5.9 6.4-5.4v3c-1.6-.4-3.4.6-3.4 2.4 0 1.4 1.1 2.6 2.6 2.6 1.6 0 2.7-1.1 2.7-3V3h3z"/></svg></a></li>
-          <li><a href="https://x.com/emmy_blm48" target="_blank" rel="noopener" aria-label="X @emmy_blm48"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg></a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== HISTORY (rendered from data.js) ===== -->
-  <section class="section hatched" id="history">
-    <div class="inner">
-      <h2 class="sec-tit">HISTORY<small>เส้นทางไอดอล</small></h2>
-      <ul class="sched" id="sched"></ul>
-      <button class="view-more" id="sched-more">VIEW MORE</button>
-    </div>
-  </section>
-
-  <!-- ===== MOVIE (rendered from data.js) ===== -->
-  <section class="section" id="movie">
-    <h2 class="sec-tit">MOVIE<small>คลิปผลงาน</small></h2>
-    <div class="pills" role="group" aria-label="กรองคลิป">
-      <button class="pill-btn is-on" data-vfilter="all">ALL</button>
-      <button class="pill-btn" data-vfilter="song">SONG</button>
-      <button class="pill-btn" data-vfilter="mv">MV</button>
-      <button class="pill-btn" data-vfilter="center">CENTER</button>
-      <button class="pill-btn" data-vfilter="teaser">TEASER</button>
-      <button class="pill-btn" data-vfilter="thai">THAI VER.</button>
-      <button class="pill-btn" data-vfilter="male">MALE VER.</button>
-    </div>
-    <div class="movies" id="video-list"></div>
-    <button class="view-more" id="video-more" hidden>VIEW MORE</button>
-  </section>
-
-  <!-- ===== PHOTO (rendered from data.js) ===== -->
-  <section class="section" id="photo">
-    <h2 class="sec-tit">PHOTO<small>โปรไฟล์</small></h2>
-    <div class="pills" role="group" aria-label="กรองโปรไฟล์">
-      <button class="pill-btn is-on" data-filter="all">ALL</button>
-      <button class="pill-btn" data-filter="senbatsu">SENBATSU</button>
-      <button class="pill-btn" data-filter="center">CENTER</button>
-      <button class="pill-btn" data-filter="under">UNDER</button>
-      <button class="pill-btn" data-filter="cw">C/W</button>
-      <button class="pill-btn" data-filter="event">EVENT</button>
-    </div>
-    <div class="photos" id="archive-list" data-lb-group="archive"></div>
-
-    <h3 class="sub-tit">MAGAZINE COVERS</h3>
-    <div class="covers" data-lb-group="covers">
-      <button class="cover" data-lb data-caption="Revolution — Launch Day 26.03.2024"><img src="images/revolution.webp" alt="Revolution" loading="lazy"></button>
-      <button class="cover" data-lb data-caption="RHYTHM — RIDE THE RHYTHM"><img src="images/rhythm-pink.webp" alt="RHYTHM" loading="lazy"></button>
-      <button class="cover" data-lb data-caption="Teddy Bears — My Love 4ever"><img src="images/teddy-bears.webp" alt="Teddy Bears" loading="lazy"></button>
-      <button class="cover" data-lb data-caption="RIDE THE RHYTHM AND YOU — July 2025"><img src="images/rhythm-blue.webp" alt="RHYTHM AND YOU" loading="lazy"></button>
-    </div>
+  <!-- ===== CONTENTS (links to each page) ===== -->
+  <section class="section" id="contents">
+    <h2 class="sec-tit">CONTENTS<small>เมนู</small></h2>
+    <ul class="contents">
+      <li><a href="/profile"><span class="contents-img"><img src="images/profiles/2026-06-01-pride-month.jpg" alt="" loading="lazy"></span><b>PROFILE</b><small>โปรไฟล์</small></a></li>
+      <li><a href="/history"><span class="contents-img"><img src="images/profiles/2026-01-30-bingo.jpg" alt="" loading="lazy"></span><b>HISTORY</b><small>เส้นทางไอดอล</small></a></li>
+      <li><a href="/movie"><span class="contents-img"><img src="https://i.ytimg.com/vi/QaxSjLIxcSE/mqdefault.jpg" alt="" loading="lazy"></span><b>MOVIE</b><small>คลิปผลงาน</small></a></li>
+      <li><a href="/photo"><span class="contents-img"><img src="images/profiles/2026-04-24-sustainable.jpg" alt="" loading="lazy"></span><b>PHOTO</b><small>โปรไฟล์</small></a></li>
+      <li><a href="/gallery"><span class="contents-img"><img src="images/gallery/photo-01.webp" alt="" loading="lazy"></span><b>GALLERY</b><small>แกลเลอรี</small></a></li>
+      <li><a href="/champ"><span class="contents-img"><img src="images/gallery/2026-10-14-4cut.webp" alt="" loading="lazy"></span><b>CHAMP OF THE MONTH</b><small>ข้อความถึงคุณหมี</small></a></li>
+    </ul>
   </section>
 
   <!-- ===== MESSAGE ===== -->
@@ -155,38 +81,10 @@
   </section>
 
   </main>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer hatched">
-    <ul class="sns sns-footer">
-      <li><a href="https://www.instagram.com/emmy.blm48official/" target="_blank" rel="noopener" aria-label="Instagram @emmy.blm48official"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></a></li>
-      <li><a href="https://www.tiktok.com/@emmy.blm48official" target="_blank" rel="noopener" aria-label="TikTok @emmy.blm48official"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 3c.3 2.2 1.6 3.7 3.9 3.9v2.9c-1.4.1-2.7-.3-3.9-1v6.4c0 3.3-2.4 5.8-5.7 5.8-3.1 0-5.6-2.4-5.6-5.5 0-3.4 2.9-5.9 6.4-5.4v3c-1.6-.4-3.4.6-3.4 2.4 0 1.4 1.1 2.6 2.6 2.6 1.6 0 2.7-1.1 2.7-3V3h3z"/></svg></a></li>
-      <li><a href="https://x.com/emmy_blm48" target="_blank" rel="noopener" aria-label="X @emmy_blm48"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg></a></li>
-    </ul>
-    <a href="#top" class="footer-heart" aria-label="กลับขึ้นด้านบน">♥</a>
-    <p class="footer-logo">EMMY</p>
-    <p class="footer-sub">BLM48 3rd Generation · Team Bloom <span aria-hidden="true">🧸</span></p>
-    <p class="footer-copy">© 2026 Emmy Nattawat · Photos ©BLM48</p>
-  </footer>
-
-  <!-- Lightbox -->
-  <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="ดูรูปเต็มจอ">
-    <button class="lb-btn lb-close" aria-label="ปิด">×</button>
-    <button class="lb-btn lb-prev" aria-label="รูปก่อนหน้า">‹</button>
-    <figure><figcaption></figcaption></figure>
-    <button class="lb-btn lb-next" aria-label="รูปถัดไป">›</button>
-  </div>
-
-  <!-- Video player -->
-  <div class="player" hidden role="dialog" aria-modal="true" aria-label="เล่นวิดีโอ">
-    <button class="lb-btn player-close" aria-label="ปิด">×</button>
-    <div class="player-box">
-      <div class="player-frame"></div>
-      <p class="player-cap"><span></span><a target="_blank" rel="noopener">YOUTUBE →</a></p>
-    </div>
   </div>
 
   <script src="data.js"></script>
+  <script src="layout.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

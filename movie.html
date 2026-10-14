@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MOVIE · EMMY BLM48</title>
+  <meta name="description" content="MOVIE — เอ็มมี่ BLM48 รุ่นที่ 3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Josefin+Sans:wght@300;400;600&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/images/logo.jpg">
+  <meta property="og:image" content="https://emmyblm48officialsite.vercel.app/images/logo.jpg">
+  <meta name="theme-color" content="#4a2311">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page page-movie">
+
+  <div class="booth">
+  <header class="page-head">
+    <a class="brand" href="/" aria-label="EMMY — หน้าแรก"><img src="images/logo.jpg" alt="" width="40" height="40"><span>EMMY</span></a>
+    <nav class="crumbs" aria-label="ตำแหน่งหน้า"><a href="/">HOME</a><span aria-hidden="true">/</span><span aria-current="page">MOVIE</span></nav>
+  </header>
+
+  <main id="top">
+
+  <!-- ===== MOVIE (rendered from data.js) ===== -->
+  <section class="section" id="movie">
+    <h1 class="sec-tit">MOVIE<small>คลิปผลงาน</small></h1>
+    <div class="pills" role="group" aria-label="กรองคลิป">
+      <button class="pill-btn is-on" data-vfilter="all">ALL</button>
+      <button class="pill-btn" data-vfilter="song">SONG</button>
+      <button class="pill-btn" data-vfilter="mv">MV</button>
+      <button class="pill-btn" data-vfilter="center">CENTER</button>
+      <button class="pill-btn" data-vfilter="teaser">TEASER</button>
+      <button class="pill-btn" data-vfilter="thai">THAI VER.</button>
+      <button class="pill-btn" data-vfilter="male">MALE VER.</button>
+    </div>
+    <div class="movies" id="video-list"></div>
+    <button class="view-more" id="video-more" hidden>VIEW MORE</button>
+  </section>
+
+
+  <nav class="page-nav" aria-label="หน้าอื่น">
+    <a class="pn-prev" href="/history"><small>PREV</small>HISTORY</a>
+    <a class="pn-next" href="/photo"><small>NEXT</small>PHOTO</a>
+  </nav>
+
+  </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="layout.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
