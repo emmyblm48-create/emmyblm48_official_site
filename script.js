@@ -137,7 +137,7 @@ if (document.getElementById("video-list")) {
     <button class="movie" data-yt="${v.yt}" data-title="${esc(videoTitle(v))}" aria-label="เล่น ${esc(videoTitle(v))}">
       <div class="movie-thumb">
         <img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
-        <span class="play" aria-hidden="true">▶</span>
+        <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
         <time datetime="${v.date}">${fmtDate(v.date)}</time>
@@ -184,7 +184,7 @@ if (champList) champList.innerHTML = champs.map((c, i) => `
       <p class="champ-no">No.${String(c.count).padStart(2, "0")}</p>
       <h3>${esc(c.label)}</h3>
       <div class="champ-text" id="champ-text-${i}">
-        ${c.text.map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`).join("")}
+        ${c.text.map((p) => `<p>${esc(p).replace(/\n/g, "<br>").replace(/\{(\w+)\}/g, (m, name) => icon(name) || m)}</p>`).join("")}
       </div>
       <button class="view-more champ-toggle" aria-expanded="false" aria-controls="champ-text-${i}">READ MORE</button>
     </div>
