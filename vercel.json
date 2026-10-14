@@ -5,6 +5,6 @@
     { "source": "/movie", "destination": "/discography", "permanent": true }
   ],
   "functions": {
-    "api/views.js": { "includeFiles": "data.js", "maxDuration": 30 }
+    "api/views.js": { "includeFiles": "data.js", "maxDuration": 60 }
   }
 }
