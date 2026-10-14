@@ -147,7 +147,6 @@ const movieCard = (v) => `
     </div>
     <div class="movie-meta">
       <time datetime="${v.date}">${fmtDate(v.date)}</time>
-      ${v.kind === "teaser" ? pill("teaser", "TEASER") : ""}${v.mv ? pill("movie", "MV") : ""}${v.center ? pill("center", "CENTER") : ""}${v.ver ? pill("ver", v.ver.toUpperCase()) : ""}
       <h3>${esc(v.title)}${v.th ? ` <small>${esc(v.th)}</small>` : ""}</h3>
       <p>${esc(v.release)}</p>
     </div>
@@ -174,13 +173,11 @@ archive.innerHTML = [...ERAS].reverse().map((e) => `
   <button class="photo" data-lb data-tags="${e.tags.join(" ")}" data-caption="${esc(fmtDate(e.date) + " — " + e.title + (e.release ? " · " + e.release : ""))}">
     <div class="photo-img">
       <img src="images/profiles/${e.img}" alt="โปรไฟล์ ${esc(e.title)}" loading="lazy" width="600" height="600">
-      ${e.tags.includes("center") ? pill("center", "CENTER") : ""}
     </div>
     <div class="photo-meta">
       <time datetime="${e.date}">${fmtDate(e.date)}</time>
       <h3>${esc(e.title)}</h3>
       <p>${esc([e.release, e.sub].filter(Boolean).join(" · "))}</p>
-      <p class="tags">${e.tags.filter((t) => t !== "center").map((t) => pill(t, TAG_LABEL[t])).join("")}</p>
     </div>
   </button>`).join("");
 document.querySelectorAll("[data-filter]").forEach((btn) => {

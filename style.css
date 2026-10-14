@@ -132,13 +132,26 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .pill.role { color: #1f6f8b; background: #e7f3f7; }
 .pill.live { color: var(--blue); }
 
-.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px 26px; margin-bottom: 40px; }
 .pill-btn {
-  font-family: var(--en); font-size: .6875rem; letter-spacing: .14em; padding: 7px 14px;
-  border: 1px solid var(--line); border-radius: 999px; color: var(--ink-2); transition: all .2s;
+  --c: var(--ink-2);
+  position: relative; padding: 6px 2px 10px; color: var(--c);
+  font-family: var(--en); font-size: .8rem; letter-spacing: .08em; transition: color .2s, opacity .2s;
 }
-.pill-btn:hover { border-color: var(--pink); color: var(--pink); }
-.pill-btn.is-on { background: var(--pink); border-color: var(--pink); color: #fff; }
+.pill-btn::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink);
+  transform: scaleX(0); transition: transform .3s ease;
+}
+.pill-btn:hover { opacity: .7; }
+.pill-btn.is-on { color: var(--ink); }
+.pill-btn.is-on::after { transform: scaleX(1); }
+[data-vfilter="song"], [data-filter="senbatsu"] { --c: #b8457f; }
+[data-vfilter="mv"], [data-filter="cw"] { --c: #8257c9; }
+[data-vfilter="center"], [data-filter="center"] { --c: #8a6a10; }
+[data-vfilter="teaser"] { --c: #b0601a; }
+[data-vfilter="thai"], [data-filter="event"] { --c: #4a6fd1; }
+[data-vfilter="male"] { --c: #2b8068; }
+[data-filter="under"] { --c: #707070; }
 
 /* ===== PROFILE ===== */
 .profile { display: grid; grid-template-columns: minmax(240px, 400px) 1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
@@ -194,12 +207,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .photo-img { position: relative; overflow: hidden; border-radius: 4px; background: #f3f3f3; }
 .photo-img img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform .6s ease; }
 .photo:hover .photo-img img { transform: scale(1.05); }
-.photo-img .pill { position: absolute; top: 10px; left: 10px; }
 .photo-meta { margin-top: 12px; }
 .photo-meta time { font-family: var(--en); font-size: .6875rem; letter-spacing: .1em; color: var(--ink-2); }
 .photo-meta h3 { font-weight: 400; font-size: .92rem; line-height: 1.45; margin: 4px 0 2px; }
 .photo-meta p { font-size: .74rem; color: var(--ink-2); line-height: 1.5; }
-.photo-meta .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
 .covers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
 .cover { overflow: hidden; border-radius: 4px; }
 .cover img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform .6s ease; }
