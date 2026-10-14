@@ -80,9 +80,13 @@ window.MUSIC_VIDEOS = [
   { yt: "9gQ9OMW_z-0", title: "", artist: "", date: "" },
 ];
 
-// Discography · MAGAZINE COVER — ใส่รูปไว้ที่ images/magazines/
-// { date: "2026-01-15", img: "2026-01-xxx.jpg", title: "ชื่อนิตยสาร", issue: "Vol. / ฉบับ", url: "ลิงก์ (ถ้ามี)" }
+// Discography · MAGAZINE COVER — ใส่รูปไว้ที่ images/magazines/ (แสดงตามลำดับในรายการ)
+// { img: "xxx.webp", title: "ชื่อปก", issue: "รายละเอียด / ฉบับ", date: "YYYY-MM-DD" (ไม่ใส่ก็ได้) }
 window.MAGAZINES = [
+  { img: "revolution.webp", title: "Revolution", issue: "Launch Day", date: "2024-03-26" },
+  { img: "rhythm-pink.webp", title: "RHYTHM", issue: "RIDE THE RHYTHM" },
+  { img: "teddy-bears.webp", title: "Teddy Bears", issue: "My Love 4ever" },
+  { img: "rhythm-blue.webp", title: "RIDE THE RHYTHM AND YOU", issue: "July 2025" },
 ];
 
 // 1st Special Album — ลำดับตามเพลย์ลิสต์ YouTube

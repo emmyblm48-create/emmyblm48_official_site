@@ -120,7 +120,7 @@ if (document.getElementById("sched")) {
 // ---------- Discography (Movie · Music Video · Magazine Cover) ----------
 if (document.getElementById("discography")) {
   const MUSIC_VIDEOS = window.MUSIC_VIDEOS || [];
-  const MAGAZINES = (window.MAGAZINES || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+  const MAGAZINES = window.MAGAZINES || [];
   const videoList = document.getElementById("video-list");
   const videoMore = document.getElementById("video-more");
   const VIDEO_LIMIT = 9;
@@ -489,5 +489,5 @@ const io = new IntersectionObserver((entries) => {
     if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
   });
 }, { rootMargin: "0px 0px -40px 0px" });
-document.querySelectorAll(".sec-tit, .profile, .message, .covers, .champ")
+document.querySelectorAll(".sec-tit, .profile, .message, .champ")
   .forEach((el) => { el.classList.add("reveal"); io.observe(el); });
