@@ -1,11 +1,16 @@
 const ERAS = window.ERAS || [];
+const VIDEOS = window.VIDEOS || [];
 const TAG_LABEL = { center: "Center", senbatsu: "Senbatsu", under: "Under", cw: "c/w", event: "Event" };
 const fmtDate = (iso) => iso.split("-").reverse().join(".");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 // ---------- Stats ----------
 const count = (tag) => ERAS.filter((e) => e.tags.includes(tag)).length;
-const statValues = { senbatsu: count("senbatsu"), center: count("center"), eras: ERAS.length };
+const centerSongs = new Set([
+  ...ERAS.filter((e) => e.tags.includes("center")).map((e) => e.title),
+  ...VIDEOS.filter((v) => v.center).map((v) => v.title),
+]);
+const statValues = { senbatsu: count("senbatsu"), center: centerSongs.size, eras: ERAS.length, videos: VIDEOS.length };
 document.querySelectorAll("[data-stat]").forEach((el) => { el.textContent = statValues[el.dataset.stat]; });
 
 // ---------- Archive (grouped by year) ----------
@@ -36,9 +41,9 @@ archive.innerHTML = years.map((y) => {
 }).join("");
 
 // Filters
-document.querySelectorAll(".filters .chip").forEach((chip) => {
+document.querySelectorAll("[data-filter]").forEach((chip) => {
   chip.addEventListener("click", () => {
-    document.querySelectorAll(".filters .chip").forEach((c) => c.classList.toggle("is-on", c === chip));
+    document.querySelectorAll("[data-filter]").forEach((c) => c.classList.toggle("is-on", c === chip));
     const f = chip.dataset.filter;
     archive.querySelectorAll(".era").forEach((el) => {
       el.hidden = f !== "all" && !el.dataset.tags.split(" ").includes(f);
@@ -48,6 +53,85 @@ document.querySelectorAll(".filters .chip").forEach((chip) => {
     });
   });
 });
+
+// ---------- Performances (newest first) ----------
+const videoList = document.getElementById("video-list");
+const videoMore = document.getElementById("video-more");
+const VIDEO_LIMIT = 12;
+let videoFilter = "all";
+let videoExpanded = false;
+const videoMatches = (v) => ({
+  all: true,
+  song: v.kind === "song",
+  center: !!v.center,
+  teaser: v.kind === "teaser",
+  thai: v.ver === "Thai ver.",
+  male: v.ver === "Male ver.",
+}[videoFilter]);
+const videoCard = (v) => {
+  const label = v.kind === "teaser" ? "Teaser" : v.kind === "appeal" ? "Appeal" : "";
+  const thumb = v.yt
+    ? `<img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="play" aria-hidden="true">▶</span>`
+    : `<span class="no-link">ลิงก์เร็ว ๆ นี้</span>`;
+  const inner = `
+      <div class="v-thumb">${thumb}
+        ${v.center ? '<span class="era-star">★ CENTER</span>' : ""}
+        ${label ? `<span class="v-kind">${label}</span>` : ""}
+      </div>
+      <div class="v-body">
+        <time datetime="${v.date}">${fmtDate(v.date)}</time>
+        <h4>${esc(v.title)}</h4>
+        ${v.th ? `<p class="v-th">${esc(v.th)}</p>` : ""}
+        <p class="v-rel">${esc(v.release)}</p>
+        ${v.ver ? `<p class="era-tags"><span class="tag ${v.ver.startsWith("Thai") ? "event" : "cw"}">${v.ver}</span></p>` : ""}
+      </div>`;
+  return v.yt
+    ? `<button class="video" data-yt="${v.yt}" data-title="${esc(v.title + (v.kind === "teaser" ? " (Teaser)" : ""))}" aria-label="เล่น ${esc(v.title)}">${inner}</button>`
+    : `<div class="video is-empty">${inner}</div>`;
+};
+const renderVideos = () => {
+  const list = [...VIDEOS].reverse().filter(videoMatches);
+  const shown = videoExpanded ? list : list.slice(0, VIDEO_LIMIT);
+  videoList.innerHTML = shown.map(videoCard).join("");
+  videoMore.hidden = videoExpanded || list.length <= VIDEO_LIMIT;
+  videoMore.textContent = `แสดงทั้งหมด (${list.length})`;
+};
+document.querySelectorAll("[data-vfilter]").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll("[data-vfilter]").forEach((c) => c.classList.toggle("is-on", c === chip));
+    videoFilter = chip.dataset.vfilter;
+    renderVideos();
+  });
+});
+videoMore.addEventListener("click", () => { videoExpanded = true; renderVideos(); });
+renderVideos();
+
+// Player (YouTube embed, loaded only on click)
+const player = document.querySelector(".player");
+const playerFrame = player.querySelector(".player-frame");
+const playerCap = player.querySelector(".player-cap span");
+const playerLink = player.querySelector(".player-cap a");
+let playerOpener = null;
+const closePlayer = () => {
+  player.hidden = true;
+  playerFrame.innerHTML = "";
+  document.body.style.overflow = "";
+  playerOpener?.focus();
+};
+videoList.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-yt]");
+  if (!btn) return;
+  playerOpener = btn;
+  const id = btn.dataset.yt;
+  playerFrame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${btn.dataset.title}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  playerCap.textContent = btn.dataset.title;
+  playerLink.href = `https://youtu.be/${id}`;
+  player.hidden = false;
+  document.body.style.overflow = "hidden";
+  player.querySelector(".player-close").focus();
+});
+player.querySelector(".player-close").addEventListener("click", closePlayer);
+player.addEventListener("click", (e) => { if (e.target === player) closePlayer(); });
 
 // ---------- Discography ----------
 const posOf = (e) => e.tags.includes("center") ? ["center", "senbatsu"] : e.tags.filter((t) => t !== "event");
@@ -102,7 +186,7 @@ lb.querySelector(".lb-prev").addEventListener("click", () => show(current - 1));
 lb.querySelector(".lb-next").addEventListener("click", () => show(current + 1));
 lb.addEventListener("click", (e) => { if (e.target === lb) closeLb(); });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { if (!lb.hidden) closeLb(); else if (!drawer.hidden) setDrawer(false); }
+  if (e.key === "Escape") { if (!player.hidden) closePlayer(); else if (!lb.hidden) closeLb(); else if (!drawer.hidden) setDrawer(false); }
   if (lb.hidden) return;
   if (e.key === "ArrowLeft") show(current - 1);
   if (e.key === "ArrowRight") show(current + 1);

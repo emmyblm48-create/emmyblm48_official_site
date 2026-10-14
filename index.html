@@ -25,8 +25,9 @@
       <li><a href="#letter"><i>02</i>จดหมายจากเอ็มมี่</a></li>
       <li><a href="#archive"><i>03</i>Profile Archive</a></li>
       <li><a href="#works"><i>04</i>ผลงาน</a></li>
-      <li><a href="#covers"><i>05</i>ปกนิตยสาร</a></li>
-      <li><a href="#members"><i>06</i>BLM48</a></li>
+      <li><a href="#videos"><i>05</i>Performances</a></li>
+      <li><a href="#covers"><i>06</i>ปกนิตยสาร</a></li>
+      <li><a href="#members"><i>07</i>BLM48</a></li>
     </ol>
   </nav>
 
@@ -69,9 +70,9 @@
   <!-- ================= STATS ================= -->
   <section class="stats wrap" id="stats" aria-label="สถิติ">
     <div class="stat"><b data-stat="senbatsu">7</b><span>ครั้งที่ติด<br>Senbatsu</span></div>
-    <div class="stat hot"><b data-stat="center">1</b><span>Center<br>BINGO!</span></div>
+    <div class="stat hot"><b data-stat="center">3</b><span>Center<br>Position</span></div>
     <div class="stat"><b>#5</b><span>1st General<br>Election</span></div>
-    <div class="stat"><b data-stat="eras">16</b><span>Profile<br>Eras</span></div>
+    <div class="stat"><b data-stat="videos">39</b><span>Songs &amp;<br>Videos</span></div>
   </section>
 
   <!-- ================= CONTENTS ================= -->
@@ -85,8 +86,9 @@
       <li><a href="#letter"><i>02</i><b>จดหมายจากเอ็มมี่</b><span>Beginning of Emmy</span></a></li>
       <li><a href="#archive"><i>03</i><b>Profile Archive</b><span>2024 — 2026</span></a></li>
       <li><a href="#works"><i>04</i><b>ผลงาน</b><span>Discography · Concert</span></a></li>
-      <li><a href="#covers"><i>05</i><b>ปกนิตยสาร</b><span>4 Covers</span></a></li>
-      <li><a href="#members"><i>06</i><b>BLM48</b><span>15 Members</span></a></li>
+      <li><a href="#videos"><i>05</i><b>Performances</b><span>YouTube</span></a></li>
+      <li><a href="#covers"><i>06</i><b>ปกนิตยสาร</b><span>4 Covers</span></a></li>
+      <li><a href="#members"><i>07</i><b>BLM48</b><span>15 Members</span></a></li>
     </ol>
   </section>
 
@@ -106,12 +108,14 @@
           <p class="idcard-jp">エミー</p>
         </div>
         <dl class="spec">
+          <div class="wide"><dt>ชื่อจริง</dt><dd>Nattawat Wongsarat</dd></div>
           <div><dt>รุ่น</dt><dd>BLM48 รุ่นที่ 3</dd></div>
           <div><dt>วันเดบิวต์</dt><dd>26 มี.ค. 2024</dd></div>
           <div><dt>วันเกิด</dt><dd>06.05.2005</dd></div>
           <div><dt>General Election</dt><dd>อันดับ 5 (ครั้งที่ 1)</dd></div>
+          <div class="wide"><dt>Center Position</dt><dd>BINGO! · Boku wa Inai · Rapsodi</dd></div>
           <div class="wide"><dt>ไอดอลต้นแบบ</dt><dd>Sashihara Rino 指原莉乃</dd></div>
-          <div class="wide"><dt>ผลงานเด่น</dt><dd>Center 9th Single “BINGO!” · โปรดิวเซอร์ 1<sup>st</sup> Solo Concert “RIDE THE RHYTHM”</dd></div>
+          <div class="wide"><dt>ผลงานเด่น</dt><dd>โปรดิวเซอร์ 1<sup>st</sup> Solo Concert “RIDE THE RHYTHM”</dd></div>
         </dl>
         <p class="idcard-sign">รักทุกคนนะ จุบจุบ ♥</p>
         <div class="barcode" aria-hidden="true"><span></span><small>0605 2005 · EMMY</small></div>
@@ -240,9 +244,27 @@
     </article>
   </section>
 
-  <!-- ================= 05 COVERS ================= -->
+  <!-- ================= 05 PERFORMANCES ================= -->
+  <section class="chapter wrap" id="videos">
+    <header class="ch-head"><i>05</i><h2>Performances</h2><span>ล่าสุด → แรกสุด</span></header>
+
+    <div class="filters" role="group" aria-label="กรองคลิป">
+      <button class="chip is-on" data-vfilter="all">ทั้งหมด</button>
+      <button class="chip" data-vfilter="song">เพลง</button>
+      <button class="chip" data-vfilter="center">Center</button>
+      <button class="chip" data-vfilter="teaser">Teaser</button>
+      <button class="chip" data-vfilter="thai">Thai ver.</button>
+      <button class="chip" data-vfilter="male">Male ver.</button>
+    </div>
+
+    <!-- Rendered from data.js -->
+    <div class="videos" id="video-list"></div>
+    <button class="more" id="video-more" hidden>แสดงทั้งหมด</button>
+  </section>
+
+  <!-- ================= 06 COVERS ================= -->
   <section class="chapter wrap" id="covers">
-    <header class="ch-head"><i>05</i><h2>ปกนิตยสาร</h2><span>แตะเพื่อดูเต็มจอ</span></header>
+    <header class="ch-head"><i>06</i><h2>ปกนิตยสาร</h2><span>แตะเพื่อดูเต็มจอ</span></header>
     <div class="cards" data-lb-group="covers">
       <button class="pc" data-lb data-caption="Revolution — Launch Day 26.03.2024"><img src="images/revolution.webp" alt="Revolution" loading="lazy"><span>Revolution</span></button>
       <button class="pc" data-lb data-caption="RHYTHM — RIDE THE RHYTHM"><img src="images/rhythm-pink.webp" alt="RHYTHM สีชมพู" loading="lazy"><span>Rhythm</span></button>
@@ -251,9 +273,9 @@
     </div>
   </section>
 
-  <!-- ================= 06 MEMBERS ================= -->
+  <!-- ================= 07 MEMBERS ================= -->
   <section class="chapter wrap" id="members">
-    <header class="ch-head"><i>06</i><h2>BLM48</h2><span>15 Members</span></header>
+    <header class="ch-head"><i>07</i><h2>BLM48</h2><span>15 Members</span></header>
     <ol class="roster">
       <li>Ayumu</li><li>Bamboo</li><li>Eclairs</li><li class="me">Emmy</li><li>Gino</li>
       <li>Hana</li><li>Hero</li><li>Jayden</li><li>Mushroom</li><li>Nemi</li>
@@ -276,6 +298,15 @@
     <button class="lb-btn lb-prev" aria-label="รูปก่อนหน้า">‹</button>
     <figure><img alt=""><figcaption></figcaption></figure>
     <button class="lb-btn lb-next" aria-label="รูปถัดไป">›</button>
+  </div>
+
+  <!-- Video player -->
+  <div class="player" hidden role="dialog" aria-modal="true" aria-label="เล่นวิดีโอ">
+    <button class="lb-btn player-close" aria-label="ปิด">×</button>
+    <div class="player-box">
+      <div class="player-frame"></div>
+      <p class="player-cap"><span></span><a target="_blank" rel="noopener">ดูบน YouTube ↗</a></p>
+    </div>
   </div>
 
   <script src="data.js"></script>
