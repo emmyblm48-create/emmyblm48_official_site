@@ -1,112 +1,208 @@
 const ERAS = window.ERAS || [];
-const VIDEOS = window.VIDEOS || [];
-const TAG_LABEL = { center: "Center", senbatsu: "Senbatsu", under: "Under", cw: "c/w", event: "Event" };
+const VIDEOS = (window.VIDEOS || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+const ALBUM = window.ALBUM;
+const TAG_LABEL = { center: "CENTER", senbatsu: "SENBATSU", under: "UNDER", cw: "C/W", event: "EVENT" };
+const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const fmtDate = (iso) => iso.split("-").reverse().join(".");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pill = (cls, text) => `<span class="pill ${cls}">${esc(text)}</span>`;
+const isNew = (iso) => (Date.now() - new Date(iso)) / 864e5 <= 30 && new Date(iso) <= Date.now();
+const videoTitle = (v) => v.title + (v.kind === "teaser" ? " (Teaser)" : "");
 
 // ---------- Stats ----------
-const count = (tag) => ERAS.filter((e) => e.tags.includes(tag)).length;
 const centerSongs = new Set([
   ...ERAS.filter((e) => e.tags.includes("center")).map((e) => e.title),
   ...VIDEOS.filter((v) => v.center).map((v) => v.title),
 ]);
-const statValues = { senbatsu: count("senbatsu"), center: centerSongs.size, eras: ERAS.length, videos: VIDEOS.length };
+const statValues = {
+  senbatsu: ERAS.filter((e) => e.tags.includes("senbatsu")).length,
+  center: centerSongs.size,
+  eras: ERAS.length,
+  videos: VIDEOS.length,
+};
 document.querySelectorAll("[data-stat]").forEach((el) => { el.textContent = statValues[el.dataset.stat]; });
 
-// ---------- Archive (grouped by year) ----------
-const archive = document.getElementById("archive-list");
-const years = [...new Set(ERAS.map((e) => e.date.slice(0, 4)))];
-archive.innerHTML = years.map((y) => {
-  const items = ERAS.filter((e) => e.date.startsWith(y));
-  return `
-    <section class="year" data-year="${y}">
-      <h3 class="year-label">${y}</h3>
-      <div class="year-grid">
-        ${items.map((e) => `
-          <article class="era" data-tags="${e.tags.join(" ")}">
-            <button class="era-photo" data-lb data-caption="${esc(fmtDate(e.date) + " — " + e.title + (e.release ? " · " + e.release : ""))}">
-              <img src="images/profiles/${e.img}" alt="โปรไฟล์ ${esc(e.title)}" loading="lazy" width="600" height="600">
-              ${e.tags.includes("center") ? '<span class="era-star">★ CENTER</span>' : ""}
-            </button>
-            <div class="era-body">
-              <time datetime="${e.date}">${fmtDate(e.date)}</time>
-              <h4>${esc(e.title)}</h4>
-              ${e.jp ? `<p class="era-jp">${esc(e.jp)}</p>` : ""}
-              <p class="era-sub">${esc([e.release, e.sub].filter(Boolean).join(" · "))}</p>
-              <p class="era-tags">${e.tags.map((t) => `<span class="tag ${t}">${TAG_LABEL[t]}</span>`).join("")}</p>
-            </div>
-          </article>`).join("")}
-      </div>
-    </section>`;
-}).join("");
+// ---------- Hero slideshow (latest profiles) ----------
+const heroSlides = document.getElementById("hero-slides");
+const heroEras = [...ERAS].reverse().slice(0, 5);
+heroSlides.innerHTML = heroEras.map((e, i) => `
+  <div class="hero-slide${i === 0 ? " is-on" : ""}">
+    <div class="bg" style="background-image:url('images/profiles/${e.img}')"></div>
+    <img src="images/profiles/${e.img}" alt="เอ็มมี่ — ${esc(e.title)}" ${i ? 'loading="lazy"' : ""}>
+  </div>`).join("");
+const slides = [...heroSlides.children];
+let heroIndex = 0;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (slides.length > 1 && !reduceMotion) {
+  setInterval(() => {
+    slides[heroIndex].classList.remove("is-on");
+    heroIndex = (heroIndex + 1) % slides.length;
+    slides[heroIndex].classList.add("is-on");
+  }, 5000);
+}
 
-// Filters
-document.querySelectorAll("[data-filter]").forEach((chip) => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll("[data-filter]").forEach((c) => c.classList.toggle("is-on", c === chip));
-    const f = chip.dataset.filter;
-    archive.querySelectorAll(".era").forEach((el) => {
-      el.hidden = f !== "all" && !el.dataset.tags.split(" ").includes(f);
-    });
-    archive.querySelectorAll(".year").forEach((y) => {
-      y.hidden = !y.querySelector(".era:not([hidden])");
-    });
-  });
+// ---------- Banners ----------
+if (ALBUM) document.getElementById("banner-album").href = `https://www.youtube.com/playlist?list=${ALBUM.playlist}`;
+const latest = [...VIDEOS].reverse().find((v) => v.yt);
+if (latest) {
+  document.getElementById("banner-latest").textContent = latest.title;
+  document.getElementById("banner-latest-sub").textContent = `${fmtDate(latest.date)} · ${latest.release}`;
+}
+const track = document.getElementById("banner-track");
+const banners = [...track.children];
+const dots = document.getElementById("banner-dots");
+dots.innerHTML = banners.map((_, i) => `<button aria-label="แบนเนอร์ ${i + 1}"></button>`).join("");
+const dotBtns = [...dots.children];
+const bannerAt = () => {
+  const mid = track.scrollLeft + track.clientWidth / 2;
+  let best = 0;
+  banners.forEach((b, i) => { if (Math.abs(b.offsetLeft + b.offsetWidth / 2 - mid) < Math.abs(banners[best].offsetLeft + banners[best].offsetWidth / 2 - mid)) best = i; });
+  return best;
+};
+const goBanner = (i) => track.scrollTo({ left: banners[i].offsetLeft - (track.clientWidth - banners[i].offsetWidth) / 2, behavior: "smooth" });
+const syncDots = () => { const at = bannerAt(); dotBtns.forEach((d, i) => d.classList.toggle("is-on", i === at)); };
+dotBtns.forEach((d, i) => d.addEventListener("click", () => goBanner(i)));
+track.addEventListener("scroll", () => requestAnimationFrame(syncDots), { passive: true });
+syncDots();
+let bannerPaused = false;
+track.addEventListener("pointerenter", () => { bannerPaused = true; });
+track.addEventListener("pointerleave", () => { bannerPaused = false; });
+if (!reduceMotion) setInterval(() => { if (!bannerPaused) goBanner((bannerAt() + 1) % banners.length); }, 4500);
+
+// ---------- History (schedule-style list, newest first) ----------
+const sameSong = (v, e) => v.date === e.date && v.title === e.title && v.kind === "song";
+const historyItems = [
+  ...ERAS.map((e) => ({ date: e.date, type: "era", e, v: VIDEOS.find((v) => sameSong(v, e)) })),
+  ...VIDEOS.filter((v) => !ERAS.some((e) => sameSong(v, e))).map((v) => ({ date: v.date, type: "video", v })),
+  { date: "2025-07-26", type: "concert" },
+].sort((a, b) => b.date.localeCompare(a.date));
+
+const historyRow = (it) => {
+  const d = new Date(it.date);
+  const [y, m, day] = it.date.split("-");
+  let tags = "", title = "";
+  if (it.type === "era") {
+    const e = it.e;
+    tags = e.tags.map((t) => pill(t, TAG_LABEL[t])).join("");
+    const label = `${esc(e.release ? e.release + " " : "")}「${esc(e.title)}」${e.sub ? ` <small>${esc(e.sub)}</small>` : ""}`;
+    title = it.v
+      ? `<button data-yt="${it.v.yt}" data-title="${esc(videoTitle(it.v))}">${label}</button>`
+      : `<a href="#photo">${label}</a>`;
+  } else if (it.type === "video") {
+    const v = it.v;
+    tags = pill(v.kind === "teaser" ? "teaser" : "movie", v.kind === "teaser" ? "TEASER" : v.kind === "appeal" ? "APPEAL" : v.mv ? "MV" : "MOVIE")
+      + (v.center ? pill("center", "CENTER") : "") + (v.ver ? pill("ver", v.ver.toUpperCase()) : "");
+    const label = `${esc(v.release)}「${esc(v.title)}」${v.th ? ` <small>${esc(v.th)}</small>` : ""}`;
+    title = v.yt ? `<button data-yt="${v.yt}" data-title="${esc(videoTitle(v))}">${label}</button>` : label;
+  } else {
+    tags = pill("event", "LIVE");
+    title = `BLM48 1st Solo Concert「RIDE THE RHYTHM」 <small>26–27.07.2025 · Roblox Game · Producer: Emmy &amp; Hero</small>`;
+  }
+  return `<li>
+    <p class="sched-date"><b>${day}.${m}</b><span>${DAYS[d.getDay()]}.${y}</span></p>
+    <div class="sched-body">
+      <p class="sched-tags">${tags}${isNew(it.date) ? '<span class="sched-new">NEW</span>' : ""}</p>
+      <p class="sched-title">${title}</p>
+    </div>
+  </li>`;
+};
+const sched = document.getElementById("sched");
+const schedMore = document.getElementById("sched-more");
+const SCHED_LIMIT = 10;
+let schedAll = false;
+const renderSched = () => {
+  sched.innerHTML = (schedAll ? historyItems : historyItems.slice(0, SCHED_LIMIT)).map(historyRow).join("");
+  schedMore.textContent = schedAll ? "CLOSE" : `VIEW MORE (${historyItems.length})`;
+};
+schedMore.addEventListener("click", () => {
+  schedAll = !schedAll;
+  renderSched();
+  if (!schedAll) document.getElementById("history").scrollIntoView();
 });
+renderSched();
 
-// ---------- Performances (newest first) ----------
+// ---------- Movie ----------
 const videoList = document.getElementById("video-list");
 const videoMore = document.getElementById("video-more");
-const VIDEO_LIMIT = 12;
+const VIDEO_LIMIT = 9;
 let videoFilter = "all";
 let videoExpanded = false;
 const videoMatches = (v) => ({
   all: true,
   song: v.kind === "song",
+  mv: !!v.mv,
   center: !!v.center,
   teaser: v.kind === "teaser",
   thai: v.ver === "Thai ver.",
   male: v.ver === "Male ver.",
 }[videoFilter]);
-const videoCard = (v) => {
-  const label = v.kind === "teaser" ? "Teaser" : v.kind === "appeal" ? "Appeal" : "";
-  const thumb = v.yt
-    ? `<img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="play" aria-hidden="true">▶</span>`
-    : `<span class="no-link">ลิงก์เร็ว ๆ นี้</span>`;
-  const inner = `
-      <div class="v-thumb">${thumb}
-        ${v.center ? '<span class="era-star">★ CENTER</span>' : ""}
-        ${label ? `<span class="v-kind">${label}</span>` : ""}
-      </div>
-      <div class="v-body">
-        <time datetime="${v.date}">${fmtDate(v.date)}</time>
-        <h4>${esc(v.title)}</h4>
-        ${v.th ? `<p class="v-th">${esc(v.th)}</p>` : ""}
-        <p class="v-rel">${esc(v.release)}</p>
-        ${v.ver ? `<p class="era-tags"><span class="tag ${v.ver.startsWith("Thai") ? "event" : "cw"}">${v.ver}</span></p>` : ""}
-      </div>`;
-  return v.yt
-    ? `<button class="video" data-yt="${v.yt}" data-title="${esc(v.title + (v.kind === "teaser" ? " (Teaser)" : ""))}" aria-label="เล่น ${esc(v.title)}">${inner}</button>`
-    : `<div class="video is-empty">${inner}</div>`;
-};
+const movieCard = (v) => `
+  <button class="movie" data-yt="${v.yt}" data-title="${esc(videoTitle(v))}" aria-label="เล่น ${esc(videoTitle(v))}">
+    <div class="movie-thumb">
+      <img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+      <span class="play" aria-hidden="true">▶</span>
+    </div>
+    <div class="movie-meta">
+      <time datetime="${v.date}">${fmtDate(v.date)}</time>
+      ${v.kind === "teaser" ? pill("teaser", "TEASER") : ""}${v.mv ? pill("movie", "MV") : ""}${v.center ? pill("center", "CENTER") : ""}${v.ver ? pill("ver", v.ver.toUpperCase()) : ""}
+      <h3>${esc(v.title)}${v.th ? ` <small>${esc(v.th)}</small>` : ""}</h3>
+      <p>${esc(v.release)}</p>
+    </div>
+  </button>`;
 const renderVideos = () => {
-  const list = [...VIDEOS].reverse().filter(videoMatches);
-  const shown = videoExpanded ? list : list.slice(0, VIDEO_LIMIT);
-  videoList.innerHTML = shown.map(videoCard).join("");
+  const list = [...VIDEOS].reverse().filter((v) => v.yt && videoMatches(v));
+  videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map(movieCard).join("");
   videoMore.hidden = videoExpanded || list.length <= VIDEO_LIMIT;
-  videoMore.textContent = `แสดงทั้งหมด (${list.length})`;
+  videoMore.textContent = `VIEW MORE (${list.length})`;
 };
-document.querySelectorAll("[data-vfilter]").forEach((chip) => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll("[data-vfilter]").forEach((c) => c.classList.toggle("is-on", c === chip));
-    videoFilter = chip.dataset.vfilter;
+document.querySelectorAll("[data-vfilter]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-vfilter]").forEach((b) => b.classList.toggle("is-on", b === btn));
+    videoFilter = btn.dataset.vfilter;
     renderVideos();
   });
 });
 videoMore.addEventListener("click", () => { videoExpanded = true; renderVideos(); });
 renderVideos();
 
-// Player (YouTube embed, loaded only on click)
+// ---------- Photo archive ----------
+const archive = document.getElementById("archive-list");
+archive.innerHTML = [...ERAS].reverse().map((e) => `
+  <button class="photo" data-lb data-tags="${e.tags.join(" ")}" data-caption="${esc(fmtDate(e.date) + " — " + e.title + (e.release ? " · " + e.release : ""))}">
+    <div class="photo-img">
+      <img src="images/profiles/${e.img}" alt="โปรไฟล์ ${esc(e.title)}" loading="lazy" width="600" height="600">
+      ${e.tags.includes("center") ? pill("center", "CENTER") : ""}
+    </div>
+    <div class="photo-meta">
+      <time datetime="${e.date}">${fmtDate(e.date)}</time>
+      <h3>${esc(e.title)}</h3>
+      <p>${esc([e.release, e.sub].filter(Boolean).join(" · "))}</p>
+      <p class="tags">${e.tags.filter((t) => t !== "center").map((t) => pill(t, TAG_LABEL[t])).join("")}</p>
+    </div>
+  </button>`).join("");
+document.querySelectorAll("[data-filter]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-filter]").forEach((b) => b.classList.toggle("is-on", b === btn));
+    const f = btn.dataset.filter;
+    archive.querySelectorAll(".photo").forEach((el) => {
+      el.hidden = f !== "all" && !el.dataset.tags.split(" ").includes(f);
+    });
+  });
+});
+
+// ---------- Menu ----------
+const menuBtn = document.querySelector(".menu-btn");
+const menu = document.querySelector(".menu");
+const setMenu = (open) => {
+  menu.hidden = !open;
+  menuBtn.setAttribute("aria-expanded", open);
+  menuBtn.setAttribute("aria-label", open ? "ปิดเมนู" : "เปิดเมนู");
+  document.body.style.overflow = open ? "hidden" : "";
+};
+menuBtn.addEventListener("click", () => setMenu(menu.hidden));
+menu.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+
+// ---------- Player (YouTube, loaded on click) ----------
 const player = document.querySelector(".player");
 const playerFrame = player.querySelector(".player-frame");
 const playerCap = player.querySelector(".player-cap span");
@@ -118,7 +214,7 @@ const closePlayer = () => {
   document.body.style.overflow = "";
   playerOpener?.focus();
 };
-videoList.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-yt]");
   if (!btn) return;
   playerOpener = btn;
@@ -133,30 +229,10 @@ videoList.addEventListener("click", (e) => {
 player.querySelector(".player-close").addEventListener("click", closePlayer);
 player.addEventListener("click", (e) => { if (e.target === player) closePlayer(); });
 
-// ---------- Discography ----------
-const posOf = (e) => e.tags.includes("center") ? ["center", "senbatsu"] : e.tags.filter((t) => t !== "event");
-document.getElementById("disco-body").innerHTML = ERAS.filter((e) => e.release).map((e) => `
-  <tr class="${e.tags.includes("center") ? "is-center" : ""}">
-    <td class="d-date">${fmtDate(e.date)}</td>
-    <td class="d-rel">${esc(e.release)}</td>
-    <td class="d-title"><b>${esc(e.title)}</b>${e.jp ? `<small>${esc(e.jp)}</small>` : ""}</td>
-    <td class="d-pos">${posOf(e).map((t) => `<span class="tag ${t}">${TAG_LABEL[t]}</span>`).join("")}</td>
-  </tr>`).join("");
-
-// ---------- Contents drawer ----------
-const menuBtn = document.querySelector(".bar-menu");
-const drawer = document.querySelector(".drawer");
-const setDrawer = (open) => {
-  drawer.hidden = !open;
-  menuBtn.setAttribute("aria-expanded", open);
-  document.body.style.overflow = open ? "hidden" : "";
-};
-menuBtn.addEventListener("click", () => setDrawer(drawer.hidden));
-drawer.addEventListener("click", (e) => { if (e.target.closest("a")) setDrawer(false); });
-
 // ---------- Lightbox (per group, visible items only) ----------
 const lb = document.querySelector(".lightbox");
-const lbImg = lb.querySelector("img");
+const lbImg = document.createElement("img");
+lb.querySelector("figure").prepend(lbImg);
 const lbCap = lb.querySelector("figcaption");
 let group = [];
 let current = 0;
@@ -173,8 +249,7 @@ const closeLb = () => { lb.hidden = true; document.body.style.overflow = ""; ope
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-lb]");
   if (!btn) return;
-  const container = btn.closest("[data-lb-group]");
-  group = [...container.querySelectorAll("[data-lb]")].filter((b) => !b.closest("[hidden]"));
+  group = [...btn.closest("[data-lb-group]").querySelectorAll("[data-lb]")].filter((b) => !b.hidden);
   opener = btn;
   show(group.indexOf(btn));
   lb.hidden = false;
@@ -185,8 +260,13 @@ lb.querySelector(".lb-close").addEventListener("click", closeLb);
 lb.querySelector(".lb-prev").addEventListener("click", () => show(current - 1));
 lb.querySelector(".lb-next").addEventListener("click", () => show(current + 1));
 lb.addEventListener("click", (e) => { if (e.target === lb) closeLb(); });
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { if (!player.hidden) closePlayer(); else if (!lb.hidden) closeLb(); else if (!drawer.hidden) setDrawer(false); }
+  if (e.key === "Escape") {
+    if (!player.hidden) closePlayer();
+    else if (!lb.hidden) closeLb();
+    else if (!menu.hidden) setMenu(false);
+  }
   if (lb.hidden) return;
   if (e.key === "ArrowLeft") show(current - 1);
   if (e.key === "ArrowRight") show(current + 1);
@@ -198,5 +278,5 @@ const io = new IntersectionObserver((entries) => {
     if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
   });
 }, { rootMargin: "0px 0px -40px 0px" });
-document.querySelectorAll(".stat, .contents-list li, .ch-head, .idcard, .letter blockquote, .why, .election, .glossary > div, .era, .disco, .ticket, .album, .pc, .roster")
+document.querySelectorAll(".sec-tit, .profile, .message, .covers")
   .forEach((el) => { el.classList.add("reveal"); io.observe(el); });

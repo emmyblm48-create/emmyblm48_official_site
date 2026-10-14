@@ -3,300 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EMMY · BLM48</title>
-  <meta name="description" content="นิตยสารฉบับพิเศษ รวมโปรไฟล์และผลงานของเอ็มมี่ BLM48 รุ่นที่ 3">
+  <title>EMMY · BLM48 Official Site</title>
+  <meta name="description" content="เว็บไซต์รวมโปรไฟล์และผลงานของเอ็มมี่ BLM48 รุ่นที่ 3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,700;1,6..96,900&family=DM+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ================= TOP BAR ================= -->
-  <header class="bar">
-    <a href="#cover" class="bar-logo">EMMY</a>
-    <span class="bar-issue">ISSUE Nº03 · BLM48 3<sup>RD</sup> GEN</span>
-    <button class="bar-menu" aria-label="เปิดสารบัญ" aria-expanded="false"><span></span><span></span></button>
-  </header>
-
-  <nav class="drawer" aria-label="สารบัญ" hidden>
-    <ol>
-      <li><a href="#profile"><i>01</i>โปรไฟล์</a></li>
-      <li><a href="#letter"><i>02</i>จดหมายจากเอ็มมี่</a></li>
-      <li><a href="#archive"><i>03</i>Profile Archive</a></li>
-      <li><a href="#works"><i>04</i>ผลงาน</a></li>
-      <li><a href="#videos"><i>05</i>Performances</a></li>
-      <li><a href="#covers"><i>06</i>ปกนิตยสาร</a></li>
-      <li><a href="#members"><i>07</i>BLM48</a></li>
-    </ol>
+  <!-- ===== MENU ===== -->
+  <button class="menu-btn" aria-label="เปิดเมนู" aria-expanded="false"><span></span><span></span></button>
+  <nav class="menu" aria-label="เมนู" hidden>
+    <p class="menu-logo">EMMY</p>
+    <ul>
+      <li><a href="#top">HOME<small>หน้าแรก</small></a></li>
+      <li><a href="#profile">PROFILE<small>โปรไฟล์</small></a></li>
+      <li><a href="#history">HISTORY<small>เส้นทางไอดอล</small></a></li>
+      <li><a href="#movie">MOVIE<small>คลิปผลงาน</small></a></li>
+      <li><a href="#photo">PHOTO<small>โปรไฟล์ทุกช่วง</small></a></li>
+      <li><a href="#message">MESSAGE<small>ข้อความจากเอ็มมี่</small></a></li>
+    </ul>
   </nav>
 
-  <main>
+  <main id="top">
 
-  <!-- ================= COVER ================= -->
-  <section class="cover" id="cover">
-    <h1 class="masthead" aria-label="Emmy">EMMY</h1>
-
-    <figure class="cover-photo">
-      <img src="images/rhythm-pink.webp" alt="เอ็มมี่ BLM48 บนปก RHYTHM" width="959" height="1200">
-    </figure>
-
-    <p class="cover-vertical" aria-hidden="true">エミー・BLM48</p>
-
-    <div class="cover-lines left">
-      <p class="cl-kicker">SPECIAL ISSUE</p>
-      <p class="cl-big">“MY”<br>Revolution</p>
-      <p class="cl-small">จาก Under สู่ Center<br>เส้นทาง 2 ปีของเอ็มมี่</p>
-    </div>
-
-    <div class="cover-lines right">
-      <p class="cl-num">26.03<span>.2024</span></p>
-      <p class="cl-small">LAUNCH DAY · 打ち上げ日</p>
-      <p class="cl-pill">BINGO! CENTER</p>
-      <p class="cl-pill alt">GENERAL ELECTION #5</p>
-    </div>
-
-    <a href="#stats" class="cover-scroll">เปิดอ่าน ↓</a>
-  </section>
-
-  <!-- ================= TICKER ================= -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>それでも好きだよ</span><b>✦</b><span>MY REVOLUTION</span><b>✦</b><span>BINGO! CENTER</span><b>✦</b><span>RIDE THE RHYTHM</span><b>✦</b><span>みんな 大好き</span><b>✦</b><span>BEGINNING OF EMMY</span><b>✦</b>
-      <span>それでも好きだよ</span><b>✦</b><span>MY REVOLUTION</span><b>✦</b><span>BINGO! CENTER</span><b>✦</b><span>RIDE THE RHYTHM</span><b>✦</b><span>みんな 大好き</span><b>✦</b><span>BEGINNING OF EMMY</span><b>✦</b>
-    </div>
-  </div>
-
-  <!-- ================= STATS ================= -->
-  <section class="stats wrap" id="stats" aria-label="สถิติ">
-    <div class="stat"><b data-stat="senbatsu">7</b><span>ครั้งที่ติด<br>Senbatsu</span></div>
-    <div class="stat hot"><b data-stat="center">3</b><span>Center<br>Position</span></div>
-    <div class="stat"><b>#5</b><span>1st General<br>Election</span></div>
-    <div class="stat"><b data-stat="videos">39</b><span>Songs &amp;<br>Videos</span></div>
-  </section>
-
-  <!-- ================= CONTENTS ================= -->
-  <section class="contents wrap" id="contents">
-    <div class="contents-head">
-      <p class="kicker">目次 · CONTENTS</p>
-      <h2 class="contents-title">ในเล่มนี้</h2>
-    </div>
-    <ol class="contents-list">
-      <li><a href="#profile"><i>01</i><b>โปรไฟล์</b><span>Member Card</span></a></li>
-      <li><a href="#letter"><i>02</i><b>จดหมายจากเอ็มมี่</b><span>Beginning of Emmy</span></a></li>
-      <li><a href="#archive"><i>03</i><b>Profile Archive</b><span>2024 — 2026</span></a></li>
-      <li><a href="#works"><i>04</i><b>ผลงาน</b><span>Discography · Concert</span></a></li>
-      <li><a href="#videos"><i>05</i><b>Performances</b><span>YouTube</span></a></li>
-      <li><a href="#covers"><i>06</i><b>ปกนิตยสาร</b><span>4 Covers</span></a></li>
-      <li><a href="#members"><i>07</i><b>BLM48</b><span>15 Members</span></a></li>
-    </ol>
-  </section>
-
-  <!-- ================= 01 PROFILE ================= -->
-  <section class="chapter wrap" id="profile">
-    <header class="ch-head"><i>01</i><h2>โปรไฟล์</h2><span>Member Card</span></header>
-
-    <div class="idcard">
-      <div class="idcard-photo">
-        <img src="images/profiles/2026-06-01-pride-month.jpg" alt="เอ็มมี่ BLM48 โปรไฟล์ล่าสุด" loading="lazy">
-        <span class="idcard-gen">3<sup>rd</sup> GEN</span>
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-label="หน้าแรก">
+    <div class="hero-frame">
+      <div class="hero-text">
+        <p class="hero-logo">EMMY</p>
+        <p class="hero-sub">BLM48 3rd Generation · Team Bloom</p>
       </div>
-      <div class="idcard-body">
-        <div class="idcard-top">
-          <p class="idcard-group">BLM48 OFFICIAL MEMBER</p>
-          <p class="idcard-name">Emmy <em>Nattawat</em></p>
-          <p class="idcard-jp">エミー</p>
-        </div>
-        <dl class="spec">
-          <div class="wide"><dt>ชื่อจริง</dt><dd>Nattawat Wongsarat</dd></div>
-          <div><dt>รุ่น</dt><dd>BLM48 รุ่นที่ 3</dd></div>
-          <div><dt>วันเดบิวต์</dt><dd>26 มี.ค. 2024</dd></div>
-          <div><dt>วันเกิด</dt><dd>06.05.2005</dd></div>
-          <div><dt>General Election</dt><dd>อันดับ 5 (ครั้งที่ 1)</dd></div>
-          <div class="wide"><dt>Center Position</dt><dd>BINGO! · Boku wa Inai · Rapsodi</dd></div>
-          <div class="wide"><dt>ไอดอลต้นแบบ</dt><dd>Sashihara Rino 指原莉乃</dd></div>
-          <div class="wide"><dt>ผลงานเด่น</dt><dd>โปรดิวเซอร์ 1<sup>st</sup> Solo Concert “RIDE THE RHYTHM”</dd></div>
+      <div class="hero-slides" id="hero-slides"></div>
+      <p class="hero-credit">©BLM48</p>
+    </div>
+  </section>
+
+  <!-- ===== BANNERS ===== -->
+  <section class="banners" aria-label="ไฮไลต์">
+    <div class="banner-track" id="banner-track">
+      <a class="banner b-pink" href="#photo"><small>9th Single</small><b>BINGO!</b><span>Center Position</span></a>
+      <a class="banner b-white" href="#profile"><small>1st General Election</small><b>No.5</b><span>อันดับ 3 ของรุ่นที่ 3</span></a>
+      <a class="banner b-blue" href="#history"><small>1st Solo Concert</small><b>RIDE THE RHYTHM</b><span>Producer · Emmy &amp; Hero</span></a>
+      <a class="banner b-lilac" id="banner-album" target="_blank" rel="noopener"><small>1st Special Album</small><b>RHYTHM:YOU</b><span>13 Tracks</span></a>
+      <a class="banner b-cream" href="#movie"><small>Latest Movie</small><b id="banner-latest">MOVIE</b><span id="banner-latest-sub">คลิปล่าสุด</span></a>
+    </div>
+    <div class="banner-dots" id="banner-dots" aria-label="เลือกแบนเนอร์"></div>
+  </section>
+
+  <!-- ===== PROFILE ===== -->
+  <section class="section" id="profile">
+    <h2 class="sec-tit">PROFILE<small>โปรไฟล์</small></h2>
+    <div class="profile">
+      <figure class="profile-photo">
+        <img src="images/profiles/2026-06-01-pride-month.jpg" alt="เอ็มมี่ BLM48" loading="lazy" width="600" height="600">
+      </figure>
+      <div class="profile-body">
+        <p class="profile-name">Emmy<span>エミー</span></p>
+        <p class="profile-th">ณัฐวรรธ์ วงศ์ษารัตน์ · Nattawat Wongsarat</p>
+        <dl class="profile-data">
+          <div><dt>Generation</dt><dd>BLM48 รุ่นที่ 3 (3rd Generation)</dd></div>
+          <div><dt>Team</dt><dd>Bloom</dd></div>
+          <div><dt>Debut</dt><dd>26.03.2024</dd></div>
+          <div><dt>Birthday</dt><dd>06 May 2005</dd></div>
+          <div><dt>Oshimark</dt><dd><span class="oshimark" role="img" aria-label="ตุ๊กตาหมี">🧸</span></dd></div>
+          <div><dt>Fandom</dt><dd>คุณหมี</dd></div>
+          <div><dt>Province</dt><dd>Surat Thani</dd></div>
+          <div><dt>Blood Type</dt><dd>B</dd></div>
+          <div><dt>MBTI</dt><dd>ESFJ</dd></div>
+          <div><dt>Like</dt><dd>BLM48 / AKB48Group / =LOVE / Sleep</dd></div>
+          <div><dt>Hobby</dt><dd>เล่น Valorant / Heartopia, ฟังเพลง</dd></div>
+          <div><dt>Election</dt><dd>1st General Election อันดับ 5 (อันดับ 3 ของรุ่นที่ 3)</dd></div>
+          <div><dt>Center</dt><dd>BINGO! · Boku wa Inai · Rapsodi</dd></div>
+          <div><dt>Producer</dt><dd>1st Solo Concert “RIDE THE RHYTHM”</dd></div>
+          <div><dt>Role Model</dt><dd>Sashihara Rino 指原莉乃</dd></div>
         </dl>
-        <p class="idcard-sign">รักทุกคนนะ จุบจุบ ♥</p>
-        <div class="barcode" aria-hidden="true"><span></span><small>0605 2005 · EMMY</small></div>
+        <ul class="profile-stats">
+          <li><b data-stat="senbatsu">7</b>Senbatsu</li>
+          <li><b data-stat="center">3</b>Center</li>
+          <li><b data-stat="videos">39</b>Movies</li>
+          <li><b data-stat="eras">16</b>Profiles</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- ================= 02 LETTER ================= -->
-  <section class="letter" id="letter">
-    <div class="wrap letter-inner">
-      <header class="ch-head light"><i>02</i><h2>จดหมายจากเอ็มมี่</h2><span>Beginning of Emmy</span></header>
-      <blockquote>
-        <p class="pull">“เอ็มมี่เป็นคนที่<mark>ไม่ได้เก่ง</mark>ตั้งแต่แรก”</p>
-        <div class="letter-cols">
-          <p>ต้องพยายามอย่างมากเพื่อตามเพื่อน ๆ ในรุ่นให้ทัน และไม่ได้ติดเซ็มบัตสึตั้งแต่ตอนนั้น ตั้งแต่ Love Trip จนถึง BLM Festival</p>
-          <p>จนกระทั่งการเลือกตั้งครั้งแรกมาถึง — โอกาสที่มีค่าที่สุด ที่ทำให้เอ็มมี่เป็นเอ็มมี่ในทุกวันนี้ ขอบคุณทุกคนมาก ๆ เลยนะ</p>
-        </div>
-        <footer>— เอ็มมี่ <span>それでも好きだよ みんな 大好き</span></footer>
-      </blockquote>
-
-      <aside class="why">
-        <p class="why-q">ทำไมถึงอยากเป็นไอดอล?</p>
-        <p class="why-a">เพราะเธอคนนี้</p>
-        <p class="why-name">SASHIHARA RINO</p>
-        <p class="why-sub">指原莉乃 · บุคคลต้นแบบ</p>
-      </aside>
+  <!-- ===== HISTORY (rendered from data.js) ===== -->
+  <section class="section hatched" id="history">
+    <div class="inner">
+      <h2 class="sec-tit">HISTORY<small>เส้นทางไอดอล</small></h2>
+      <ul class="sched" id="sched"></ul>
+      <button class="view-more" id="sched-more">VIEW MORE</button>
     </div>
   </section>
 
-  <!-- ================= 03 ARCHIVE ================= -->
-  <section class="chapter wrap" id="archive">
-    <header class="ch-head"><i>03</i><h2>Profile Archive</h2><span>ทุกโปรไฟล์ตั้งแต่เดบิวต์</span></header>
-
-    <!-- Election feature -->
-    <article class="election">
-      <div class="election-photo">
-        <img src="images/profiles/2024-12-15-general-election.png" alt="โปรไฟล์ 1st General Election" loading="lazy">
-      </div>
-      <div class="election-body">
-        <p class="kicker">1<sup>st</sup> GENERAL ELECTION · 15.12.2024</p>
-        <p class="election-rank"><span>อันดับ</span>5</p>
-        <p class="election-lead">การลงเลือกตั้งครั้งแรก คะแนนสูงเป็น <b>อันดับ 3 ของรุ่นที่ 3</b> — จุดเปลี่ยนจาก Under สู่การติดเซ็มบัตสึครั้งแรกในซิงเกิลถัดมา</p>
-        <ol class="gen3">
-          <li><i>#2</i>Eclairs</li>
-          <li><i>#4</i>Yushi</li>
-          <li class="me"><i>#5</i>Emmy</li>
-        </ol>
-        <p class="gen3-note">อันดับของเมมเบอร์รุ่นที่ 3</p>
-      </div>
-    </article>
-
-    <!-- Glossary -->
-    <dl class="glossary">
-      <div><dt><span class="tag senbatsu">Senbatsu</span></dt><dd>เมมเบอร์ที่ได้รับเลือกให้ร้องเพลงหลักที่ใช้โปรโมตซิงเกิลนั้น ๆ ของวง สมาชิกเปลี่ยนได้ในแต่ละซิงเกิล</dd></div>
-      <div><dt><span class="tag under">Under</span></dt><dd>เมมเบอร์ที่ไม่ได้ถูกเลือกเป็น Senbatsu ในซิงเกิลนั้น</dd></div>
-      <div><dt><span class="tag event">General Election</span></dt><dd>งานเลือกตั้งที่แฟน ๆ โหวตให้เมมเบอร์ได้ติดเซ็มบัตสึ หรือได้เป็นเซ็นเตอร์ของซิงเกิล</dd></div>
-    </dl>
-
-    <!-- Filters -->
-    <div class="filters" role="group" aria-label="กรองโปรไฟล์">
-      <button class="chip is-on" data-filter="all">ทั้งหมด</button>
-      <button class="chip" data-filter="senbatsu">Senbatsu</button>
-      <button class="chip" data-filter="center">Center</button>
-      <button class="chip" data-filter="under">Under</button>
-      <button class="chip" data-filter="cw">c/w</button>
-      <button class="chip" data-filter="event">Event</button>
+  <!-- ===== MOVIE (rendered from data.js) ===== -->
+  <section class="section" id="movie">
+    <h2 class="sec-tit">MOVIE<small>คลิปผลงาน</small></h2>
+    <div class="pills" role="group" aria-label="กรองคลิป">
+      <button class="pill-btn is-on" data-vfilter="all">ALL</button>
+      <button class="pill-btn" data-vfilter="song">SONG</button>
+      <button class="pill-btn" data-vfilter="mv">MV</button>
+      <button class="pill-btn" data-vfilter="center">CENTER</button>
+      <button class="pill-btn" data-vfilter="teaser">TEASER</button>
+      <button class="pill-btn" data-vfilter="thai">THAI VER.</button>
+      <button class="pill-btn" data-vfilter="male">MALE VER.</button>
     </div>
-
-    <!-- Rendered from data.js -->
-    <div class="archive" id="archive-list" data-lb-group="archive"></div>
+    <div class="movies" id="video-list"></div>
+    <button class="view-more" id="video-more" hidden>VIEW MORE</button>
   </section>
 
-  <!-- ================= 04 WORKS ================= -->
-  <section class="chapter wrap" id="works">
-    <header class="ch-head"><i>04</i><h2>ผลงาน</h2><span>Discography · Concert</span></header>
-
-    <!-- Discography (rendered from data.js) -->
-    <div class="disco">
-      <div class="disco-head">
-        <p class="kicker">DISCOGRAPHY</p>
-        <h3>ผลงานเพลง</h3>
-      </div>
-      <table class="disco-table">
-        <thead><tr><th>วันที่</th><th>ผลงาน</th><th>เพลง</th><th>ตำแหน่ง</th></tr></thead>
-        <tbody id="disco-body"></tbody>
-      </table>
+  <!-- ===== PHOTO (rendered from data.js) ===== -->
+  <section class="section" id="photo">
+    <h2 class="sec-tit">PHOTO<small>โปรไฟล์ทุกช่วง</small></h2>
+    <div class="pills" role="group" aria-label="กรองโปรไฟล์">
+      <button class="pill-btn is-on" data-filter="all">ALL</button>
+      <button class="pill-btn" data-filter="senbatsu">SENBATSU</button>
+      <button class="pill-btn" data-filter="center">CENTER</button>
+      <button class="pill-btn" data-filter="under">UNDER</button>
+      <button class="pill-btn" data-filter="cw">C/W</button>
+      <button class="pill-btn" data-filter="event">EVENT</button>
     </div>
+    <div class="photos" id="archive-list" data-lb-group="archive"></div>
 
-    <!-- Ticket -->
-    <article class="ticket">
-      <div class="ticket-img"><img src="images/rhythm-blue.webp" alt="โปสเตอร์ RIDE THE RHYTHM AND YOU" loading="lazy"></div>
-      <div class="ticket-main">
-        <p class="kicker">BLM48 1<sup>st</sup> SOLO CONCERT</p>
-        <h3>Ride the<br><em>Rhythm</em></h3>
-        <p>คอนเสิร์ตที่ “ทำโดยเมมเบอร์ BLM48” เอ็มมี่รับหน้าที่โปรดิวเซอร์ร่วมกับฮีโร่ ดูแลตั้งแต่คอนเซ็ปต์จนถึงโชว์บนเวที พร้อมสมาชิกทั้ง 15 คน</p>
-        <dl class="ticket-meta">
-          <div><dt>DATE</dt><dd>26–27 JUL 2025</dd></div>
-          <div><dt>TIME</dt><dd>19:00</dd></div>
-          <div><dt>VENUE</dt><dd>Roblox Game</dd></div>
-          <div><dt>ROLE</dt><dd>Producer</dd></div>
-        </dl>
-      </div>
-      <div class="ticket-stub" aria-hidden="true">
-        <span>ADMIT ONE</span>
-        <b>RTR</b>
-        <span>Nº 0605</span>
-      </div>
-    </article>
-
-    <!-- Album -->
-    <article class="album">
-      <div>
-        <p class="kicker">SP ALBUM</p>
-        <h3>リズムと君</h3>
-        <p class="sub">BLM48 Special Album · RIDE THE RHYTHM</p>
-      </div>
-      <ol class="tracklist">
-        <li>PARTYが始まるよ</li>
-        <li>Renai Kinshi Jourei</li>
-        <li>Pajama Drive</li>
-        <li>Saishuu Bell ga Naru</li>
-        <li>RESET</li>
-        <li>Theater no Megami</li>
-        <li>Koko Kara da</li>
-      </ol>
-    </article>
-  </section>
-
-  <!-- ================= 05 PERFORMANCES ================= -->
-  <section class="chapter wrap" id="videos">
-    <header class="ch-head"><i>05</i><h2>Performances</h2><span>ล่าสุด → แรกสุด</span></header>
-
-    <div class="filters" role="group" aria-label="กรองคลิป">
-      <button class="chip is-on" data-vfilter="all">ทั้งหมด</button>
-      <button class="chip" data-vfilter="song">เพลง</button>
-      <button class="chip" data-vfilter="center">Center</button>
-      <button class="chip" data-vfilter="teaser">Teaser</button>
-      <button class="chip" data-vfilter="thai">Thai ver.</button>
-      <button class="chip" data-vfilter="male">Male ver.</button>
-    </div>
-
-    <!-- Rendered from data.js -->
-    <div class="videos" id="video-list"></div>
-    <button class="more" id="video-more" hidden>แสดงทั้งหมด</button>
-  </section>
-
-  <!-- ================= 06 COVERS ================= -->
-  <section class="chapter wrap" id="covers">
-    <header class="ch-head"><i>06</i><h2>ปกนิตยสาร</h2><span>แตะเพื่อดูเต็มจอ</span></header>
-    <div class="cards" data-lb-group="covers">
-      <button class="pc" data-lb data-caption="Revolution — Launch Day 26.03.2024"><img src="images/revolution.webp" alt="Revolution" loading="lazy"><span>Revolution</span></button>
-      <button class="pc" data-lb data-caption="RHYTHM — RIDE THE RHYTHM"><img src="images/rhythm-pink.webp" alt="RHYTHM สีชมพู" loading="lazy"><span>Rhythm</span></button>
-      <button class="pc" data-lb data-caption="Teddy Bears — My Love 4ever"><img src="images/teddy-bears.webp" alt="Teddy Bears" loading="lazy"><span>Teddy Bears</span></button>
-      <button class="pc" data-lb data-caption="RIDE THE RHYTHM AND YOU — July 2025"><img src="images/rhythm-blue.webp" alt="RHYTHM AND YOU" loading="lazy"><span>And You</span></button>
+    <h3 class="sub-tit">MAGAZINE COVERS</h3>
+    <div class="covers" data-lb-group="covers">
+      <button class="cover" data-lb data-caption="Revolution — Launch Day 26.03.2024"><img src="images/revolution.webp" alt="Revolution" loading="lazy"></button>
+      <button class="cover" data-lb data-caption="RHYTHM — RIDE THE RHYTHM"><img src="images/rhythm-pink.webp" alt="RHYTHM" loading="lazy"></button>
+      <button class="cover" data-lb data-caption="Teddy Bears — My Love 4ever"><img src="images/teddy-bears.webp" alt="Teddy Bears" loading="lazy"></button>
+      <button class="cover" data-lb data-caption="RIDE THE RHYTHM AND YOU — July 2025"><img src="images/rhythm-blue.webp" alt="RHYTHM AND YOU" loading="lazy"></button>
     </div>
   </section>
 
-  <!-- ================= 07 MEMBERS ================= -->
-  <section class="chapter wrap" id="members">
-    <header class="ch-head"><i>07</i><h2>BLM48</h2><span>15 Members</span></header>
-    <ol class="roster">
-      <li>Ayumu</li><li>Bamboo</li><li>Eclairs</li><li class="me">Emmy</li><li>Gino</li>
-      <li>Hana</li><li>Hero</li><li>Jayden</li><li>Mushroom</li><li>Nemi</li>
-      <li>Noel</li><li>Pangdek</li><li>Patty</li><li>Punrak</li><li>Yushi</li>
-    </ol>
-    <p class="thanks">Thank you CEO <b>Taylor</b> และแฟน ๆ ทุกคน — ご参加いただいた皆様、ありがとうございました。</p>
+  <!-- ===== MESSAGE ===== -->
+  <section class="section" id="message">
+    <h2 class="sec-tit">MESSAGE<small>ข้อความจากเอ็มมี่</small></h2>
+    <div class="message">
+      <p class="message-lead">“เอ็มมี่เป็นคนที่ไม่ได้เก่งตั้งแต่แรก”</p>
+      <p>ต้องพยายามอย่างมากเพื่อตามเพื่อน ๆ ในรุ่นให้ทัน และไม่ได้ติดเซ็มบัตสึตั้งแต่ตอนนั้น ตั้งแต่ Love Trip จนถึง BLM Festival จนกระทั่งการเลือกตั้งครั้งแรกมาถึง — โอกาสที่มีค่าที่สุด ที่ทำให้เอ็มมี่เป็นเอ็มมี่ในทุกวันนี้</p>
+      <p>ขอบคุณทุกคนมาก ๆ เลยนะ รักทุกคนนะ จุบจุบ</p>
+      <p class="message-jp">それでも好きだよ　みんな 大好き</p>
+      <p class="message-sign">Emmy <span class="heart">♥</span></p>
+      <p class="why">ทำไมถึงอยากเป็นไอดอล? — เพราะเธอคนนี้ <b>Sashihara Rino</b> 指原莉乃</p>
+    </div>
   </section>
 
   </main>
 
-  <footer class="foot">
-    <p class="foot-big">EMMY</p>
-    <p class="foot-line">I'm so proud of you · Words of love ♥</p>
-    <p class="foot-small">© 2026 Emmy Nattawat · Photos © BLM48</p>
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer hatched">
+    <a href="#top" class="footer-heart" aria-label="กลับขึ้นด้านบน">♥</a>
+    <p class="footer-logo">EMMY</p>
+    <p class="footer-sub">BLM48 3rd Generation · Team Bloom <span aria-hidden="true">🧸</span></p>
+    <p class="footer-copy">© 2026 Emmy Nattawat · Photos ©BLM48</p>
   </footer>
 
   <!-- Lightbox -->
   <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="ดูรูปเต็มจอ">
     <button class="lb-btn lb-close" aria-label="ปิด">×</button>
     <button class="lb-btn lb-prev" aria-label="รูปก่อนหน้า">‹</button>
-    <figure><img alt=""><figcaption></figcaption></figure>
+    <figure><figcaption></figcaption></figure>
     <button class="lb-btn lb-next" aria-label="รูปถัดไป">›</button>
   </div>
 
@@ -305,7 +172,7 @@
     <button class="lb-btn player-close" aria-label="ปิด">×</button>
     <div class="player-box">
       <div class="player-frame"></div>
-      <p class="player-cap"><span></span><a target="_blank" rel="noopener">ดูบน YouTube ↗</a></p>
+      <p class="player-cap"><span></span><a target="_blank" rel="noopener">YOUTUBE →</a></p>
     </div>
   </div>
 
