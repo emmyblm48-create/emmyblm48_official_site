@@ -22,7 +22,7 @@ const fromApi = async (ids, key, meta) => {
     if (!r.ok) throw new Error(`YouTube API ${r.status}: ${(await r.json().catch(() => ({})))?.error?.message || r.statusText}`);
     for (const item of (await r.json()).items || []) {
       views[item.id] = Number(item.statistics.viewCount) || 0;
-      meta[item.id] = { title: item.snippet.title, author: item.snippet.channelTitle };
+      meta[item.id] = { title: item.snippet.title, author: item.snippet.channelTitle, published: item.snippet.publishedAt };
     }
   }
   return views;

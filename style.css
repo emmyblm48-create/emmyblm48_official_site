@@ -289,6 +289,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .dtab.is-on { background: var(--paper); color: var(--brown); }
 .dtab.is-on small, .dtab.is-on b { color: #8a5a3f; }
 .dpanel[hidden] { display: none; }
+.dsort { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin: -16px 0 30px; }
+.dsort[hidden] { display: none; }
+.dsort-label { font-family: var(--en); font-size: .7rem; letter-spacing: .2em; color: var(--ink-3); margin-right: 6px; text-align: right; line-height: 1.2; }
+.dsort-label small, .dsort-btn small { display: block; font-family: var(--th); font-size: .66rem; letter-spacing: .02em; }
+.dsort-btn { font-family: var(--en); font-size: .72rem; letter-spacing: .14em; line-height: 1.3; padding: 7px 16px 6px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-2); transition: background .2s, color .2s, border-color .2s; }
+.dsort-btn small { color: var(--ink-3); }
+.dsort-btn:not(.is-on):not(:disabled):hover { border-color: var(--accent); color: var(--ink); }
+.dsort-btn.is-on { background: var(--paper); border-color: var(--paper); color: var(--brown); }
+.dsort-btn.is-on small { color: #8a5a3f; }
+.dsort-btn:disabled { opacity: .4; cursor: default; }
+.rank { position: absolute; left: 0; top: 0; min-width: 40px; height: 40px; padding: 0 8px; display: grid; place-items: center; font-family: var(--en); font-size: 1.05rem; background: #2a1208d9; color: var(--ink); }
+.rank-1 { background: #e9c46a; color: var(--brown); }
+.rank-2 { background: #d9d4cc; color: var(--brown); }
+.rank-3 { background: #c98b5e; color: var(--brown); }
 .d-empty { display: flex; align-items: center; justify-content: center; gap: 10px; grid-column: 1 / -1; padding: 56px 0; color: var(--ink-3); border: 1px dashed var(--line); }
 .mags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 22px; }
 .mag { text-align: left; display: block; align-self: start; }
@@ -450,6 +464,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .photos, .mags { grid-template-columns: repeat(2, 1fr); gap: 26px 14px; }
   .dtab { font-size: .68rem; letter-spacing: .1em; padding: 16px 4px 14px; }
   .dtab b { top: 5px; right: 6px; }
+  .dsort { gap: 6px; }
+  .dsort-label { display: none; }
+  .dsort-btn { padding: 7px 12px 6px; letter-spacing: .08em; }
   .lightbox { grid-template-columns: 40px 1fr 40px; padding: 16px 0; }
   .page-head { padding: 14px 124px 14px 16px; gap: 14px; flex-wrap: wrap; }
   .crumbs { font-size: .6875rem; }

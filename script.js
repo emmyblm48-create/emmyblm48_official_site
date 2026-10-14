@@ -125,6 +125,7 @@ if (document.getElementById("discography")) {
   const videoMore = document.getElementById("video-more");
   const VIDEO_LIMIT = 9;
   let tab = "movie";
+  let sort = "new";
   let videoFilter = "all";
   let videoExpanded = false;
   let viewData = null;
@@ -139,10 +140,10 @@ if (document.getElementById("discography")) {
     thai: v.ver === "Thai ver.",
     male: v.ver === "Male ver.",
   }[videoFilter]);
-  const card = ({ yt, title, th, date, dateText, sub }) => `
+  const card = ({ yt, title, th, date, dateText, sub, rank }) => `
     <button class="movie" data-yt="${yt}" data-title="${esc(title)}" aria-label="เล่น ${esc(title)}">
       <div class="movie-thumb">
-        <img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+        <img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">${rank ? `<span class="rank${rank <= 3 ? ` rank-${rank}` : ""}" aria-label="อันดับ ${rank}">${rank}</span>` : ""}
         <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
@@ -151,23 +152,34 @@ if (document.getElementById("discography")) {
         ${sub ? `<p>${esc(sub)}</p>` : ""}
       </div>
     </button>`;
-  const movieItems = () => [...VIDEOS].reverse().filter((v) => v.yt && videoMatches(v));
+  // sort: new / old by date, views = ranking by YouTube views (clips without a count go last)
+  const viewsOf = (v) => viewData?.views[v.yt] ?? -1;
+  const sorted = (list, dateOf) => {
+    const out = [...list];
+    if (sort === "views") return out.sort((a, b) => viewsOf(b) - viewsOf(a));
+    out.sort((a, b) => (dateOf(a) || "").localeCompare(dateOf(b) || ""));
+    return sort === "new" ? out.reverse() : out;
+  };
+  const ranked = () => sort === "views" && !!viewData;
+  const movieItems = () => sorted(VIDEOS.filter((v) => v.yt && videoMatches(v)), (v) => v.date);
   const mvInfo = (m, i) => {
     const meta = viewData?.meta?.[m.yt] || {};
     const no = String(i + 1).padStart(2, "0");
-    return { ...m, no, title: m.title || meta.title || `Music Video ${no}`, sub: m.artist || meta.author || "" };
+    const date = m.date || (meta.published || "").slice(0, 10);
+    // keep list order for clips without a date (No.01 = first)
+    return { ...m, no, date, order: date || `0000-${no}`, title: m.title || meta.title || `Music Video ${no}`, sub: m.artist || meta.author || "" };
   };
 
   const renderMovie = () => {
     const list = movieItems();
-    videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map((v) =>
-      card({ yt: v.yt, title: videoTitle(v), th: v.th, date: v.date, dateText: fmtDate(v.date), sub: v.release })).join("");
+    videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map((v, i) =>
+      card({ yt: v.yt, title: videoTitle(v), th: v.th, date: v.date, dateText: fmtDate(v.date), sub: v.release, rank: ranked() && viewsOf(v) >= 0 && i + 1 })).join("");
     videoMore.hidden = videoExpanded || list.length <= VIDEO_LIMIT;
     videoMore.textContent = `VIEW MORE (${list.length})`;
   };
   const renderMv = () => {
-    document.getElementById("mv-list").innerHTML = MUSIC_VIDEOS.map(mvInfo).map((m) =>
-      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? `No.${m.no} · ${fmtDate(m.date)}` : `No.${m.no}`, sub: m.sub })).join("")
+    document.getElementById("mv-list").innerHTML = sorted(MUSIC_VIDEOS.map(mvInfo), (m) => m.order).map((m, i) =>
+      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? `No.${m.no} · ${fmtDate(m.date)}` : `No.${m.no}`, sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })).join("")
       || `<p class="d-empty">${icon("play")}ยังไม่มี Music Video</p>`;
   };
   const renderMagazine = () => {
@@ -206,6 +218,7 @@ if (document.getElementById("discography")) {
       document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
     });
     if (push) history.replaceState(null, "", tab === "movie" ? location.pathname : `#${tab}`);
+    document.getElementById("dsort").hidden = tab === "magazine";
     renderTotal();
   };
   tabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.dtab, true)));
@@ -222,11 +235,19 @@ if (document.getElementById("discography")) {
       renderMovie(); renderTotal();
     });
   });
+  const sortBtns = [...document.querySelectorAll("[data-sort]")];
+  const syncSort = () => {
+    sortBtns.forEach((b) => { b.classList.toggle("is-on", b.dataset.sort === sort); b.setAttribute("aria-pressed", b.dataset.sort === sort); });
+    // ranking needs view counts
+    sortBtns.find((b) => b.dataset.sort === "views").disabled = !viewData;
+  };
+  sortBtns.forEach((b) => b.addEventListener("click", () => { sort = b.dataset.sort; syncSort(); renderMovie(); renderMv(); }));
   videoMore.addEventListener("click", () => { videoExpanded = true; renderMovie(); });
   render();
+  syncSort();
   setTab(location.hash.slice(1));
   fetch("/api/views").then((r) => r.ok ? r.json() : null).then((d) => {
-    if (d?.views) { viewData = d; render(); }
+    if (d?.views) { viewData = d; syncSort(); render(); }
   }).catch(() => {});
 }
 

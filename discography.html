@@ -30,13 +30,20 @@
     <h1 class="sec-tit">DISCOGRAPHY<small>ผลงานของเอ็มมี่</small></h1>
     <div class="dtabs" role="tablist" aria-label="ประเภทผลงาน">
       <button class="dtab is-on" role="tab" id="tab-movie" aria-controls="panel-movie" aria-selected="true" data-dtab="movie">MOVIE<small>คลิปผลงาน</small><b data-dcount="movie"></b></button>
-      <button class="dtab" role="tab" id="tab-mv" aria-controls="panel-mv" aria-selected="false" data-dtab="mv">MUSIC VIDEO<small>มิวสิกวิดีโอ</small><b data-dcount="mv"></b></button>
+      <button class="dtab" role="tab" id="tab-mv" aria-controls="panel-mv" aria-selected="false" data-dtab="mv">MUSIC VIDEO<small>ผลงานแสดง</small><b data-dcount="mv"></b></button>
       <button class="dtab" role="tab" id="tab-magazine" aria-controls="panel-magazine" aria-selected="false" data-dtab="magazine">MAGAZINE COVER<small>ปกนิตยสาร</small><b data-dcount="magazine"></b></button>
     </div>
     <div class="views-total" id="views-total" hidden>
       <p class="views-label">TOTAL VIEWS<small>ยอดวิวรวมบน YouTube</small></p>
       <p class="views-num"><b id="views-num">0</b><span>views</span></p>
       <p class="views-sub" id="views-sub"></p>
+    </div>
+
+    <div class="dsort" id="dsort" role="group" aria-label="เรียงลำดับ">
+      <span class="dsort-label">SORT<small>เรียงตาม</small></span>
+      <button class="dsort-btn is-on" data-sort="new" aria-pressed="true">NEWEST<small>ใหม่สุด</small></button>
+      <button class="dsort-btn" data-sort="old" aria-pressed="false">OLDEST<small>เก่าสุด</small></button>
+      <button class="dsort-btn" data-sort="views" aria-pressed="false">RANKING<small>ยอดวิวสูงสุด</small></button>
     </div>
 
     <div class="dpanel" role="tabpanel" id="panel-movie" aria-labelledby="tab-movie">
