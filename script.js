@@ -12,6 +12,20 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 const pill = (cls, text) => `<span class="pill ${cls}">${esc(text)}</span>`;
 const isNew = (iso) => (Date.now() - new Date(iso)) / 864e5 <= 30 && new Date(iso) <= Date.now();
 const videoTitle = (v) => v.title + (v.kind === "teaser" ? " (Teaser)" : "");
+// animate a number from its current value to `to` (instant with reduced motion)
+const countUp = (el, to, ms = 900) => {
+  const from = Number(String(el.textContent).replace(/\D/g, "")) || 0;
+  const fmt = (n) => Math.round(n).toLocaleString("en-US");
+  if (from === to || matchMedia("(prefers-reduced-motion: reduce)").matches) { el.textContent = fmt(to); return; }
+  cancelAnimationFrame(el._count);
+  const t0 = performance.now();
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / ms);
+    el.textContent = fmt(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) el._count = requestAnimationFrame(step);
+  };
+  el._count = requestAnimationFrame(step);
+};
 
 // ---------- Stats ----------
 const centerSongs = new Set([
@@ -198,7 +212,7 @@ if (document.getElementById("discography")) {
     const counted = viewData ? list.filter((v) => viewData.views[v.yt] != null) : [];
     totalBox.hidden = !counted.length;
     if (!counted.length) return;
-    document.getElementById("views-num").textContent = counted.reduce((a, v) => a + viewData.views[v.yt], 0).toLocaleString("en-US");
+    countUp(document.getElementById("views-num"), counted.reduce((a, v) => a + viewData.views[v.yt], 0));
     const label = tab === "mv" ? "MUSIC VIDEO" : `MOVIE · ${document.querySelector("[data-vfilter].is-on")?.textContent || "ALL"}`;
     const upd = new Date(viewData.updated);
     document.getElementById("views-sub").textContent =
@@ -512,3 +526,73 @@ const io = new IntersectionObserver((entries) => {
 }, { rootMargin: "0px 0px -40px 0px" });
 document.querySelectorAll(".sec-tit, .profile, .message, .champ")
   .forEach((el) => { el.classList.add("reveal"); io.observe(el); });
+
+// ---------- Motion ----------
+if (!reduceMotion) {
+  // 4-cut photo: camera flash, then the cuts develop one by one (home, once per visit)
+  const cuts = document.querySelector(".hero-cuts");
+  if (cuts) {
+    let seen = false;
+    try { seen = sessionStorage.getItem("booth-flash") === "1"; sessionStorage.setItem("booth-flash", "1"); } catch {}
+    if (!seen) {
+      document.body.insertAdjacentHTML("beforeend", '<div class="flash" aria-hidden="true"></div>');
+      setTimeout(() => document.querySelector(".flash")?.remove(), 1200);
+    }
+    cuts.classList.add("is-developing");
+  }
+
+  // list items rise in as they scroll into view (also after filters re-render)
+  const ITEMS = ".movie, .photo, .mag, .g-item, .notif, .sched li, .profile-data > div";
+  const itemIO = new IntersectionObserver((entries) => {
+    entries.filter((en) => en.isIntersecting).forEach((en, i) => {
+      en.target.style.setProperty("--d", `${Math.min(i, 8) * 70}ms`);
+      en.target.classList.add("in");
+      itemIO.unobserve(en.target);
+    });
+  }, { rootMargin: "0px 0px -30px 0px" });
+  const watch = (root) => root.querySelectorAll?.(ITEMS).forEach((el) => {
+    if (el.classList.contains("pop")) return;
+    el.classList.add("pop");
+    itemIO.observe(el);
+  });
+  watch(document);
+  new MutationObserver((muts) => muts.forEach((m) => m.addedNodes.forEach((n) => {
+    if (n.nodeType !== 1) return;
+    if (n.matches(ITEMS)) { n.classList.remove("pop", "in"); watch(n.parentNode); } else watch(n);
+  }))).observe(document.body, { childList: true, subtree: true });
+
+  // profile numbers count up when they appear
+  const statIO = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (!en.isIntersecting) return;
+    const to = Number(en.target.textContent) || 0;
+    en.target.textContent = "0";
+    countUp(en.target, to, 1100);
+    statIO.unobserve(en.target);
+  }), { threshold: .6 });
+  document.querySelectorAll(".profile-stats b").forEach((el) => statIO.observe(el));
+
+  // tap a heart → little hearts float up
+  const burst = (x, y) => {
+    for (let i = 0; i < 7; i++) {
+      const h = document.createElement("span");
+      h.className = "float-heart";
+      h.innerHTML = icon("heart");
+      h.style.left = `${x}px`;
+      h.style.top = `${y}px`;
+      // spread out in a ring, drifting upward (stays on screen near the top edge)
+      const a = (i / 7) * Math.PI * 2 + Math.random() * .6;
+      const r = 50 + Math.random() * 40;
+      h.style.setProperty("--dx", `${Math.cos(a) * r}px`);
+      h.style.setProperty("--dy", `${Math.sin(a) * r - (y > 140 ? 50 : 0)}px`);
+      h.style.setProperty("--rot", `${(Math.random() - .5) * 60}deg`);
+      h.style.setProperty("--s", (.6 + Math.random() * .7).toFixed(2));
+      h.style.animationDelay = `${i * 45}ms`;
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1600);
+    }
+  };
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest(".heart, .corner-l");
+    if (t) burst(e.clientX, e.clientY);
+  });
+}

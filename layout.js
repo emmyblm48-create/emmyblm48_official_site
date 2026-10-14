@@ -68,6 +68,7 @@ window.icon = (name, cls = "ico") => window.ICONS[name]
   const count = document.querySelector(".bell-count");
   if (unread && current !== "notifications") {
     count.hidden = false;
+    document.querySelector(".bell-btn").classList.add("has-unread");
     count.textContent = unread > 9 ? "9+" : unread;
     document.querySelector(".bell-btn").setAttribute("aria-label", `การแจ้งเตือน (${unread} รายการใหม่)`);
   }
