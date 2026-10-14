@@ -29,7 +29,7 @@ window.icon = (name, cls = "ico") => window.ICONS[name]
   : "";
 
 (() => {
-  const MENU = "<button class=\"menu-btn\" aria-label=\"เปิดเมนู\" aria-expanded=\"false\"><span></span><span></span></button>\n  <nav class=\"menu\" aria-label=\"เมนู\" hidden>\n    <img class=\"menu-badge\" src=\"images/logo.jpg\" alt=\"\" width=\"96\" height=\"96\">\n    <p class=\"menu-logo\">EMMY</p>\n    <ul>\n      <li><a href=\"/\" data-page=\"home\">HOME<small>หน้าแรก</small></a></li>\n      <li><a href=\"/profile\" data-page=\"profile\">PROFILE<small>โปรไฟล์</small></a></li>\n      <li><a href=\"/history\" data-page=\"history\">HISTORY<small>เส้นทางไอดอล</small></a></li>\n      <li><a href=\"/movie\" data-page=\"movie\">MOVIE<small>คลิปผลงาน</small></a></li>\n      <li><a href=\"/photo\" data-page=\"photo\">PHOTO<small>โปรไฟล์</small></a></li>\n      <li><a href=\"/gallery\" data-page=\"gallery\">GALLERY<small>แกลเลอรี</small></a></li>\n      <li><a href=\"/champ\" data-page=\"champ\">CHAMP<small>Champ of the Month</small></a></li>\n    </ul>\n  </nav>";
+  const MENU = "<button class=\"menu-btn\" aria-label=\"เปิดเมนู\" aria-expanded=\"false\"><span></span><span></span></button>\n  <nav class=\"menu\" aria-label=\"เมนู\" hidden>\n    <img class=\"menu-badge\" src=\"images/logo.jpg\" alt=\"\" width=\"96\" height=\"96\">\n    <p class=\"menu-logo\">EMMY</p>\n    <ul>\n      <li><a href=\"/\" data-page=\"home\">HOME<small>หน้าแรก</small></a></li>\n      <li><a href=\"/profile\" data-page=\"profile\">PROFILE<small>โปรไฟล์</small></a></li>\n      <li><a href=\"/history\" data-page=\"history\">HISTORY<small>เส้นทางไอดอล</small></a></li>\n      <li><a href=\"/movie\" data-page=\"movie\">MOVIE<small>คลิปผลงาน</small></a></li>\n      <li><a href=\"/photo\" data-page=\"photo\">PHOTO<small>โปรไฟล์</small></a></li>\n      <li><a href=\"/gallery\" data-page=\"gallery\">GALLERY<small>แกลเลอรี</small></a></li>\n      <li><a href=\"/champ\" data-page=\"champ\">CHAMP<small>Champ of the Month</small></a></li>\n      <li><a href=\"/notifications\" data-page=\"notifications\">NOTIFICATIONS<small>การแจ้งเตือน</small></a></li>\n    </ul>\n  </nav>";
   const FOOTER = "<footer class=\"footer\">\n    <ul class=\"sns sns-footer\">\n      <li><a href=\"https://www.instagram.com/emmy.blm48official/\" target=\"_blank\" rel=\"noopener\" aria-label=\"Instagram @emmy.blm48official\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"12\" cy=\"12\" r=\"4.2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17.3\" cy=\"6.7\" r=\"1.1\" fill=\"currentColor\"/></svg></a></li>\n      <li><a href=\"https://www.tiktok.com/@emmy.blm48official\" target=\"_blank\" rel=\"noopener\" aria-label=\"TikTok @emmy.blm48official\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M16.6 3c.3 2.2 1.6 3.7 3.9 3.9v2.9c-1.4.1-2.7-.3-3.9-1v6.4c0 3.3-2.4 5.8-5.7 5.8-3.1 0-5.6-2.4-5.6-5.5 0-3.4 2.9-5.9 6.4-5.4v3c-1.6-.4-3.4.6-3.4 2.4 0 1.4 1.1 2.6 2.6 2.6 1.6 0 2.7-1.1 2.7-3V3h3z\"/></svg></a></li>\n      <li><a href=\"https://x.com/emmy_blm48\" target=\"_blank\" rel=\"noopener\" aria-label=\"X @emmy_blm48\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z\"/></svg></a></li>\n    </ul>\n    <span class=\"corner corner-l\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M12 21.2s-8.6-5.3-8.6-11.4C3.4 6.9 5.6 4.8 8.2 4.8c1.6 0 3 .8 3.8 2.1.8-1.3 2.2-2.1 3.8-2.1 2.6 0 4.8 2.1 4.8 5 0 6.1-8.6 11.4-8.6 11.4z\"/></svg></span>\n    <span class=\"corner corner-r\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><g fill=\"currentColor\"><circle cx=\"8.6\" cy=\"8.6\" r=\"4\"/><circle cx=\"15.4\" cy=\"8.6\" r=\"4\"/><circle cx=\"8.6\" cy=\"15.4\" r=\"4\"/><circle cx=\"15.4\" cy=\"15.4\" r=\"4\"/></g><path d=\"M12 12c1.5 3.5 3.5 6.5 6.5 9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n    <p class=\"footer-copy\">© 2026 Emmy Nattawat · Photos ©BLM48</p>\n  </footer>";
   const OVERLAYS = `<div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="ดูรูปเต็มจอ">
     <button class="lb-btn lb-close" aria-label="ปิด">${icon("close")}</button>
@@ -46,6 +46,7 @@ window.icon = (name, cls = "ico") => window.ICONS[name]
     </div>
   </div>`;
   document.body.insertAdjacentHTML("afterbegin", MENU);
+  document.body.insertAdjacentHTML("afterbegin", `<a class="bell-btn" href="/notifications" aria-label="การแจ้งเตือน">${icon("bell")}<span class="bell-count" hidden></span></a>`);
   (document.querySelector(".booth") || document.body).insertAdjacentHTML("beforeend", FOOTER);
   document.body.insertAdjacentHTML("beforeend", OVERLAYS);
 
@@ -55,4 +56,25 @@ window.icon = (name, cls = "ico") => window.ICONS[name]
   document.querySelectorAll(".menu a[data-page]").forEach((a) => {
     if (a.dataset.page === current) a.setAttribute("aria-current", "page");
   });
+
+  // unread badge: anniversaries/new content that arrived since the last visit to /notifications
+  let seen = Date.now() - 7 * 864e5;
+  try { seen = Number(localStorage.getItem("notif-seen")) || seen; } catch {}
+  const unread = (window.buildNotifications?.() || []).filter((n) => n.days <= 0 && n.at.getTime() > seen).length;
+  const count = document.querySelector(".bell-count");
+  if (unread && current !== "notifications") {
+    count.hidden = false;
+    count.textContent = unread > 9 ? "9+" : unread;
+    document.querySelector(".bell-btn").setAttribute("aria-label", `การแจ้งเตือน (${unread} รายการใหม่)`);
+  }
+
+  // device notifications (service worker; on supported browsers also checks daily in the background)
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").then(async (reg) => {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      await navigator.serviceWorker.ready;
+      window.notifyToday?.(reg);
+      try { await reg.periodicSync?.register("emmy-daily", { minInterval: 12 * 36e5 }); } catch {}
+    }).catch(() => {});
+  }
 })();

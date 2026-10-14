@@ -223,40 +223,105 @@ if (document.getElementById("archive-list")) {
   });
 }
 
-// ---------- Anniversary notice (today + next 7 days, once per day) ----------
-{
-  const BIRTHDAY = "2005-05-06";
-  const DAY = 864e5;
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const todayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-  const sources = [
-    { date: BIRTHDAY, label: (n) => `Happy Birthday Emmy · อายุครบ ${n} ปี`, birthday: true },
-    ...ERAS.map((e) => ({ date: e.date, label: (n) => e.title === "Debut" ? `ครบรอบ ${n} ปี เดบิวต์ BLM48` : `ครบรอบ ${n} ปี「${e.title}」`, sub: e.title === "Debut" ? e.sub : [e.release, e.sub].filter(Boolean).join(" · ") })),
-    ...EVENTS.map((ev) => ({ date: ev.date, label: (n) => `ครบรอบ ${n} ปี ${ev.title}`, sub: ev.sub })),
+// ---------- Notifications page ----------
+function notifWhen(n) {
+  const dm = `${String(n.at.getDate()).padStart(2, "0")}.${String(n.at.getMonth() + 1).padStart(2, "0")}`;
+  if (n.days === 0) return "TODAY · วันนี้";
+  if (n.days > 0) return `อีก ${n.days} วัน · ${dm}`;
+  if (n.days === -1) return `เมื่อวาน · ${dm}`;
+  return `${-n.days} วันที่แล้ว · ${dm}`;
+}
+if (document.getElementById("notif-list")) {
+  const all = window.buildNotifications?.() || [];
+  let seen = Date.now() - 7 * 864e5;
+  try { seen = Number(localStorage.getItem("notif-seen")) || seen; localStorage.setItem("notif-seen", Date.now()); } catch {}
+  const groups = [
+    ["TODAY", "วันนี้", all.filter((n) => n.days === 0)],
+    ["UPCOMING", "วันครบรอบที่กำลังจะถึง · 30 วัน", all.filter((n) => n.days > 0)],
+    ["EARLIER", "ย้อนหลัง 30 วัน", all.filter((n) => n.days < 0).reverse()],
   ];
-  const seen = new Set();
-  const annivs = sources.map((src) => {
-    const [y, m, d] = src.date.split("-").map(Number);
-    let next = new Date(today.getFullYear(), m - 1, d);
-    if (next < today) next = new Date(today.getFullYear() + 1, m - 1, d);
-    return { ...src, years: next.getFullYear() - y, days: Math.round((next - today) / DAY), next };
-  }).filter((a) => a.years >= 1 && a.days <= 7)
-    .filter((a) => { const k = a.label(a.years); return !seen.has(k) && seen.add(k); })
-    .sort((a, b) => a.days - b.days);
+  let filter = "all";
+  const row = (n) => `
+    <li class="notif ${n.days <= 0 && n.at.getTime() > seen ? "is-unread" : ""} ${n.days === 0 ? "is-today" : ""}">
+      <a href="${n.url}">
+        <span class="notif-ico notif-${n.type}">${icon(n.icon)}</span>
+        <span class="notif-body">
+          <span class="notif-meta">${n.type === "anniv" ? "ANNIVERSARY" : "NEW"} · ${notifWhen(n)}</span>
+          <b>${esc(n.title)}</b>${n.sub ? `<small>${esc(n.sub)}</small>` : ""}
+        </span>
+      </a>
+    </li>`;
+  const render = () => {
+    const html = groups.map(([en, th, list]) => {
+      const shown = list.filter((n) => filter === "all" || n.type === filter);
+      return shown.length ? `<h2 class="notif-group">${en}<small>${th}</small></h2><ul class="notif-ul">${shown.map(row).join("")}</ul>` : "";
+    }).join("");
+    document.getElementById("notif-list").innerHTML = html || `<p class="notif-empty">${icon("bell")}ยังไม่มีการแจ้งเตือนในช่วงนี้</p>`;
+  };
+  document.querySelectorAll("[data-nfilter]").forEach((btn) => btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-nfilter]").forEach((b) => b.classList.toggle("is-on", b === btn));
+    filter = btn.dataset.nfilter;
+    render();
+  }));
+  render();
 
+  // device notification switch
+  const box = document.getElementById("push-box");
+  const state = box.querySelector(".push-state");
+  const btn = box.querySelector(".push-btn");
+  const test = box.querySelector(".push-test");
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  const sync = () => {
+    btn.hidden = test.hidden = true;
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+      state.textContent = ios && !standalone
+        ? "บน iPhone / iPad: กดปุ่มแชร์ แล้วเลือก “เพิ่มไปยังหน้าจอโฮม” จากนั้นเปิดเว็บจากไอคอน EMMY เพื่อเปิดการแจ้งเตือน"
+        : "เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือน";
+    } else if (Notification.permission === "granted") {
+      state.textContent = "เปิดการแจ้งเตือนอยู่ — จะแจ้งเตือนวันครบรอบและผลงานใหม่ของเอ็มมี่ในวันนั้น";
+      box.classList.add("is-on");
+      test.hidden = false;
+    } else if (Notification.permission === "denied") {
+      state.textContent = "การแจ้งเตือนถูกปิดไว้ — เปิดได้ที่การตั้งค่าเว็บไซต์ของเบราว์เซอร์";
+    } else {
+      state.textContent = "รับการแจ้งเตือนบนมือถือ / คอมพิวเตอร์ เมื่อถึงวันครบรอบและมีผลงานใหม่";
+      btn.hidden = false;
+    }
+  };
+  btn.addEventListener("click", async () => {
+    if (await Notification.requestPermission() !== "granted") return sync();
+    const reg = await navigator.serviceWorker.ready;
+    try { await reg.periodicSync?.register("emmy-daily", { minInterval: 12 * 36e5 }); } catch {}
+    sync();
+    if (!(await window.notifyToday(reg))) reg.showNotification("EMMY · BLM48", { body: "เปิดการแจ้งเตือนเรียบร้อย แล้วเจอกันในวันครบรอบนะ", icon: "/images/icon-512.png", data: { url: "/notifications" } });
+  });
+  test.addEventListener("click", async () => {
+    const reg = await navigator.serviceWorker.ready;
+    const next = all.find((n) => n.days >= 0) || all[all.length - 1];
+    reg.showNotification(next ? next.title : "EMMY · BLM48", { body: next ? `${notifWhen(next)}${next.sub ? " · " + next.sub : ""}` : "ทดสอบการแจ้งเตือน", icon: "/images/icon-512.png", tag: "test", data: { url: next ? next.url : "/notifications" } });
+  });
+  sync();
+}
+
+// ---------- Anniversary pop-up (today + next 7 days, once per day) ----------
+{
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  const annivs = (window.buildNotifications?.(today, { ahead: 7, back: 0 }) || []).filter((n) => n.type === "anniv");
   let dismissed = null;
   try { dismissed = localStorage.getItem("anniv-dismissed"); } catch {}
-  if (annivs.length && dismissed !== todayKey) {
-    const when = (a) => a.days === 0 ? "TODAY · วันนี้" : `อีก ${a.days} วัน · ${String(a.next.getDate()).padStart(2, "0")}.${String(a.next.getMonth() + 1).padStart(2, "0")}`;
+  if (annivs.length && dismissed !== todayKey && !document.getElementById("notif-list")) {
     document.body.insertAdjacentHTML("beforeend", `
       <aside class="anniv" role="status" aria-label="แจ้งเตือนวันครบรอบ">
         <p class="anniv-head">${icon(annivs.some((a) => a.days === 0) ? "heart" : "bell")}ANNIVERSARY</p>
         <ul>${annivs.map((a) => `
           <li class="${a.days === 0 ? "is-today" : ""}">
-            <span class="anniv-when">${when(a)}</span>
-            <b>${esc(a.label(a.years))}</b>${a.sub ? `<small>${esc(a.sub)}</small>` : ""}
+            <span class="anniv-when">${notifWhen(a)}</span>
+            <b>${esc(a.title)}</b>${a.sub ? `<small>${esc(a.sub)}</small>` : ""}
           </li>`).join("")}
         </ul>
+        <a class="anniv-all" href="/notifications">ดูการแจ้งเตือนทั้งหมด ${icon("arrow")}</a>
         <button class="anniv-close" aria-label="ปิดการแจ้งเตือน">${icon("close")}</button>
       </aside>`);
     const box = document.querySelector(".anniv");

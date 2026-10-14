@@ -1,0 +1,16 @@
+{
+  "name": "EMMY · BLM48 Official Site",
+  "short_name": "EMMY",
+  "description": "เอ็มมี่ BLM48 รุ่นที่ 3 — โปรไฟล์ ผลงาน และการแจ้งเตือนวันครบรอบ",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#4a2311",
+  "theme_color": "#4a2311",
+  "lang": "th",
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

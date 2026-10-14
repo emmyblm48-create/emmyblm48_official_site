@@ -50,7 +50,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .corner svg { width: 100%; height: 100%; }
 .corner-l { left: 26px; }
 .corner-r { right: 26px; }
-.hero .corner-r { right: 88px; }
+.hero .corner-r { right: 146px; }
+
+/* ===== BELL (notifications) ===== */
+.bell-btn {
+  position: fixed; top: 20px; right: 78px; z-index: 120; width: 48px; height: 48px; display: grid; place-items: center;
+  background: var(--paper); color: var(--brown); border-radius: 50%; box-shadow: 0 2px 10px #00000026;
+}
+.bell-btn .ico { width: 22px; height: 22px; }
+.bell-btn:hover { color: #c4566f; }
+.bell-count {
+  position: absolute; top: -2px; right: -2px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px;
+  background: #d9576f; color: #fff; font-family: var(--en); font-size: .7rem; line-height: 21px; text-align: center; border: 2px solid var(--brown);
+}
+.bell-count[hidden] { display: none; }
 
 /* ===== MENU ===== */
 .menu-btn {
@@ -96,7 +109,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .hero-date { justify-self: end; font-family: var(--en); font-size: clamp(1rem, 2vw, 1.35rem); letter-spacing: .04em; }
 
 /* ===== PAGE HEADER (sub pages) ===== */
-.page-head { display: flex; align-items: center; gap: 22px; padding: 22px clamp(20px, 5vw, 64px) 18px; padding-right: 96px; border-bottom: 1px solid var(--line); }
+.page-head { display: flex; align-items: center; gap: 22px; padding: 22px clamp(20px, 5vw, 64px) 18px; padding-right: 150px; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; align-items: center; gap: 12px; font-family: var(--en); font-size: 1.15rem; letter-spacing: .28em; }
 .brand img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--paper); }
 .brand:hover span { color: var(--accent); }
@@ -326,6 +339,35 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .player-cap .ico { width: 1em; height: 1em; vertical-align: -.12em; }
 .player-close { position: absolute; top: 20px; right: 24px; }
 
+/* ===== NOTIFICATIONS PAGE ===== */
+.notif-wrap { max-width: 720px; }
+.push-box { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; background: var(--brown-card); padding: 18px 22px; margin-bottom: 36px; box-shadow: 0 10px 24px -14px #000000b0; }
+.push-box.is-on { box-shadow: inset 3px 0 0 var(--accent), 0 10px 24px -14px #000000b0; }
+.push-state { flex: 1 1 260px; font-size: .9rem; line-height: 1.6; color: var(--ink-2); }
+.push-actions { display: flex; gap: 10px; }
+.push-btn, .push-test { font-family: var(--en); font-size: .78rem; letter-spacing: .12em; padding: 11px 18px; border-radius: 999px; }
+.push-btn { background: var(--paper); color: var(--brown); }
+.push-btn:hover { background: var(--accent); }
+.push-test { border: 1px solid var(--ink-3); }
+.push-test:hover { border-color: var(--accent); color: var(--accent); }
+.push-btn[hidden], .push-test[hidden] { display: none; }
+.notif-pills { margin-bottom: 8px; }
+.notif-group { font-family: var(--en); font-weight: 400; font-size: .85rem; letter-spacing: .3em; margin: 34px 0 6px; }
+.notif-group small { font-family: var(--th); font-size: .75rem; letter-spacing: .02em; color: var(--ink-3); margin-left: 12px; }
+.notif-ul { list-style: none; }
+.notif a { position: relative; display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 14px 28px 14px 0; border-bottom: 1px dashed var(--line); transition: background .2s; }
+.notif a:hover { background: #ffffff08; }
+.notif-ico { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); color: var(--brown); }
+.notif-ico .ico { width: 22px; height: 22px; }
+.notif-anniv { color: #c4566f; }
+.notif.is-today .notif-ico { background: var(--accent); color: var(--brown); }
+.notif-meta { display: block; font-family: var(--en); font-size: .68rem; letter-spacing: .1em; color: var(--ink-3); margin-bottom: 2px; }
+.notif.is-today .notif-meta { color: var(--accent); }
+.notif b { display: block; font-weight: 500; font-size: .95rem; line-height: 1.5; }
+.notif small { display: block; font-size: .8rem; color: var(--ink-3); line-height: 1.5; margin-top: 2px; }
+.notif.is-unread a::after { content: ""; position: absolute; right: 6px; top: 50%; width: 9px; height: 9px; margin-top: -4px; border-radius: 50%; background: var(--accent); }
+.notif-empty { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--ink-3); padding: 48px 0; }
+
 /* ===== ANNIVERSARY NOTICE ===== */
 .anniv {
   position: fixed; right: 20px; bottom: 20px; z-index: 250; width: min(360px, calc(100vw - 32px));
@@ -342,6 +384,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .anniv li.is-today .anniv-when { color: #c4566f; }
 .anniv b { display: block; font-weight: 500; font-size: .95rem; }
 .anniv small { display: block; font-size: .78rem; color: #7a4d35; }
+.anniv-all { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: .8rem; color: #8a5a3f; border-bottom: 1px solid currentColor; }
+.anniv-all:hover { color: #c4566f; }
 .anniv-close { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; display: grid; place-items: center; color: var(--brown); }
 .anniv-close .ico { width: 18px; height: 18px; }
 @media (max-width: 600px) { .anniv { right: 16px; bottom: 16px; } }
@@ -373,6 +417,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .corner-r { right: auto; left: 52px; }
   .hero-foot { grid-template-columns: auto 1fr auto; gap: 10px; }
   .menu-btn { top: 10px; right: 10px; }
+  .bell-btn { top: 10px; right: 66px; }
   .banner-track { padding: 4px 16px 8px; grid-auto-columns: 78vw; }
   .sec-tit { letter-spacing: .4em; padding-left: .4em; }
   .profile-data div { grid-template-columns: 96px 1fr; }
@@ -382,7 +427,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .movies { grid-template-columns: 1fr; }
   .photos { grid-template-columns: repeat(2, 1fr); gap: 26px 14px; }
   .lightbox { grid-template-columns: 40px 1fr 40px; padding: 16px 0; }
-  .page-head { padding: 14px 70px 14px 16px; gap: 14px; flex-wrap: wrap; }
+  .page-head { padding: 14px 124px 14px 16px; gap: 14px; flex-wrap: wrap; }
   .crumbs { font-size: .6875rem; }
   .page-nav a { font-size: .85rem; letter-spacing: .14em; }
 }
