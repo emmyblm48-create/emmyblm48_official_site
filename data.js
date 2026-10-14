@@ -11,7 +11,7 @@ window.ERAS = [
   { date: "2025-03-08", img: "2025-03-08-green-flash.jpg", title: "Green Flash", jp: "グリーンフラッシュ", sub: "Main Song", tags: ["senbatsu"], release: "2nd Album" },
   { date: "2025-06-01", img: "2025-06-01-pride-month.jpg", title: "Pride Month 2025", sub: "Special Profile", tags: ["event"] },
   { date: "2025-07-26", img: "2025-07-26-flying-get.jpg", title: "Flying Get", jp: "フライングゲット", sub: "Main Song", tags: ["senbatsu"], release: "8th Single" },
-  { date: "2025-09-28", img: "2025-09-28-8th-cw.jpg", title: "8th Single c/w", sub: "Coupling Song", tags: ["cw"], release: "8th Single · c/w" },
+  { date: "2025-09-28", img: "2025-09-28-borderless.jpg", title: "BORDERLESS", sub: "Coupling Song", tags: ["cw"], release: "8th Single · c/w" },
   { date: "2025-11-08", img: "2025-11-08-fortune-cookie.jpg", title: "Koisuru Fortune Cookie", jp: "恋するフォーチュンクッキー", sub: "Main Song", tags: ["senbatsu"], release: "1st Special Album" },
   { date: "2025-12-25", img: "2025-12-25-noel-no-yoru.jpg", title: "Noel no Yoru", jp: "ノエルの夜", sub: "Christmas Project 2025", tags: ["cw"], release: "Special Single · c/w" },
   { date: "2026-01-30", img: "2026-01-30-bingo.jpg", title: "BINGO!", sub: "Center Position", tags: ["center", "senbatsu"], release: "9th Single" },
