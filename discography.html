@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DISCOGRAPHY · EMMY BLM48</title>
+  <meta name="description" content="DISCOGRAPHY — ผลงานของเอ็มมี่ BLM48 · Movie · Music Video · Magazine Cover">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Josefin+Sans:wght@300;400;600&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/images/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta property="og:image" content="https://emmyblm48officialsite.vercel.app/images/logo.jpg">
+  <meta name="theme-color" content="#4a2311">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page page-discography">
+
+  <div class="booth">
+  <header class="page-head">
+    <a class="brand" href="/" aria-label="EMMY — หน้าแรก"><img src="images/logo.jpg" alt="" width="40" height="40"><span>EMMY</span></a>
+    <nav class="crumbs" aria-label="ตำแหน่งหน้า"><a href="/">HOME</a><span aria-hidden="true">/</span><span aria-current="page">DISCOGRAPHY</span></nav>
+  </header>
+
+  <main id="top">
+
+  <!-- ===== DISCOGRAPHY (rendered from data.js) ===== -->
+  <section class="section" id="discography">
+    <h1 class="sec-tit">DISCOGRAPHY<small>ผลงานของเอ็มมี่</small></h1>
+    <div class="dtabs" role="tablist" aria-label="ประเภทผลงาน">
+      <button class="dtab is-on" role="tab" id="tab-movie" aria-controls="panel-movie" aria-selected="true" data-dtab="movie">MOVIE<small>คลิปผลงาน</small><b data-dcount="movie"></b></button>
+      <button class="dtab" role="tab" id="tab-mv" aria-controls="panel-mv" aria-selected="false" data-dtab="mv">MUSIC VIDEO<small>มิวสิกวิดีโอ</small><b data-dcount="mv"></b></button>
+      <button class="dtab" role="tab" id="tab-magazine" aria-controls="panel-magazine" aria-selected="false" data-dtab="magazine">MAGAZINE COVER<small>ปกนิตยสาร</small><b data-dcount="magazine"></b></button>
+    </div>
+    <div class="views-total" id="views-total" hidden>
+      <p class="views-label">TOTAL VIEWS<small>ยอดวิวรวมบน YouTube</small></p>
+      <p class="views-num"><b id="views-num">0</b><span>views</span></p>
+      <p class="views-sub" id="views-sub"></p>
+    </div>
+
+    <div class="dpanel" role="tabpanel" id="panel-movie" aria-labelledby="tab-movie">
+      <div class="pills" role="group" aria-label="กรองคลิป">
+        <button class="pill-btn is-on" data-vfilter="all">ALL</button>
+        <button class="pill-btn" data-vfilter="song">SONG</button>
+        <button class="pill-btn" data-vfilter="mv">MV</button>
+        <button class="pill-btn" data-vfilter="center">CENTER</button>
+        <button class="pill-btn" data-vfilter="teaser">TEASER</button>
+        <button class="pill-btn" data-vfilter="thai">THAI VER.</button>
+        <button class="pill-btn" data-vfilter="male">MALE VER.</button>
+      </div>
+      <div class="movies" id="video-list"></div>
+      <button class="view-more" id="video-more" hidden>VIEW MORE</button>
+    </div>
+    <div class="dpanel" role="tabpanel" id="panel-mv" aria-labelledby="tab-mv" hidden>
+      <div class="movies" id="mv-list"></div>
+    </div>
+    <div class="dpanel" role="tabpanel" id="panel-magazine" aria-labelledby="tab-magazine" hidden>
+      <div class="mags" id="mag-list" data-lb-group="magazines"></div>
+    </div>
+  </section>
+
+
+  <nav class="page-nav" aria-label="หน้าอื่น">
+    <a class="pn-prev" href="/history"><small>PREV</small>HISTORY</a>
+    <a class="pn-next" href="/photo"><small>NEXT</small>PHOTO</a>
+  </nav>
+
+  </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="notify.js"></script>
+  <script src="layout.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

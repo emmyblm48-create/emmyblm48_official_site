@@ -117,15 +117,19 @@ if (document.getElementById("sched")) {
   renderSched();
 }
 
-// ---------- Movie ----------
-if (document.getElementById("video-list")) {
+// ---------- Discography (Movie · Music Video · Magazine Cover) ----------
+if (document.getElementById("discography")) {
+  const MUSIC_VIDEOS = window.MUSIC_VIDEOS || [];
+  const MAGAZINES = (window.MAGAZINES || []).slice().sort((a, b) => b.date.localeCompare(a.date));
   const videoList = document.getElementById("video-list");
   const videoMore = document.getElementById("video-more");
   const VIDEO_LIMIT = 9;
+  let tab = "movie";
   let videoFilter = "all";
   let videoExpanded = false;
   let viewData = null;
   const fmtViews = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, "")}M` : n >= 1e3 ? `${(n / 1e3).toFixed(n >= 1e5 ? 0 : 1).replace(/\.0$/, "")}K` : String(n);
+  const viewsTag = (id) => viewData?.views[id] != null ? `<span class="movie-views">${icon("play")}${fmtViews(viewData.views[id])} views</span>` : "";
   const videoMatches = (v) => ({
     all: true,
     song: v.kind === "song",
@@ -135,50 +139,95 @@ if (document.getElementById("video-list")) {
     thai: v.ver === "Thai ver.",
     male: v.ver === "Male ver.",
   }[videoFilter]);
-  const movieCard = (v) => `
-    <button class="movie" data-yt="${v.yt}" data-title="${esc(videoTitle(v))}" aria-label="เล่น ${esc(videoTitle(v))}">
+  const card = ({ yt, title, th, date, dateText, sub }) => `
+    <button class="movie" data-yt="${yt}" data-title="${esc(title)}" aria-label="เล่น ${esc(title)}">
       <div class="movie-thumb">
-        <img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+        <img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
         <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
-        <time datetime="${v.date}">${fmtDate(v.date)}</time>${viewData?.views[v.yt] != null ? `<span class="movie-views">${icon("play")}${fmtViews(viewData.views[v.yt])} views</span>` : ""}
-        <h3>${esc(v.title)}${v.th ? ` <small>${esc(v.th)}</small>` : ""}</h3>
-        <p>${esc(v.release)}</p>
+        <time${date ? ` datetime="${date}"` : ""}>${esc(dateText)}</time>${viewsTag(yt)}
+        <h3>${esc(title)}${th ? ` <small>${esc(th)}</small>` : ""}</h3>
+        ${sub ? `<p>${esc(sub)}</p>` : ""}
       </div>
     </button>`;
-  const renderVideos = () => {
-    const list = [...VIDEOS].reverse().filter((v) => v.yt && videoMatches(v));
-    videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map(movieCard).join("");
+  const movieItems = () => [...VIDEOS].reverse().filter((v) => v.yt && videoMatches(v));
+  const mvInfo = (m, i) => {
+    const meta = viewData?.meta?.[m.yt] || {};
+    const no = String(i + 1).padStart(2, "0");
+    return { ...m, no, title: m.title || meta.title || `Music Video ${no}`, sub: m.artist || meta.author || "" };
+  };
+
+  const renderMovie = () => {
+    const list = movieItems();
+    videoList.innerHTML = (videoExpanded ? list : list.slice(0, VIDEO_LIMIT)).map((v) =>
+      card({ yt: v.yt, title: videoTitle(v), th: v.th, date: v.date, dateText: fmtDate(v.date), sub: v.release })).join("");
     videoMore.hidden = videoExpanded || list.length <= VIDEO_LIMIT;
     videoMore.textContent = `VIEW MORE (${list.length})`;
-    renderTotal(list);
   };
-  // total views (live from /api/views); follows the current filter
+  const renderMv = () => {
+    document.getElementById("mv-list").innerHTML = MUSIC_VIDEOS.map(mvInfo).map((m) =>
+      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? `No.${m.no} · ${fmtDate(m.date)}` : `No.${m.no}`, sub: m.sub })).join("")
+      || `<p class="d-empty">${icon("play")}ยังไม่มี Music Video</p>`;
+  };
+  const renderMagazine = () => {
+    document.getElementById("mag-list").innerHTML = MAGAZINES.map((m) => `
+      <button class="mag" data-lb data-caption="${esc([m.title, m.issue, m.date && fmtDate(m.date)].filter(Boolean).join(" · "))}">
+        <div class="mag-img"><img src="images/magazines/${m.img}" alt="ปกนิตยสาร ${esc(m.title)}" loading="lazy"></div>
+        <div class="photo-meta">${m.date ? `<time datetime="${m.date}">${fmtDate(m.date)}</time>` : ""}<h3>${esc(m.title)}</h3>${m.issue ? `<p>${esc(m.issue)}</p>` : ""}</div>
+      </button>`).join("")
+      || `<p class="d-empty">${icon("ribbon")}Magazine Cover — เร็ว ๆ นี้</p>`;
+  };
+
+  // total views (live from /api/views); follows the tab and filter
   const totalBox = document.getElementById("views-total");
-  const renderTotal = (list) => {
-    if (!viewData || !totalBox) return;
-    const counted = list.filter((v) => viewData.views[v.yt] != null);
-    const sum = counted.reduce((a, v) => a + viewData.views[v.yt], 0);
-    totalBox.hidden = false;
-    document.getElementById("views-num").textContent = sum.toLocaleString("en-US");
-    const label = document.querySelector("[data-vfilter].is-on")?.textContent || "ALL";
+  const renderTotal = () => {
+    const list = tab === "movie" ? movieItems() : tab === "mv" ? MUSIC_VIDEOS : [];
+    const counted = viewData ? list.filter((v) => viewData.views[v.yt] != null) : [];
+    totalBox.hidden = !counted.length;
+    if (!counted.length) return;
+    document.getElementById("views-num").textContent = counted.reduce((a, v) => a + viewData.views[v.yt], 0).toLocaleString("en-US");
+    const label = tab === "mv" ? "MUSIC VIDEO" : `MOVIE · ${document.querySelector("[data-vfilter].is-on")?.textContent || "ALL"}`;
     const upd = new Date(viewData.updated);
     document.getElementById("views-sub").textContent =
       `${label} · ${counted.length} คลิป · อัปเดต ${fmtDate(viewData.updated.slice(0, 10))} ${String(upd.getHours()).padStart(2, "0")}:${String(upd.getMinutes()).padStart(2, "0")}`;
   };
-  fetch("/api/views").then((r) => r.ok ? r.json() : null).then((d) => {
-    if (d?.views) { viewData = d; renderVideos(); }
-  }).catch(() => {});
+  const render = () => { renderMovie(); renderMv(); renderMagazine(); renderTotal(); };
+
+  const counts = { movie: VIDEOS.filter((v) => v.yt).length, mv: MUSIC_VIDEOS.length, magazine: MAGAZINES.length };
+  document.querySelectorAll("[data-dcount]").forEach((el) => { el.textContent = counts[el.dataset.dcount]; });
+  const tabs = [...document.querySelectorAll("[data-dtab]")];
+  const setTab = (name, push) => {
+    tab = tabs.some((t) => t.dataset.dtab === name) ? name : "movie";
+    tabs.forEach((t) => {
+      const on = t.dataset.dtab === tab;
+      t.classList.toggle("is-on", on);
+      t.setAttribute("aria-selected", on);
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (push) history.replaceState(null, "", tab === "movie" ? location.pathname : `#${tab}`);
+    renderTotal();
+  };
+  tabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.dtab, true)));
+  tabs.forEach((t, i) => t.addEventListener("keydown", (e) => {
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    const next = tabs[(i + step + tabs.length) % tabs.length];
+    next.focus(); setTab(next.dataset.dtab, true);
+  }));
   document.querySelectorAll("[data-vfilter]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll("[data-vfilter]").forEach((b) => b.classList.toggle("is-on", b === btn));
       videoFilter = btn.dataset.vfilter;
-      renderVideos();
+      renderMovie(); renderTotal();
     });
   });
-  videoMore.addEventListener("click", () => { videoExpanded = true; renderVideos(); });
-  renderVideos();
+  videoMore.addEventListener("click", () => { videoExpanded = true; renderMovie(); });
+  render();
+  setTab(location.hash.slice(1));
+  fetch("/api/views").then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d?.views) { viewData = d; render(); }
+  }).catch(() => {});
 }
 
 // ---------- Gallery ----------

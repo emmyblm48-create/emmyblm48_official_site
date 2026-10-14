@@ -37,7 +37,7 @@
       if (days <= 0 && days >= -back) items.push({ id: `new:${id}`, type: "new", icon, title, sub, url, at, days });
     };
     (g.VIDEOS || []).filter((v) => v.yt).forEach((v) =>
-      fresh(v.date, v.yt, "play", `คลิปใหม่「${v.title}${v.kind === "teaser" ? " (Teaser)" : ""}」`, [v.release, v.ver].filter(Boolean).join(" · "), "/movie"));
+      fresh(v.date, v.yt, "play", `คลิปใหม่「${v.title}${v.kind === "teaser" ? " (Teaser)" : ""}」`, [v.release, v.ver].filter(Boolean).join(" · "), "/discography"));
     (g.ERAS || []).forEach((e) => fresh(e.date, `era:${e.date}:${e.title}`, "bear", `โปรไฟล์ใหม่ · ${e.title}`, [e.release, e.sub].filter(Boolean).join(" · "), "/photo"));
     (g.EVENTS || []).forEach((ev) => fresh(ev.date, `event:${ev.date}:${ev.title}`, "pin", ev.title, ev.sub, "/history"));
     (g.CHAMPS || []).forEach((c) => fresh(`${c.month}-01`, `champ:${c.month}`, "heart", `Champ of the Month · ${c.label}`, "ข้อความใหม่จากเอ็มมี่ถึงคุณหมี", "/champ"));

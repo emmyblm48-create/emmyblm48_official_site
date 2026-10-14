@@ -72,6 +72,19 @@ window.VIDEOS = [
   { date: "2026-10-05", yt: "I48dsMiwhVs", kind: "song", title: "Anata ga Ite Kureta Kara", th: "บ้านแห่งหัวใจ", release: "BLM48 Special Tracks" },
 ];
 
+// Discography · MUSIC VIDEO — MV ที่เอ็มมี่ร่วมแสดง (เรียงตามลำดับผลงาน)
+// title / artist / date เว้นว่างได้ — ระบบจะดึงชื่อคลิปและชื่อช่องจาก YouTube ให้อัตโนมัติ
+window.MUSIC_VIDEOS = [
+  { yt: "SBay1DGjsvU", title: "", artist: "", date: "" },
+  { yt: "5K3rURkf4-4", title: "", artist: "", date: "" },
+  { yt: "9gQ9OMW_z-0", title: "", artist: "", date: "" },
+];
+
+// Discography · MAGAZINE COVER — ใส่รูปไว้ที่ images/magazines/
+// { date: "2026-01-15", img: "2026-01-xxx.jpg", title: "ชื่อนิตยสาร", issue: "Vol. / ฉบับ", url: "ลิงก์ (ถ้ามี)" }
+window.MAGAZINES = [
+];
+
 // 1st Special Album — ลำดับตามเพลย์ลิสต์ YouTube
 window.ALBUM = {
   title: "RHYTHM:YOU",
