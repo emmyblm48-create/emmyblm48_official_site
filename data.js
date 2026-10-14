@@ -6,7 +6,7 @@ window.ERAS = [
   { date: "2024-07-21", img: "2024-07-21-reborn.jpg", title: "Reborn", sub: "เพลงเดบิวต์รุ่นที่ 3", tags: ["cw"], release: "5th Single · c/w" },
   { date: "2024-08-25", img: "2024-08-25-love-trip.jpg", title: "Love Trip", jp: "ラブトリップ", sub: "Main Song", tags: ["under"], release: "5th Single" },
   { date: "2024-12-06", img: "2024-12-06-blm-festival.jpg", title: "BLM Festival", sub: "Main Song", tags: ["under"], release: "6th Single" },
-  { date: "2024-12-15", img: "2024-12-15-general-election.png", title: "1st General Election", jp: "選抜総選挙", sub: "อันดับ 5 · สูงเป็นอันดับ 3 ของรุ่นที่ 3", tags: ["event"] },
+  { date: "2024-12-15", img: "2024-12-15-general-election.png", title: "1st General Election", jp: "選抜総選挙", sub: "อันดับ 5", tags: ["event"] },
   { date: "2025-01-31", img: "2025-01-31-koi-tsunjatta.jpg", title: "恋 詰んじゃった", jp: "Koi Tsunjatta", sub: "First Time Senbatsu", tags: ["senbatsu"], release: "7th Single" },
   { date: "2025-03-08", img: "2025-03-08-green-flash.jpg", title: "Green Flash", jp: "グリーンフラッシュ", sub: "Main Song", tags: ["senbatsu"], release: "2nd Album" },
   { date: "2025-06-01", img: "2025-06-01-pride-month.jpg", title: "Pride Month 2025", sub: "Special Profile", tags: ["event"] },
