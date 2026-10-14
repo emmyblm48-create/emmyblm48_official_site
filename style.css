@@ -191,6 +191,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 [data-vfilter="thai"], [data-filter="event"] { --c: #bcd2f6; }
 [data-vfilter="male"] { --c: #a9dcc6; }
 [data-filter="under"] { --c: #cdb8a3; }
+[data-filter="team"] { --c: #f2c3df; }
 
 /* ===== PROFILE ===== */
 .profile { display: grid; grid-template-columns: minmax(240px, 400px) 1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }

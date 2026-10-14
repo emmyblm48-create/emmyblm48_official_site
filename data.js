@@ -1,5 +1,5 @@
 // ข้อมูลโปรไฟล์ทุกช่วงของเอ็มมี่ — เพิ่มช่วงใหม่ได้โดยเพิ่ม 1 บรรทัดท้ายรายการ
-// tags: "center" | "senbatsu" | "under" | "cw" | "event"
+// tags: "center" | "senbatsu" | "under" | "cw" | "event" | "team"
 // release: ใส่เมื่อเป็นผลงานเพลง (จะแสดงในตาราง Discography ด้วย)
 window.ERAS = [
   { date: "2024-03-26", img: "2024-03-26-debut.jpg", title: "Debut", jp: "打ち上げ日", sub: "เปิดตัวสมาชิก BLM48 รุ่นที่ 3", tags: ["event"] },
@@ -12,11 +12,13 @@ window.ERAS = [
   { date: "2025-06-01", img: "2025-06-01-pride-month.jpg", title: "Pride Month 2025", sub: "Special Profile", tags: ["event"] },
   { date: "2025-07-26", img: "2025-07-26-flying-get.jpg", title: "Flying Get", jp: "フライングゲット", sub: "Main Song · Thai ver.", tags: ["senbatsu"], release: "8th Single" },
   { date: "2025-09-28", img: "2025-09-28-borderless.jpg", title: "BORDERLESS", sub: "Coupling Song", tags: ["cw"], release: "8th Single · c/w" },
+  { date: "2025-10-11", img: "team-b-bloom.webp", title: "Team B", sub: "ได้รับคัดเลือกเข้า Team B · BLM48 Team B 1st Stage「Party ga Hajimaru yo – ปาร์ตี้ในฝัน」", tags: ["team"] },
   { date: "2025-11-08", img: "2025-11-08-fortune-cookie.jpg", title: "Koisuru Fortune Cookie", jp: "恋するフォーチュンクッキー", sub: "Main Song", tags: ["senbatsu"], release: "1st Special Album · RHYTHM:YOU" },
   { date: "2025-12-25", img: "2025-12-25-noel-no-yoru.jpg", title: "Noel no Yoru", jp: "ノエルの夜", sub: "Christmas Project 2025", tags: ["cw"], release: "Special Single · c/w" },
   { date: "2026-01-30", img: "2026-01-30-bingo.jpg", title: "BINGO!", sub: "Center Position · Thai ver.", tags: ["center", "senbatsu"], release: "9th Single" },
   { date: "2026-04-04", img: "2026-04-04-celebration.jpg", title: "Celebration", sub: "3rd Generation Special Single · Center Position", tags: ["center", "senbatsu"], release: "3rd Gen Special Single" },
   { date: "2026-04-24", img: "2026-04-24-sustainable.jpg", title: "Sustainable", jp: "サステナブル", sub: "Main Song · Thai ver.", tags: ["senbatsu"], release: "10th Single" },
+  { date: "2026-04-25", img: "team-b-bloom.webp", title: "Team Bloom", sub: "ได้รับคัดเลือกเป็นสมาชิก Team Bloom · Team Bloom 1st Stage「Dreaming Blossom」", tags: ["team"] },
   { date: "2026-06-01", img: "2026-06-01-pride-month.jpg", title: "Pride Month 2026", sub: "Special Profile", tags: ["event"] },
 ];
 
@@ -24,6 +26,7 @@ window.ERAS = [
 // kind: "song" | "teaser" | "appeal" · mv: true ถ้าเป็น MV · ver: "Thai ver." | "Male ver." · center: true ถ้าเป็นเซ็นเตอร์
 window.VIDEOS = [
   { date: "2024-07-21", yt: "Lbgi8-PD7zw", kind: "song", title: "Reborn", release: "5th Single · c/w" },
+  { date: "2024-08-01", yt: "SxxtQacauhg", kind: "song", title: "Heavy Rotation", release: "“REBORN” BLM48 3rd Generation Debut Stage" },
   { date: "2024-10-30", yt: "2AODcS5Wwsw", kind: "song", title: "Idol Nanka Janakattara", th: "หากไม่ใช่ไอดอล", ver: "Thai ver.", release: "BLM48 Special Single" },
   { date: "2024-11-12", yt: "oCO9EBfzSJg", kind: "appeal", title: "Appeal Comment", th: "Nattawat Wongsarat · Team Trainee", release: "7th Single Senbatsu General Election" },
   { date: "2025-01-19", yt: "zNjpZ5IzYBw", kind: "song", title: "มะลิ", release: "6th Single · c/w" },

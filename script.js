@@ -5,7 +5,7 @@ const EVENTS = window.EVENTS || [];
 const CHAMPS = window.CHAMPS || [];
 const GALLERY = window.GALLERY || [];
 const EVENT_LABEL = { team: "TEAM", role: "ROLE", live: "LIVE" };
-const TAG_LABEL = { center: "CENTER", senbatsu: "SENBATSU", under: "UNDER", cw: "C/W", event: "EVENT" };
+const TAG_LABEL = { center: "CENTER", senbatsu: "SENBATSU", under: "UNDER", cw: "C/W", event: "EVENT", team: "TEAM" };
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const fmtDate = (iso) => iso.split("-").reverse().join(".");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -66,7 +66,7 @@ if (document.getElementById("banner-track")) {
 if (document.getElementById("sched")) {
   const sameSong = (v, e) => v.date === e.date && v.title === e.title && v.kind === "song";
   const historyItems = [
-    ...ERAS.map((e) => ({ date: e.date, type: "era", e, v: VIDEOS.find((v) => sameSong(v, e)) })),
+    ...ERAS.filter((e) => !e.tags.includes("team")).map((e) => ({ date: e.date, type: "era", e, v: VIDEOS.find((v) => sameSong(v, e)) })),
     ...VIDEOS.filter((v) => !ERAS.some((e) => sameSong(v, e))).map((v) => ({ date: v.date, type: "video", v })),
     ...EVENTS.map((ev) => ({ date: ev.date, type: "event", ev })),
   ].sort((a, b) => b.date.localeCompare(a.date));
