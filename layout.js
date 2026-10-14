@@ -57,6 +57,10 @@ window.icon = (name, cls = "ico") => window.ICONS[name]
     if (a.dataset.page === current) a.setAttribute("aria-current", "page");
   });
 
+  // no zooming: iOS Safari ignores user-scalable=no, so block pinch here (double-tap: touch-action in style.css)
+  ["gesturestart", "gesturechange"].forEach((t) => document.addEventListener(t, (e) => e.preventDefault(), { passive: false }));
+  document.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
   // unread badge: anniversaries/new content that arrived since the last visit to /notifications
   let seen = Date.now() - 7 * 864e5;
   try { seen = Number(localStorage.getItem("notif-seen")) || seen; } catch {}

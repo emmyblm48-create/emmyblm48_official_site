@@ -147,7 +147,7 @@ if (document.getElementById("discography")) {
         <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
-        <time${date ? ` datetime="${date}"` : ""}>${esc(dateText)}</time>${viewsTag(yt)}
+        ${dateText ? `<time${date ? ` datetime="${date}"` : ""}>${esc(dateText)}</time>` : ""}${viewsTag(yt)}
         <h3>${esc(title)}${th ? ` <small>${esc(th)}</small>` : ""}</h3>
         ${sub ? `<p>${esc(sub)}</p>` : ""}
       </div>
@@ -179,7 +179,7 @@ if (document.getElementById("discography")) {
   };
   const renderMv = () => {
     document.getElementById("mv-list").innerHTML = sorted(MUSIC_VIDEOS.map(mvInfo), (m) => m.order).map((m, i) =>
-      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? `No.${m.no} · ${fmtDate(m.date)}` : `No.${m.no}`, sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })).join("")
+      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? fmtDate(m.date) : "", sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })).join("")
       || `<p class="d-empty">${icon("play")}ยังไม่มี Music Video</p>`;
   };
   const renderMagazine = () => {
