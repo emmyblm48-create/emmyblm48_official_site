@@ -19,7 +19,7 @@ const fromApi = async (ids, key, meta) => {
   for (let i = 0; i < ids.length; i += 50) {
     const url = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${ids.slice(i, i + 50).join(",")}&key=${key}`;
     const r = await fetch(url);
-    if (!r.ok) throw new Error(`YouTube API ${r.status}`);
+    if (!r.ok) throw new Error(`YouTube API ${r.status}: ${(await r.json().catch(() => ({})))?.error?.message || r.statusText}`);
     for (const item of (await r.json()).items || []) {
       views[item.id] = Number(item.statistics.viewCount) || 0;
       meta[item.id] = { title: item.snippet.title, author: item.snippet.channelTitle };
@@ -82,7 +82,17 @@ module.exports = async (req, res) => {
     const { ids, mvIds } = loadData();
     const key = process.env.YOUTUBE_API_KEY;
     const allMeta = {};
-    const views = key ? await fromApi(ids, key, allMeta) : await fromWatchPages(ids);
+    let source = key ? "youtube-api" : "youtube-page";
+    let apiError;
+    let views;
+    try {
+      views = key ? await fromApi(ids, key, allMeta) : await fromWatchPages(ids);
+    } catch (e) {
+      // key missing permissions / quota → still show counts without it
+      apiError = String(e.message || e);
+      source = "youtube-page";
+      views = await fromWatchPages(ids);
+    }
     const meta = {};
     await Promise.all(mvIds.map(async (id) => { const m = allMeta[id] || await oembed(id); if (m) meta[id] = m; }));
     const counted = Object.keys(views).length;
@@ -94,7 +104,8 @@ module.exports = async (req, res) => {
       clips: counted,
       missing: ids.filter((id) => views[id] == null),
       updated: new Date().toISOString(),
-      source: key ? "youtube-api" : "youtube-page",
+      source,
+      ...(apiError && { apiError }),
       views,
       meta,
     });
