@@ -18,6 +18,7 @@ window.ICONS = {
   cry: FACE + EYES + '<path d="M8.5 16.4c.9-1.1 2.1-1.6 3.5-1.6s2.6.5 3.5 1.6"/>' + DROP(8.9, 11.6) + DROP(15.1, 11.6),
   sorry: FACE + '<path d="M7.8 10.2c.6.6 1.8.6 2.4 0M13.8 10.2c.6.6 1.8.6 2.4 0M10.5 15.5h3"/>',
   play: '<path fill="currentColor" stroke="none" d="M8 5.2v13.6L18.8 12z"/>',
+  bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
   close: '<path d="M6 6l12 12M18 6 6 18"/>',
   prev: '<path d="M15 4.5 7.5 12l7.5 7.5"/>',
   next: '<path d="M9 4.5l7.5 7.5L9 19.5"/>',

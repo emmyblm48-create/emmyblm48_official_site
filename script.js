@@ -223,6 +223,51 @@ if (document.getElementById("archive-list")) {
   });
 }
 
+// ---------- Anniversary notice (today + next 7 days, once per day) ----------
+{
+  const BIRTHDAY = "2005-05-06";
+  const DAY = 864e5;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const todayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  const sources = [
+    { date: BIRTHDAY, label: (n) => `Happy Birthday Emmy · อายุครบ ${n} ปี`, birthday: true },
+    ...ERAS.map((e) => ({ date: e.date, label: (n) => e.title === "Debut" ? `ครบรอบ ${n} ปี เดบิวต์ BLM48` : `ครบรอบ ${n} ปี「${e.title}」`, sub: e.title === "Debut" ? e.sub : [e.release, e.sub].filter(Boolean).join(" · ") })),
+    ...EVENTS.map((ev) => ({ date: ev.date, label: (n) => `ครบรอบ ${n} ปี ${ev.title}`, sub: ev.sub })),
+  ];
+  const seen = new Set();
+  const annivs = sources.map((src) => {
+    const [y, m, d] = src.date.split("-").map(Number);
+    let next = new Date(today.getFullYear(), m - 1, d);
+    if (next < today) next = new Date(today.getFullYear() + 1, m - 1, d);
+    return { ...src, years: next.getFullYear() - y, days: Math.round((next - today) / DAY), next };
+  }).filter((a) => a.years >= 1 && a.days <= 7)
+    .filter((a) => { const k = a.label(a.years); return !seen.has(k) && seen.add(k); })
+    .sort((a, b) => a.days - b.days);
+
+  let dismissed = null;
+  try { dismissed = localStorage.getItem("anniv-dismissed"); } catch {}
+  if (annivs.length && dismissed !== todayKey) {
+    const when = (a) => a.days === 0 ? "TODAY · วันนี้" : `อีก ${a.days} วัน · ${String(a.next.getDate()).padStart(2, "0")}.${String(a.next.getMonth() + 1).padStart(2, "0")}`;
+    document.body.insertAdjacentHTML("beforeend", `
+      <aside class="anniv" role="status" aria-label="แจ้งเตือนวันครบรอบ">
+        <p class="anniv-head">${icon(annivs.some((a) => a.days === 0) ? "heart" : "bell")}ANNIVERSARY</p>
+        <ul>${annivs.map((a) => `
+          <li class="${a.days === 0 ? "is-today" : ""}">
+            <span class="anniv-when">${when(a)}</span>
+            <b>${esc(a.label(a.years))}</b>${a.sub ? `<small>${esc(a.sub)}</small>` : ""}
+          </li>`).join("")}
+        </ul>
+        <button class="anniv-close" aria-label="ปิดการแจ้งเตือน">${icon("close")}</button>
+      </aside>`);
+    const box = document.querySelector(".anniv");
+    requestAnimationFrame(() => box.classList.add("in"));
+    box.querySelector(".anniv-close").addEventListener("click", () => {
+      box.remove();
+      try { localStorage.setItem("anniv-dismissed", todayKey); } catch {}
+    });
+  }
+}
+
 // ---------- Menu ----------
 const menuBtn = document.querySelector(".menu-btn");
 const menu = document.querySelector(".menu");
