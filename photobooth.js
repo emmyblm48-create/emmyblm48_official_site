@@ -324,16 +324,29 @@
     camError.hidden = true;
     shootBtn.disabled = true;
     renderShots();
-    if (!navigator.mediaDevices?.getUserMedia) { camError.hidden = false; return; }
+    if (!navigator.mediaDevices?.getUserMedia) { showCamError(); return; }
     try {
       stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1440 } }, audio: false });
       video.srcObject = stream;
       await video.play().catch(() => {});
       shootBtn.disabled = false;
-    } catch {
-      camError.hidden = false;
+    } catch (err) {
+      showCamError(err);
     }
   };
+  // say why the camera didn't open — in-app browsers (LINE, IG, FB, TikTok) often block it
+  const IN_APP = /\bLine\/|Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance/i.test(navigator.userAgent);
+  function showCamError(err) {
+    const name = err?.name || "";
+    camError.hidden = false;
+    $("pb-cam-why").textContent =
+      !window.isSecureContext ? "ต้องเปิดเว็บผ่าน https:// ถึงจะใช้กล้องได้"
+      : IN_APP ? "เบราว์เซอร์ในแอปนี้ใช้กล้องไม่ได้ กดเมนู ⋯ แล้วเลือก “เปิดใน Safari / Chrome” หรือเลือกรูปจากเครื่องแทน"
+      : name === "NotAllowedError" || name === "SecurityError" ? "ยังไม่ได้อนุญาตให้เว็บใช้กล้อง กดไอคอนกล้องหรือแม่กุญแจที่แถบที่อยู่ แล้วเลือกอนุญาต จากนั้นกด “ลองเปิดกล้องอีกครั้ง”"
+      : name === "NotFoundError" || name === "OverconstrainedError" ? "ไม่พบกล้องในเครื่องนี้ เลือกรูปจากเครื่องแทนได้เลย"
+      : name === "NotReadableError" ? "กล้องกำลังถูกใช้อยู่ในแอปอื่น ปิดแอปนั้นแล้วกด “ลองเปิดกล้องอีกครั้ง”"
+      : "อนุญาตให้เว็บใช้กล้องในการตั้งค่าเบราว์เซอร์ หรือเลือกรูปจากเครื่องแทน";
+  }
   function stopCamera() {
     abort = true;
     stream?.getTracks().forEach((t) => t.stop());
