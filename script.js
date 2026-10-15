@@ -192,15 +192,26 @@ if (document.getElementById("discography")) {
     videoMore.textContent = `VIEW MORE (${list.length})`;
   };
   const renderMv = () => {
-    // one row per MV: clip on the left, its photos on the right (own lightbox group)
-    document.getElementById("mv-list").innerHTML = sorted(MUSIC_VIDEOS.map(mvInfo), (m) => m.order).map((m, i) => `
-      <article class="mv-row">
-        ${card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? fmtDate(m.date) : "", sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })}
-        ${m.imgs?.length ? `<div class="mv-shots" data-lb-group="mv-${m.yt}">${m.imgs.map((f, j) => `
+    // one card per MV: its photos (own lightbox group), then title + WATCH to play the clip
+    document.getElementById("mv-list").innerHTML = sorted(MUSIC_VIDEOS.map(mvInfo), (m) => m.order).map((m, i) => {
+      const rank = ranked() && viewsOf(m) >= 0 && i + 1;
+      return m.imgs?.length ? `
+      <article class="mv-card">
+        <div class="mv-shots" data-lb-group="mv-${m.yt}">${m.imgs.map((f, j) => `
           <button class="mv-shot" data-lb data-caption="${esc(m.title)}">
             <img src="images/mv/${f}" alt="ภาพจาก MV ${esc(m.title)} (${j + 1})" loading="lazy" width="480" height="270">
-          </button>`).join("")}</div>` : ""}
-      </article>`).join("")
+          </button>`).join("")}${rank ? `<span class="rank${rank <= 3 ? ` rank-${rank}` : ""}" aria-label="อันดับ ${rank}">${rank}</span>` : ""}
+        </div>
+        <div class="mv-foot">
+          <div class="movie-meta">
+            ${m.date ? `<time datetime="${m.date}">${fmtDate(m.date)}</time>` : ""}${viewsTag(m.yt)}
+            <h3>${esc(m.title)}</h3>
+            ${m.sub ? `<p>${esc(m.sub)}</p>` : ""}
+          </div>
+          <button class="mv-watch" data-yt="${m.yt}" data-title="${esc(m.title)}" aria-label="ดู MV ${esc(m.title)}">${icon("play")}WATCH</button>
+        </div>
+      </article>` : card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? fmtDate(m.date) : "", sub: m.sub, rank });
+    }).join("")
       || `<p class="d-empty">${icon("play")}ยังไม่มี Music Video</p>`;
   };
   const renderMagazine = () => {
