@@ -74,14 +74,12 @@ window.VIDEOS = [
 
 // Discography · MUSIC VIDEO — MV ที่เอ็มมี่ร่วมแสดง (เรียงตามลำดับผลงาน)
 // title / artist / date เว้นว่างได้ — ระบบจะดึงชื่อคลิปและชื่อช่องจาก YouTube ให้อัตโนมัติ
-// imgs: รูปปกแทนภาพจาก YouTube (ไฟล์ใน images/mv/) — ใส่หลายรูปจะสลับกันเป็นสไลด์
+// imgs: รูปจาก MV (ไฟล์ใน images/mv/) — แสดงฝั่งขวาของคลิป กดดูรูปใหญ่ได้
 window.MUSIC_VIDEOS = [
   { yt: "SBay1DGjsvU", title: "SAT48 - Masaka no Confession – ทำไมกันนะ? Confession", artist: "", date: "",
     imgs: ["confession-1.webp", "confession-2.webp", "confession-3.webp", "confession-4.webp"] },
   { yt: "5K3rURkf4-4", title: "HASHIRIZAKA46 - WHY NO LOVE? (Naze Koi wo Shite Konakattan darou?)", artist: "", date: "",
-    imgs: ["why-no-love-1.webp", "why-no-love-2.webp", "why-no-love-3.webp", "why-no-love-4.webp"] },
-  { yt: "9gQ9OMW_z-0", title: "", artist: "", date: "" },
-];
+    imgs: ["why-no-love-1.webp", "why-no-love-2.webp", "why-no-love-3.webp", "why-no-love-4.webp"] },];
 
 // Discography · MAGAZINE COVER — ใส่รูปไว้ที่ images/magazines/ (แสดงตามลำดับในรายการ)
 // { img: "xxx.webp", title: "ชื่อปก", issue: "รายละเอียด / ฉบับ", date: "YYYY-MM-DD" (ไม่ใส่ก็ได้) }
