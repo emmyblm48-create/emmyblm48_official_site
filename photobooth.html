@@ -48,7 +48,18 @@
     <!-- 2 · choose a frame -->
     <div class="pb-step" data-step="frame" hidden>
       <h2 class="pb-tit">SELECT FRAME<small>เลือกเฟรมที่ชอบ</small></h2>
-      <div class="pb-frames" id="pb-frames"></div>
+      <div class="pb-opts">
+        <div class="pb-opt" role="group" aria-label="รูปแบบเฟรม">
+          <span>LAYOUT</span>
+          <button class="pill-btn is-on" data-layout="grid" aria-pressed="true">2×2</button>
+          <button class="pill-btn" data-layout="strip" aria-pressed="false">STRIP</button>
+        </div>
+        <label class="pb-check"><input type="checkbox" id="pb-with-emmy"><span>WITH EMMY<small>ใส่รูปเอ็มมี่ 1 ช่อง ถ่ายเอง 3 รูป</small></span></label>
+      </div>
+      <h3 class="pb-group">SEASONS<small>เทศกาล</small></h3>
+      <div class="pb-frames" id="pb-frames-season"></div>
+      <h3 class="pb-group">COLORS<small>สีต่าง ๆ</small></h3>
+      <div class="pb-frames" id="pb-frames-color"></div>
       <div class="pb-actions">
         <button class="pb-btn pb-ghost" data-go="intro">BACK</button>
       </div>

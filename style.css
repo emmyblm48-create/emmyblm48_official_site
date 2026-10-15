@@ -582,10 +582,26 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @keyframes curtain-sway { 0%, 100% { transform: skewX(0); } 50% { transform: skewX(-1.2deg); } }
 
 /* frame cards */
-.pb-frames { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px 22px; align-items: end; }
-.pb-frame { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.pb-opts { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 40px; margin-bottom: 8px; }
+.pb-opt { display: flex; align-items: baseline; gap: 18px; }
+.pb-opt > span { font-family: var(--en); font-size: .75rem; letter-spacing: .2em; color: var(--ink-3); }
+.pb-check { display: flex; align-items: center; gap: 12px; cursor: pointer; font-family: var(--en); font-size: .85rem; letter-spacing: .12em; }
+.pb-check small { display: block; font-family: var(--th); font-size: .75rem; letter-spacing: 0; color: var(--ink-3); }
+.pb-check input { appearance: none; flex: none; width: 22px; height: 22px; border: 1px solid var(--ink-2); display: grid; place-items: center; cursor: pointer; }
+.pb-check input::after { content: ""; width: 12px; height: 12px; background: var(--accent); -webkit-mask: var(--i-heart) center / contain no-repeat; mask: var(--i-heart) center / contain no-repeat; transform: scale(0); transition: transform .2s cubic-bezier(.3, 1.6, .5, 1); }
+.pb-check input:checked { border-color: var(--accent); }
+.pb-check input:checked::after { transform: scale(1); }
+.pb-group { font-family: var(--en); font-weight: 400; font-size: .85rem; letter-spacing: .3em; margin: 44px 0 22px; padding-bottom: 10px; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 14px; }
+.pb-group small { font-family: var(--th); font-size: .78rem; letter-spacing: 0; color: var(--ink-3); }
+.pb-frames { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px 20px; align-items: end; }
+.pb-frames.is-strip { grid-template-columns: repeat(6, 1fr); }
+.pb-frame { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.pb-frames.is-strip .pb-frame-img { width: 72%; }
 .pb-frame-img { width: 100%; height: auto; box-shadow: 0 14px 24px -16px #000000c0; transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
-.pb-frame-img.pb-strip { width: 62%; }
+.pb-now {
+  position: absolute; top: -10px; right: -6px; z-index: 1; padding: 5px 9px 3px; background: var(--accent); color: var(--brown);
+  font-family: var(--en); font-size: .7rem; font-weight: 600; letter-spacing: .14em; transform: rotate(6deg);
+}
 .pb-frame:hover .pb-frame-img { transform: translateY(-4px) rotate(-1.2deg); }
 .pb-frame:active .pb-frame-img { transform: scale(.97); }
 .pb-frame-name { font-family: var(--en); font-size: .85rem; letter-spacing: .16em; }
@@ -653,7 +669,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .photos, .mags { grid-template-columns: repeat(3, 1fr); }
   .champ { grid-template-columns: 1fr; }
   .champ-img { max-width: 420px; }
-  .pb-frames { grid-template-columns: repeat(2, 1fr); gap: 36px 22px; }
+  .pb-frames { grid-template-columns: repeat(3, 1fr); gap: 36px 22px; }
+  .pb-frames.is-strip { grid-template-columns: repeat(4, 1fr); }
   .pb-result { grid-template-columns: 1fr; max-width: 420px; gap: 28px; }
 }
 @media (max-width: 600px) {
@@ -684,7 +701,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .page-head { padding: 14px 124px 14px 16px; gap: 14px; flex-wrap: wrap; }
   .crumbs { font-size: .6875rem; }
   .page-nav a { font-size: .85rem; letter-spacing: .14em; }
-  .pb-frames { gap: 30px 14px; }
+  .pb-frames { grid-template-columns: repeat(2, 1fr); gap: 30px 14px; }
+  .pb-frames.is-strip { grid-template-columns: repeat(3, 1fr); }
+  .pb-opts { flex-direction: column; gap: 16px; }
   .pb-frame-name { font-size: .75rem; letter-spacing: .1em; }
   .pb-cam { grid-template-columns: 1fr; gap: 20px; }
   .pb-shots { grid-template-columns: repeat(4, 1fr); }

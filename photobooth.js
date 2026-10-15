@@ -10,17 +10,57 @@
     grid: { W: 1080, H: 1620, cw: 446, ch: 595, cells: [[80, 180], [554, 180], [80, 803], [554, 803]] },
     strip: { W: 600, H: 1800, cw: 500, ch: 375, cells: [[50, 78], [50, 475], [50, 872], [50, 1269]] },
   };
-  const FRAMES = [
-    { id: "choco", name: "CHOCO 4 CUT", th: "เฟรมช็อกโกแลต 2×2", layout: "grid", bg: "#4a2311", ink: "#fbf6ec", star: "#714026" },
-    { id: "cream", name: "CREAM 4 CUT", th: "เฟรมครีม 2×2", layout: "grid", bg: "#fbf6ec", ink: "#4a2311", star: "#e9dcc6" },
-    { id: "strip", name: "CLASSIC STRIP", th: "แถบยาว 4 รูป", layout: "strip", bg: "#4a2311", ink: "#fbf6ec", star: "#714026" },
-    { id: "emmy", name: "WITH EMMY", th: "ถ่าย 3 รูป + รูปเอ็มมี่ 1 ช่อง", layout: "grid", bg: "#4a2311", ink: "#fbf6ec", star: "#714026", emmySlot: 3 },
+  // a design = colours + background pattern (+ corner icons, decoration, default caption); works with either layout
+  // pattern: motif name or [motif A, motif B] (A and B alternate) · corners: [left, right] · deco: "rainbow" | "lights" | "border"
+  // season: "MM-DD/MM-DD" — shown first with a NOW badge while it's on (seasons may wrap the new year)
+  const thisYear = new Date().getFullYear() + (new Date().getMonth() >= 6 ? 1 : 0); // the coming new year from July on
+  const DESIGNS = [
+    { id: "valentine", name: "VALENTINE", th: "วาเลนไทน์ · ก.พ.", season: "02-01/02-16", bg: "#f2bfce", ink: "#8e1f3a", pat: "#e99db3", pattern: "heart", corners: ["heart", "heart"], caption: "Be My Valentine" },
+    { id: "debut", name: "DEBUT DAY", th: "ครบรอบเดบิวต์ · 26 มี.ค.", season: "03-16/04-02", bg: "#4a2311", ink: "#f0d28a", pat: "#6b3a1f", pattern: ["sparkle", "star"], corners: ["sparkle", "sparkle"], deco: "border", caption: "since 26.03.2024" },
+    { id: "songkran", name: "SONGKRAN", th: "สงกรานต์ · เม.ย.", season: "04-06/04-20", bg: "#cfe9f6", ink: "#1f5b84", pat: "#a6d2ec", pat2: "#f4c3d1", pattern: ["drop", "flower"], corners: ["drop", "flower"], caption: "Happy Songkran" },
+    { id: "birthday", name: "EMMY BIRTHDAY", th: "วันเกิดเอ็มมี่ · 6 พ.ค.", season: "04-26/05-12", bg: "#fbe3ea", ink: "#7b3b2a", pat: "#efc9bd", pattern: ["bear", "confetti"], confetti: ["#f4a6bd", "#f3cf6a", "#9fd0e6", "#b5dca2"], corners: ["bear", "heart"], caption: "Happy Birthday EMMY" },
+    { id: "pride", name: "PRIDE", th: "Pride Month · มิ.ย.", season: "06-01/06-30", bg: "#fbf6ec", ink: "#4a2311", pat: "#ece2d2", pattern: "heart", corners: ["heart", "heart"], deco: "rainbow", caption: "LOVE IS LOVE" },
+    { id: "halloween", name: "HALLOWEEN", th: "ฮาโลวีน · ต.ค.", season: "10-10/11-01", bg: "#1d1411", ink: "#f39a4a", pat: "#45322a", pat2: "#64381c", pattern: ["bat", "pumpkin"], corners: ["pumpkin", "bat"], caption: "Happy Halloween" },
+    { id: "loykrathong", name: "LOY KRATHONG", th: "ลอยกระทง · พ.ย.", season: "11-05/11-30", bg: "#13244a", ink: "#f3dc9a", pat: "#23386b", pattern: ["moon", "sparkle"], corners: ["moon", "sparkle"], caption: "สุขสันต์วันลอยกระทง" },
+    { id: "christmas", name: "CHRISTMAS", th: "คริสต์มาส · ธ.ค.", season: "12-01/12-26", bg: "#1f4a35", ink: "#fbf6ec", pat: "#2e5e46", pattern: ["snow", "star"], corners: ["tree", "snow"], deco: "lights", caption: "Merry Christmas" },
+    { id: "newyear", name: "NEW YEAR", th: "ปีใหม่ · ม.ค.", season: "12-27/01-10", bg: "#111014", ink: "#e8cd84", pat: "#29262d", pattern: ["sparkle", "dot"], corners: ["sparkle", "sparkle"], deco: "border", caption: `Happy New Year ${thisYear}` },
+
+    { id: "choco", name: "CHOCO", th: "ช็อกโกแลต", bg: "#4a2311", ink: "#fbf6ec", pat: "#714026" },
+    { id: "cream", name: "CREAM", th: "ครีม", bg: "#fbf6ec", ink: "#4a2311", pat: "#e9dcc6" },
+    { id: "strawberry", name: "STRAWBERRY MILK", th: "ชมพูนม", bg: "#f8dbe3", ink: "#8e3550", pat: "#f0bfcd", pattern: ["heart", "star"] },
+    { id: "cherry", name: "CHERRY", th: "แดงม่าน", bg: "#8e1f24", ink: "#fbf6ec", pat: "#a8363c" },
+    { id: "matcha", name: "MATCHA", th: "เขียวมัทฉะ", bg: "#dbe8d3", ink: "#3d5a3a", pat: "#c3d7b8", pattern: ["clover", "dot"], corners: ["clover", "clover"] },
+    { id: "sky", name: "SODA SKY", th: "ฟ้าโซดา", bg: "#d5e6f6", ink: "#2c4a73", pat: "#b9d2ec", pattern: ["sparkle", "dot"] },
+    { id: "lavender", name: "LAVENDER", th: "ม่วงลาเวนเดอร์", bg: "#e7ddf3", ink: "#5a4280", pat: "#d4c5e9" },
+    { id: "butter", name: "BUTTER", th: "เหลืองเนย", bg: "#f8edc4", ink: "#7a5a1c", pat: "#eedc9f", pattern: ["dot", "heart"] },
+    { id: "midnight", name: "MIDNIGHT", th: "น้ำเงินกลางคืน", bg: "#171b2e", ink: "#f3e9d2", pat: "#2d3556", pattern: ["sparkle", "star"] },
+    { id: "noir", name: "NOIR", th: "ขาวดำ", bg: "#131010", ink: "#f8f0e3", pat: "#2b2422" },
   ];
-  // EMMY photos for the WITH EMMY frame (latest profiles first, one per image)
+  // seasons: in season first, then the next one coming up
+  const mmdd = (d) => (d.getMonth() + 1) * 100 + d.getDate();
+  const seasonRange = (d) => d.season.split("/").map((s) => Number(s.replace("-", "")));
+  const inSeason = (d, now = new Date()) => {
+    if (!d.season) return false;
+    const [a, b] = seasonRange(d), x = mmdd(now);
+    return a <= b ? x >= a && x <= b : x >= a || x <= b;
+  };
+  const daysUntil = (d, now = new Date()) => {
+    const [a] = seasonRange(d);
+    let next = new Date(now.getFullYear(), Math.floor(a / 100) - 1, a % 100);
+    if (next < now) next = new Date(now.getFullYear() + 1, Math.floor(a / 100) - 1, a % 100);
+    return (next - now) / 864e5;
+  };
+  const SEASONS = DESIGNS.filter((d) => d.season).sort((x, y) => (inSeason(y) - inSeason(x)) || daysUntil(x) - daysUntil(y));
+  const COLORS = DESIGNS.filter((d) => !d.season);
+
+  // EMMY photos for WITH EMMY (latest profiles first, one per image)
   const EMMY_PICS = [...new Set((window.ERAS || []).slice().reverse().map((e) => e.img))].slice(0, 8);
 
   const S = 1.5; // print resolution multiplier
-  let frame = FRAMES[0];
+  let design = SEASONS.find((d) => inSeason(d)) || COLORS[0];
+  let layout = "grid";
+  let withEmmy = false;
+  const emmySlot = () => (withEmmy ? 3 : null);
   let shots = [null, null, null, null]; // canvases (already mirrored / cropped to the cut)
   let emmyPic = EMMY_PICS[0];
   let filter = "normal";
@@ -47,25 +87,36 @@
   ].map((f) => document.fonts.load(f).catch(() => {})));
 
   // ---------- drawing ----------
-  const star = (ctx, x, y, r) => {
-    ctx.beginPath();
-    for (let i = 0; i < 10; i++) {
-      const a = -Math.PI / 2 + (i * Math.PI) / 5;
-      const rr = i % 2 ? r * 0.45 : r;
-      ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr);
-    }
-    ctx.closePath();
-    ctx.stroke();
+  // motifs in a 24×24 box (same grid as the site's SVG icons); line = outlined in the pattern, filled as a corner icon
+  const circle = (cx, cy, r) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0z`;
+  const MOTIFS = {
+    star: { d: "M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z", line: true },
+    heart: { d: "M12 21.2s-8.6-5.3-8.6-11.4C3.4 6.9 5.6 4.8 8.2 4.8c1.6 0 3 .8 3.8 2.1.8-1.3 2.2-2.1 3.8-2.1 2.6 0 4.8 2.1 4.8 5 0 6.1-8.6 11.4-8.6 11.4z", line: true },
+    clover: { d: circle(8.6, 8.6, 4) + circle(15.4, 8.6, 4) + circle(8.6, 15.4, 4) + circle(15.4, 15.4, 4) + "M12 12q2.5 5.5 6.5 9l1-1q-4-3.5-6.3-8.6z" },
+    snow: { d: "M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9.8 3.8 12 6l2.2-2.2M9.8 20.2 12 18l2.2 2.2M3.6 10.1l3-.8-.8-3M20.4 13.9l-3 .8.8 3M3.6 13.9l3 .8-.8 3M20.4 10.1l-3-.8.8-3", line: true, lineOnly: true },
+    drop: { d: "M12 2.5C9 7 6 10.6 6 14.5a6 6 0 0 0 12 0C18 10.6 15 7 12 2.5z" },
+    sparkle: { d: "M12 1.5C12.8 8 16 11.2 22.5 12 16 12.8 12.8 16 12 22.5 11.2 16 8 12.8 1.5 12 8 11.2 11.2 8 12 1.5z" },
+    dot: { d: circle(12, 12, 3.6) },
+    flower: { d: [0, 1, 2, 3, 4].map((i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5; return circle(12 + 5.4 * Math.cos(a), 12 + 5.4 * Math.sin(a), 3.9); }).join("") + circle(12, 12, 2.6) },
+    bear: { d: circle(12, 14, 7.2) + circle(6.2, 7.2, 2.9) + circle(17.8, 7.2, 2.9) },
+    bat: { d: "M12 6.8c-.8 0-1.4.6-1.6 1.3L9.3 6.3l-.2 2.9C7.4 7.4 4.6 6.4 1 7.2c1.9 1.5 2.9 4 2.6 6.9 1.2-1.3 3-1.6 4.4-.8.4-1.7 1.6-2.4 2.8-2 .2 1.8.6 3.2 1.2 4.5.6-1.3 1-2.7 1.2-4.5 1.2-.4 2.4.3 2.8 2 1.4-.8 3.2-.5 4.4.8-.3-2.9.7-5.4 2.6-6.9-3.6-.8-6.4.2-8.1 2l-.2-2.9-1.1 1.8c-.2-.7-.8-1.3-1.6-1.3z" },
+    pumpkin: { d: "M12 7.2c-1-.1-2 .2-2.8.7-.8-.4-1.8-.6-2.8-.3C3.8 8.5 2.6 11.2 3 14.2c.5 3.4 3 5.6 5.4 5.4 1.3.6 2.5.7 3.6.7s2.3-.1 3.6-.7c2.4.2 4.9-2 5.4-5.4.4-3-.8-5.7-3.4-6.6-1-.3-2-.1-2.8.3-.8-.5-1.8-.8-2.8-.7zM11.3 7.3c0-1.7.4-3.1 1.7-4.3l1.3 1c-1 .8-1.3 1.9-1.3 3.3z" },
+    moon: { d: "M15.5 3.2A9 9 0 1 0 20.8 15 7 7 0 0 1 15.5 3.2z" },
+    tree: { d: "M12 1.8l5 6.7h-2.8l4.6 6.3h-3.4l3.4 5H5.2l3.4-5H5.2l4.6-6.3H7zM10.6 19.8h2.8V23h-2.8z" },
+    confetti: { d: "M9.2 5.5h5.6v13H9.2z" },
   };
-  const HEART = new Path2D("M12 21.2s-8.6-5.3-8.6-11.4C3.4 6.9 5.6 4.8 8.2 4.8c1.6 0 3 .8 3.8 2.1.8-1.3 2.2-2.1 3.8-2.1 2.6 0 4.8 2.1 4.8 5 0 6.1-8.6 11.4-8.6 11.4z");
-  const icon24 = (ctx, x, y, size, draw) => { ctx.save(); ctx.translate(x, y); ctx.scale(size / 24, size / 24); draw(); ctx.restore(); };
-  const heart = (ctx, x, y, size, color) => icon24(ctx, x, y, size, () => { ctx.fillStyle = color; ctx.fill(HEART); });
-  const clover = (ctx, x, y, size, color) => icon24(ctx, x, y, size, () => {
-    ctx.fillStyle = color;
-    [[8.6, 8.6], [15.4, 8.6], [8.6, 15.4], [15.4, 15.4]].forEach(([cx, cy]) => { ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill(); });
-    ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.lineCap = "round";
-    ctx.beginPath(); ctx.moveTo(12, 12); ctx.quadraticCurveTo(14.5, 17.5, 18.5, 21); ctx.stroke();
-  });
+  Object.values(MOTIFS).forEach((m) => { m.p = new Path2D(m.d); });
+  const drawMotif = (ctx, name, cx, cy, size, color, { line = false, rot = 0, lw = 2 } = {}) => {
+    const m = MOTIFS[name];
+    if (!m) return;
+    ctx.save();
+    ctx.translate(cx, cy); ctx.rotate(rot); ctx.scale(size / 24, size / 24); ctx.translate(-12, -12);
+    if (line || m.lineOnly) {
+      ctx.strokeStyle = color; ctx.lineWidth = (lw * 24) / size; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.stroke(m.p);
+    } else { ctx.fillStyle = color; ctx.fill(m.p); }
+    ctx.restore();
+  };
   // letter-spaced text (canvas letterSpacing isn't everywhere yet)
   const spaced = (ctx, text, x, y, spacing, align = "center") => {
     const chars = [...text];
@@ -107,19 +158,47 @@
   };
 
   // the whole print; cuts = [canvas | image | null] ×4
-  const drawPrint = (cnv, fr, cuts, { scale = S, caption = "", date = new Date() } = {}) => {
-    const L = LAYOUTS[fr.layout];
+  const RAINBOW = ["#e5484d", "#f59e3b", "#f3cd45", "#4cb876", "#3d8fd9", "#8a5bd0"];
+  const BULBS = ["#e64b4b", "#f5c542", "#4bb3e6", "#7fd17f"];
+  const drawPrint = (cnv, fr, layoutName, cuts, { scale = S, caption = "", date = new Date() } = {}) => {
+    const L = LAYOUTS[layoutName];
+    const grid = layoutName === "grid";
     cnv.width = L.W * scale; cnv.height = L.H * scale;
     const ctx = cnv.getContext("2d");
     ctx.scale(scale, scale);
     ctx.fillStyle = fr.bg;
     ctx.fillRect(0, 0, L.W, L.H);
-    // outlined stars (same pattern as the site background)
+    // background pattern: two motifs per tile (outlined stars = the site background)
     const T = 150;
-    ctx.strokeStyle = fr.star; ctx.lineWidth = 2; ctx.lineJoin = "round";
+    const [ma, mb] = [].concat(fr.pattern || "star", fr.pattern || "star");
+    let n = 0;
     for (let ty = -T; ty < L.H + T; ty += T) for (let tx = -T; tx < L.W + T; tx += T) {
-      star(ctx, tx + T * 0.21, ty + T * 0.23, 13);
-      star(ctx, tx + T * 0.71, ty + T * 0.73, 13);
+      [[ma, tx + T * 0.21, ty + T * 0.23, fr.pat], [mb, tx + T * 0.71, ty + T * 0.73, fr.pat2 || fr.pat]].forEach(([m, x, y, c]) => {
+        n++;
+        if (m === "confetti") drawMotif(ctx, m, x, y, 22, fr.confetti[n % fr.confetti.length], { rot: (n * 47) % 180 * Math.PI / 180 });
+        else drawMotif(ctx, m, x, y, m === "dot" ? 22 : 28, c, { line: MOTIFS[m].line });
+      });
+    }
+    // decorations behind the cuts
+    if (fr.deco === "rainbow") {
+      const w = grid ? 7 : 5;
+      RAINBOW.forEach((c, i) => { ctx.fillStyle = c; ctx.fillRect(i * w, 0, w, L.H); ctx.fillRect(L.W - (i + 1) * w, 0, w, L.H); });
+    }
+    if (fr.deco === "border") {
+      ctx.strokeStyle = fr.ink; ctx.lineWidth = 2;
+      const m = grid ? 22 : 16;
+      ctx.strokeRect(m, m, L.W - 2 * m, L.H - 2 * m);
+      ctx.lineWidth = 1; ctx.strokeRect(m + 7, m + 7, L.W - 2 * m - 14, L.H - 2 * m - 14);
+    }
+    if (fr.deco === "lights" && grid) {
+      const [x0, x1, y0, cy] = [118, L.W - 118, 30, 98];
+      ctx.strokeStyle = fr.ink; ctx.globalAlpha = 0.7; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(L.W / 2, cy, x1, y0); ctx.stroke(); ctx.globalAlpha = 1;
+      for (let i = 1; i < 12; i++) {
+        const t = i / 12, x = (1 - t) ** 2 * x0 + 2 * (1 - t) * t * (L.W / 2) + t ** 2 * x1, y = (1 - t) ** 2 * y0 + 2 * (1 - t) * t * cy + t ** 2 * y0;
+        ctx.fillStyle = BULBS[i % BULBS.length];
+        ctx.beginPath(); ctx.ellipse(x, y + 12, 7, 10, 0, 0, Math.PI * 2); ctx.fill();
+      }
     }
     // cuts
     L.cells.forEach(([x, y], i) => {
@@ -132,9 +211,10 @@
     const dd = `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}`;
     ctx.fillStyle = fr.ink;
     ctx.textBaseline = "alphabetic";
-    if (fr.layout === "grid") {
-      heart(ctx, 42, 34, 60, fr.ink);
-      clover(ctx, L.W - 102, 34, 60, fr.ink);
+    const [cl, cr] = fr.corners || ["heart", "clover"];
+    if (grid) {
+      drawMotif(ctx, cl, 72, 64, 60, fr.ink, { lw: 3 });
+      drawMotif(ctx, cr, L.W - 72, 64, 60, fr.ink, { lw: 3 });
       if (caption) { ctx.font = '500 44px "Zen Maru Gothic", "IBM Plex Sans Thai Looped", sans-serif'; spaced(ctx, caption, L.W / 2, 128, 2); }
       ctx.font = '400 54px "Cormorant Garamond", serif';
       spaced(ctx, "4 cut", 80, 1478, 0, "left");
@@ -146,8 +226,8 @@
       ctx.font = '400 38px "Josefin Sans", sans-serif';
       spaced(ctx, dd, L.W - 80, 1548, 1, "right");
     } else {
-      heart(ctx, 22, 20, 36, fr.ink);
-      clover(ctx, L.W - 58, 20, 36, fr.ink);
+      drawMotif(ctx, cl, 40, 38, 36, fr.ink, { lw: 2.4 });
+      drawMotif(ctx, cr, L.W - 40, 38, 36, fr.ink, { lw: 2.4 });
       if (caption) { ctx.font = '500 26px "Zen Maru Gothic", "IBM Plex Sans Thai Looped", sans-serif'; spaced(ctx, caption, L.W / 2, 55, 1); }
       ctx.font = '400 72px "Josefin Sans", sans-serif';
       spaced(ctx, "EMMY", L.W / 2, 1720, 7);
@@ -178,23 +258,38 @@
   root.querySelector("[data-howto]").addEventListener("click", () => howto.showModal());
   howto.addEventListener("click", (e) => { if (e.target === howto) howto.close(); });
 
-  // frame cards — previews drawn with EMMY photos
-  const framesBox = $("pb-frames");
-  framesBox.innerHTML = FRAMES.map((f) => `
-    <button class="pb-frame" data-frame="${f.id}" aria-label="${f.name} — ${f.th}">
-      <canvas class="pb-frame-img pb-${f.layout}"></canvas>
-      <span class="pb-frame-name">${f.name}<small>${f.th}</small></span>
-    </button>`).join("");
-  Promise.all([fontsReady, ...EMMY_PICS.slice(0, 4).map((p) => loadImg(`images/profiles/${p}`).catch(() => null))]).then(([, ...pics]) => {
-    framesBox.querySelectorAll(".pb-frame").forEach((btn) => {
-      const f = FRAMES.find((x) => x.id === btn.dataset.frame);
-      drawPrint(btn.querySelector("canvas"), f, pics, { scale: 0.4, caption: f.id === "emmy" ? "with EMMY" : "" });
+  // frame cards (seasons, then colours) — previews drawn with EMMY photos in the chosen layout
+  const card = (d) => `
+    <button class="pb-frame" data-frame="${d.id}" aria-label="${d.name} — ${d.th}">
+      ${inSeason(d) ? '<span class="pb-now">NOW</span>' : ""}<canvas class="pb-frame-img"></canvas>
+      <span class="pb-frame-name">${d.name}<small>${d.th}</small></span>
+    </button>`;
+  $("pb-frames-season").innerHTML = SEASONS.map(card).join("");
+  $("pb-frames-color").innerHTML = COLORS.map(card).join("");
+  const previewPics = Promise.all([fontsReady, ...EMMY_PICS.slice(0, 4).map((p) => loadImg(`images/profiles/${p}`).catch(() => null))]).then(([, ...pics]) => pics);
+  const renderPreviews = async () => {
+    const pics = await previewPics;
+    root.querySelectorAll(".pb-frames").forEach((box) => box.classList.toggle("is-strip", layout === "strip"));
+    root.querySelectorAll(".pb-frame").forEach((btn) => {
+      const d = DESIGNS.find((x) => x.id === btn.dataset.frame);
+      drawPrint(btn.querySelector("canvas"), d, layout, pics, { scale: 0.4, caption: d.caption || "" });
     });
-  });
-  framesBox.addEventListener("click", (e) => {
+  };
+  renderPreviews();
+  root.querySelectorAll("[data-layout]").forEach((b) => b.addEventListener("click", () => {
+    layout = b.dataset.layout;
+    root.querySelectorAll("[data-layout]").forEach((x) => { x.classList.toggle("is-on", x === b); x.setAttribute("aria-pressed", x === b); });
+    renderPreviews();
+  }));
+  $("pb-with-emmy").addEventListener("change", (e) => { withEmmy = e.target.checked; });
+  // picking a design also fills in its caption, unless the caption was typed by hand
+  let autoCaption = "";
+  root.addEventListener("click", (e) => {
     const b = e.target.closest("[data-frame]");
     if (!b) return;
-    frame = FRAMES.find((x) => x.id === b.dataset.frame);
+    design = DESIGNS.find((x) => x.id === b.dataset.frame);
+    const cap = $("pb-caption");
+    if (!cap.value.trim() || cap.value === autoCaption) cap.value = autoCaption = design.caption || "";
     shots = [null, null, null, null];
     go("camera");
   });
@@ -218,13 +313,13 @@
   const view = $("pb-view");
   const camError = $("pb-cam-error");
   const shootBtn = $("pb-shoot");
-  const slotsToShoot = () => [0, 1, 2, 3].filter((i) => i !== frame.emmySlot);
+  const slotsToShoot = () => [0, 1, 2, 3].filter((i) => i !== emmySlot());
 
   const openCamera = async () => {
-    const L = LAYOUTS[frame.layout];
+    const L = LAYOUTS[layout];
     view.style.aspectRatio = `${L.cw} / ${L.ch}`;
-    $("pb-frame-name").textContent = frame.name;
-    $("pb-emmy").hidden = frame.emmySlot == null;
+    $("pb-frame-name").textContent = `${design.name} · ${layout === "grid" ? "2×2" : "STRIP"}`;
+    $("pb-emmy").hidden = emmySlot() == null;
     $("pb-cam-hint").textContent = `ถ่าย ${slotsToShoot().length} รูปต่อกัน · วางกล้องให้มั่นคง แล้วกด SHOOT`;
     camError.hidden = true;
     shootBtn.disabled = true;
@@ -251,7 +346,7 @@
   });
 
   const cutCanvas = () => {
-    const L = LAYOUTS[frame.layout];
+    const L = LAYOUTS[layout];
     const c = document.createElement("canvas");
     c.width = L.cw * S; c.height = L.ch * S;
     return c;
@@ -327,11 +422,11 @@
   // thumbnails of the cuts so far
   const shotsBox = $("pb-shots");
   function renderShots(just) {
-    const L = LAYOUTS[frame.layout];
+    const L = LAYOUTS[layout];
     shotsBox.style.setProperty("--ar", `${L.cw} / ${L.ch}`);
-    shotsBox.innerHTML = shots.map((s, i) => `<li class="${i === just ? "is-new" : ""}${frame.emmySlot === i ? " is-emmy" : ""}" aria-label="ช่อง ${i + 1}${s ? " ถ่ายแล้ว" : ""}">${
-      frame.emmySlot === i ? `<img src="images/profiles/${emmyPic}" alt="">` : s ? "" : `<span>${i + 1}</span>`}</li>`).join("");
-    shots.forEach((s, i) => { if (s && frame.emmySlot !== i) { const c = cutCanvas(); c.getContext("2d").drawImage(s, 0, 0); shotsBox.children[i].append(c); } });
+    shotsBox.innerHTML = shots.map((s, i) => `<li class="${i === just ? "is-new" : ""}${emmySlot() === i ? " is-emmy" : ""}" aria-label="ช่อง ${i + 1}${s ? " ถ่ายแล้ว" : ""}">${
+      emmySlot() === i ? `<img src="images/profiles/${emmyPic}" alt="">` : s ? "" : `<span>${i + 1}</span>`}</li>`).join("");
+    shots.forEach((s, i) => { if (s && emmySlot() !== i) { const c = cutCanvas(); c.getContext("2d").drawImage(s, 0, 0); shotsBox.children[i].append(c); } });
   }
 
   root.querySelectorAll("[data-timer]").forEach((b) => b.addEventListener("click", () => {
@@ -346,16 +441,16 @@
   async function renderPrint() {
     await fontsReady;
     const cuts = shots.map((s) => s && filtered(s));
-    if (frame.emmySlot != null) {
+    if (emmySlot() != null) {
       const im = await loadImg(`images/profiles/${emmyPic}`).catch(() => null);
       if (im) {
         const c = cutCanvas();
         drawCover(c.getContext("2d"), im, 0, 0, c.width, c.height, { fy: 0.25 });
-        cuts[frame.emmySlot] = filtered(c);
+        cuts[emmySlot()] = filtered(c);
       }
     }
-    drawPrint(print, frame, cuts, { caption: caption.value.trim(), date: printDate });
-    print.className = `pb-print pb-${frame.layout}`;
+    drawPrint(print, design, layout, cuts, { caption: caption.value.trim(), date: printDate });
+    print.className = `pb-print pb-${layout}`;
   }
   let typing;
   caption.addEventListener("input", () => { clearTimeout(typing); typing = setTimeout(renderPrint, 200); });
