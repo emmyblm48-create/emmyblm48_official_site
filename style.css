@@ -663,6 +663,24 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .pb-howto .pb-shoot { background: var(--brown); color: var(--paper); border-color: var(--brown); min-width: 140px; }
 
 /* ===== RESPONSIVE ===== */
+/* ===== FAV SONGS (3D album stack) ===== */
+.fav-count { text-align: center; font-family: var(--en); font-size: .75rem; letter-spacing: .3em; color: var(--ink-3); margin: -4px auto 34px; }
+.fav-stack { list-style: none; max-width: 460px; margin-inline: auto; padding-bottom: 40px; }
+.fav { position: relative; margin-bottom: -38%; }
+.fav:last-child { margin-bottom: 0; }
+.fav-card {
+  display: block; transform-origin: 50% 100%; transform-style: preserve-3d; will-change: transform;
+  background: var(--paper); border-radius: 3px; box-shadow: 0 18px 30px -12px #00000080, 0 2px 0 #00000033;
+}
+.fav-cover { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 3px 3px 0 0; background: var(--brown-card); }
+.fav-label {
+  display: block; padding: 6px 12px 5px; text-align: center; color: var(--brown);
+  font-family: var(--en); font-size: .82rem; letter-spacing: .02em; line-height: 1.5;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.fav-label b { font-weight: 600; }
+.fav-card:hover .fav-label, .fav-card:focus-visible .fav-label { color: #c4566f; }
+
 @media (max-width: 900px) {
   .profile { grid-template-columns: 1fr; }
   .profile-photo { max-width: 400px; }
