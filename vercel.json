@@ -2,7 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/movie", "destination": "/discography", "permanent": true }
+    { "source": "/movie", "destination": "/discography", "permanent": true },
+    { "source": "/favsongs", "destination": "/#favsongs", "permanent": false }
   ],
   "functions": {
     "api/views.js": { "includeFiles": "data.js", "maxDuration": 60 }

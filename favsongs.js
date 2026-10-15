@@ -9,11 +9,17 @@
   const songCount = ALBUMS.reduce((n, a) => n + a.fav.length, 0);
   document.getElementById("fav-count").textContent = `${songCount} SONGS · ${ALBUMS.length} ALBUMS`;
   if (window.FAV_PLAYLIST) document.getElementById("fav-playlist").href = window.FAV_PLAYLIST;
+  const colours = (a) => `--bg:#${a.bg};--fg:#${a.fg};--fg2:#${a.fg2}`;
+  // "Believers - EP" → title "Believers", kind "EP" (printed at the foot of the spine, like "12TH SINGLE")
+  const parts = (a) => {
+    const m = a.title.match(/^(.*?)\s+-\s+(Single|EP)$/i);
+    return { name: m ? m[1] : a.title, kind: m ? m[2].toUpperCase() : "ALBUM" };
+  };
   shelf.innerHTML = ALBUMS.map((a, i) => `
     <div class="cd-slot" role="listitem">
-      <button class="cd" type="button" data-i="${i}" style="--bg:#${a.bg};--fg:#${a.fg};--fg2:#${a.fg2}" aria-label="${esc(a.title)} · ${esc(a.artist)} — ดูรายชื่อเพลง">
+      <button class="cd" type="button" data-i="${i}" style="${colours(a)}" aria-label="${esc(a.title)} · ${esc(a.artist)} — ดูรายชื่อเพลง">
         <img class="cd-cover" src="${esc(a.cover)}" alt="" width="600" height="600" loading="lazy" decoding="async" referrerpolicy="no-referrer">
-        <span class="cd-spine"><b>${esc(a.title)}</b> ${esc(a.artist)}</span>
+        <span class="cd-spine" aria-hidden="true"><i>${esc(a.artist)}</i><b>${esc(parts(a).name)}</b><small>${parts(a).kind}</small></span>
       </button>
     </div>`).join("");
 
@@ -119,9 +125,8 @@
 
   const fill = async (a) => {
     current = a;
-    sheet.style.setProperty("--bg", `#${a.bg}`);
+    sheet.setAttribute("style", `${colours(a)};--img:url("${a.cover}")`);
     $(".fd-cover").src = a.cover;
-    $(".fd-disc").style.backgroundImage = `url("${a.cover}")`;
     $(".fd-title").textContent = a.title;
     $(".fd-artist").textContent = a.artist;
     $(".fd-meta").textContent = "";
@@ -169,17 +174,24 @@
     $(".fd-close").focus();
   };
 
-  // the CD case flies from the shelf to the middle of the screen and opens; then the sheet comes up
+  // opening, like the real thing: the plastic case flies from the shelf to the middle, opens like a book
+  // (booklet left, the disc with the cover printed on it right), the disc lifts → album sheet.
+  // Tap anywhere during the animation to skip it.
   const fly = document.createElement("div");
   fly.className = "cd-fly";
   fly.hidden = true;
   fly.setAttribute("aria-hidden", "true");
-  fly.innerHTML = '<div class="cf-case"><div class="cf-tray"><div class="cf-disc"></div></div><div class="cf-lid"></div></div>';
+  fly.innerHTML = '<div class="cf-stage"><div class="cf-jewel"><div class="cf-tray"><div class="disc cf-disc"></div></div><div class="cf-lid"></div></div></div>';
   document.body.append(fly);
-  const flyCase = fly.querySelector(".cf-case");
+  const stage = fly.querySelector(".cf-stage");
+  const jewel = fly.querySelector(".cf-jewel");
   const lid = fly.querySelector(".cf-lid");
   const disc = fly.querySelector(".cf-disc");
   let flying = false;
+  let skip = false;
+  fly.addEventListener("click", () => { skip = true; fly.getAnimations({ subtree: true }).forEach((an) => an.playState === "running" && an.finish()); });
+  const ease = "cubic-bezier(.2,.8,.2,1)";
+  const run = (el, frames, ms, opts = {}) => el.animate(frames, { duration: skip ? 1 : ms, easing: ease, fill: "forwards", ...opts }).finished;
   const openCase = async (i, btn) => {
     const a = ALBUMS[i];
     if (flying) return;
@@ -188,32 +200,32 @@
     fill(a);
     if (reduceMotion) { showSheet(); return; }
     flying = true;
+    skip = false;
     const from = btn.querySelector(".cd-cover").getBoundingClientRect();
-    const size = Math.min(innerWidth * .72, innerHeight * .5, 380);
-    lid.style.setProperty("--img", `url("${a.cover}")`);
-    disc.style.backgroundImage = `url("${a.cover}")`;
-    fly.style.setProperty("--size", `${size}px`);
-    fly.style.setProperty("--bg", `#${a.bg}`);
+    const size = Math.min(innerWidth * .7, innerHeight * .45, 380);
+    const fit = Math.min(1, (innerWidth * .94) / (size * 2)); // the open case is twice as wide
+    fly.setAttribute("style", `${colours(a)};--size:${size}px;--img:url("${a.cover}")`);
+    lid.dataset.title = parts(a).name;
     fly.hidden = false;
     const dx = from.left + from.width / 2 - innerWidth / 2;
     const dy = from.top + from.height / 2 - innerHeight / 2;
-    const sc = from.height / size;
     const side = btn.closest(".cd-slot").classList.contains("is-right") ? -1 : 1;
-    const ease = "cubic-bezier(.2,.8,.2,1)";
-    fly.animate([{ backgroundColor: "#2a120800" }, { backgroundColor: "#2a1208e6" }], { duration: 420, fill: "forwards" });
-    await flyCase.animate([
-      { transform: `translate(${dx}px, ${dy}px) scale(${sc}) rotateY(${side * 70}deg)` },
+    run(fly, [{ backgroundColor: "#2a120800" }, { backgroundColor: "#2a1208e6" }], 420);
+    // 1 · off the shelf, turning to face you, then a little lift towards you
+    await run(stage, [
+      { transform: `translate(${dx}px, ${dy}px) scale(${from.height / size}) rotateY(${side * 70}deg)` },
+      { transform: "translateZ(60px) rotateX(8deg)", offset: .75 },
       { transform: "none" },
-    ], { duration: 520, easing: ease }).finished;
-    // lid swings open on its hinge, the disc slides out and spins
-    lid.animate([{ transform: "rotateY(0deg)" }, { transform: "rotateY(-158deg)" }], { duration: 620, easing: ease, fill: "forwards" });
-    await disc.animate([
-      { transform: "translateX(0) rotate(0deg)" },
-      { transform: "translateX(0) rotate(40deg)", offset: .35 },
-      { transform: "translateX(26%) rotate(300deg)" },
-    ], { duration: 820, easing: "ease-out", fill: "forwards" }).finished;
+    ], 820);
+    // 2 · open it like a book: the booklet swings to the left, the tray with the disc stays
+    await Promise.all([
+      run(stage, [{ transform: "none" }, { transform: `scale(${fit}) translateX(50%)` }], 720),
+      run(lid, [{ transform: "rotateY(0deg)" }, { transform: "rotateY(-178deg)" }], 720),
+    ]);
+    // 3 · the disc lifts out of the tray and spins
+    await run(disc, [{ transform: "none" }, { transform: "translateZ(60px) scale(1.04) rotate(240deg)" }], 720, { easing: "ease-in-out" });
     showSheet();
-    await fly.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 240, fill: "forwards" }).finished;
+    await run(fly, [{ opacity: 1 }, { opacity: 0 }], 240);
     fly.getAnimations({ subtree: true }).forEach((an) => an.cancel());
     fly.hidden = true;
     flying = false;
