@@ -665,7 +665,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* ===== RESPONSIVE ===== */
 /* ===== FAV SONGS (CD cases standing in a row) ===== */
 .fav-count { text-align: center; font-family: var(--en); font-size: .75rem; letter-spacing: .3em; color: var(--ink-3); margin: -4px auto 18px; }
-.fav-hint { text-align: center; font-size: .8rem; color: var(--ink-3); margin-top: 6px; }
 .fav-from { text-align: center; margin-top: 18px; }
 .fav-from a { display: inline-flex; flex-direction: column; font-family: var(--en); font-size: .85rem; letter-spacing: .24em; transition: color .2s; }
 .fav-from small { font-family: var(--th); font-size: .72rem; letter-spacing: 0; color: var(--ink-3); }
