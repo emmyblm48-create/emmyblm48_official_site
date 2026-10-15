@@ -154,10 +154,15 @@ if (document.getElementById("discography")) {
     thai: v.ver === "Thai ver.",
     male: v.ver === "Male ver.",
   }[videoFilter]);
-  const card = ({ yt, title, th, date, dateText, sub, rank }) => `
+  // custom cover images (images/mv/) replace the YouTube thumbnail; several = cross-fade slideshow
+  const thumb = (yt, imgs) => imgs?.length
+    ? `<div class="thumb-slides${imgs.length > 1 ? " is-cycling" : ""}" style="--n:${imgs.length}">${imgs.map((f, i) =>
+        `<img src="images/mv/${f}" alt="" loading="lazy" width="480" height="270" style="--i:${i}">`).join("")}</div>`
+    : `<img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">`;
+  const card = ({ yt, title, th, date, dateText, sub, rank, imgs }) => `
     <button class="movie" data-yt="${yt}" data-title="${esc(title)}" aria-label="เล่น ${esc(title)}">
       <div class="movie-thumb">
-        <img src="https://i.ytimg.com/vi/${yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">${rank ? `<span class="rank${rank <= 3 ? ` rank-${rank}` : ""}" aria-label="อันดับ ${rank}">${rank}</span>` : ""}
+        ${thumb(yt, imgs)}${rank ? `<span class="rank${rank <= 3 ? ` rank-${rank}` : ""}" aria-label="อันดับ ${rank}">${rank}</span>` : ""}
         <span class="play" aria-hidden="true">${icon("play")}</span>
       </div>
       <div class="movie-meta">
@@ -193,7 +198,7 @@ if (document.getElementById("discography")) {
   };
   const renderMv = () => {
     document.getElementById("mv-list").innerHTML = sorted(MUSIC_VIDEOS.map(mvInfo), (m) => m.order).map((m, i) =>
-      card({ yt: m.yt, title: m.title, date: m.date, dateText: m.date ? fmtDate(m.date) : "", sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })).join("")
+      card({ yt: m.yt, imgs: m.imgs, title: m.title, date: m.date, dateText: m.date ? fmtDate(m.date) : "", sub: m.sub, rank: ranked() && viewsOf(m) >= 0 && i + 1 })).join("")
       || `<p class="d-empty">${icon("play")}ยังไม่มี Music Video</p>`;
   };
   const renderMagazine = () => {

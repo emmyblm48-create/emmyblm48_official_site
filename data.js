@@ -74,9 +74,11 @@ window.VIDEOS = [
 
 // Discography · MUSIC VIDEO — MV ที่เอ็มมี่ร่วมแสดง (เรียงตามลำดับผลงาน)
 // title / artist / date เว้นว่างได้ — ระบบจะดึงชื่อคลิปและชื่อช่องจาก YouTube ให้อัตโนมัติ
+// imgs: รูปปกแทนภาพจาก YouTube (ไฟล์ใน images/mv/) — ใส่หลายรูปจะสลับกันเป็นสไลด์
 window.MUSIC_VIDEOS = [
   { yt: "SBay1DGjsvU", title: "", artist: "", date: "" },
-  { yt: "5K3rURkf4-4", title: "", artist: "", date: "" },
+  { yt: "5K3rURkf4-4", title: "HASHIRIZAKA46 - WHY NO LOVE? (Naze Koi wo Shite Konakattan darou?)", artist: "", date: "",
+    imgs: ["why-no-love-1.webp", "why-no-love-2.webp", "why-no-love-3.webp", "why-no-love-4.webp"] },
   { yt: "9gQ9OMW_z-0", title: "", artist: "", date: "" },
 ];
 
