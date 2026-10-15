@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>PHOTOBOOTH · EMMY BLM48</title>
+  <meta name="description" content="PHOTOBOOTH — ถ่ายรูป 4 cut photo ในเฟรมของเอ็มมี่ BLM48">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500&family=Josefin+Sans:wght@300;400;600&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/images/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta property="og:image" content="https://emmyblm48officialsite.vercel.app/images/logo.jpg">
+  <meta name="theme-color" content="#4a2311">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page page-photobooth">
+
+  <div class="booth">
+  <header class="page-head">
+    <a class="brand" href="/" aria-label="EMMY — หน้าแรก"><img src="images/logo.jpg" alt="" width="40" height="40"><span>EMMY</span></a>
+    <nav class="crumbs" aria-label="ตำแหน่งหน้า"><a href="/">HOME</a><span aria-hidden="true">/</span><span aria-current="page">PHOTOBOOTH</span></nav>
+  </header>
+
+  <main id="top">
+
+  <!-- ===== PHOTOBOOTH (photobooth.js) — every photo stays on this device, nothing is uploaded ===== -->
+  <section class="section pb" id="photobooth">
+    <h1 class="sec-tit">PHOTOBOOTH<small>ถ่ายรูป 4 cut photo กับเอ็มมี่</small></h1>
+
+    <!-- 1 · the booth -->
+    <div class="pb-step pb-intro" data-step="intro">
+      <div class="pb-booth">
+        <p class="pb-sign">PHOTO BOOTH<small>with EMMY</small></p>
+        <div class="pb-body">
+          <div class="pb-panel">
+            <button class="pb-start" data-go="frame">START<small>เริ่มถ่าย</small></button>
+            <button class="pb-howto-btn" data-howto>how to use?</button>
+          </div>
+          <div class="pb-curtain" aria-hidden="true">
+            <svg class="pb-tie" viewBox="0 0 60 70" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20C20 6 6 8 8 18s14 6 22 2c8 4 20 8 22-2S40 6 30 20z"/><path d="M28 22c-4 14-10 30-18 44M32 22c4 12 6 28 14 42"/><circle cx="30" cy="20" r="3" fill="#fff"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 · choose a frame -->
+    <div class="pb-step" data-step="frame" hidden>
+      <h2 class="pb-tit">SELECT FRAME<small>เลือกเฟรมที่ชอบ</small></h2>
+      <div class="pb-frames" id="pb-frames"></div>
+      <div class="pb-actions">
+        <button class="pb-btn pb-ghost" data-go="intro">BACK</button>
+      </div>
+    </div>
+
+    <!-- 3 · camera -->
+    <div class="pb-step" data-step="camera" hidden>
+      <h2 class="pb-tit"><span id="pb-frame-name">FRAME</span><small id="pb-cam-hint">วางกล้องให้มั่นคง แล้วกดถ่ายได้เลย</small></h2>
+      <div class="pb-emmy" id="pb-emmy" hidden>
+        <p>เลือกรูปเอ็มมี่ที่จะอยู่ในเฟรม</p>
+        <div class="pb-emmy-list" id="pb-emmy-list" role="radiogroup" aria-label="รูปเอ็มมี่"></div>
+      </div>
+      <div class="pb-cam">
+        <div class="pb-view" id="pb-view">
+          <video id="pb-video" playsinline muted autoplay></video>
+          <span class="pb-count" id="pb-count" aria-live="assertive"></span>
+          <div class="pb-cam-error" id="pb-cam-error" hidden>
+            <p>เปิดกล้องไม่ได้<small>อนุญาตให้เว็บใช้กล้องในการตั้งค่าเบราว์เซอร์ หรือเลือกรูปจากเครื่องแทน</small></p>
+            <label class="pb-btn">เลือกรูปจากเครื่อง<input type="file" accept="image/*" multiple id="pb-upload" hidden></label>
+            <button class="pb-btn pb-ghost" id="pb-retry">ลองเปิดกล้องอีกครั้ง</button>
+          </div>
+        </div>
+        <ol class="pb-shots" id="pb-shots" aria-label="รูปที่ถ่ายแล้ว"></ol>
+      </div>
+      <div class="pb-timer" role="group" aria-label="ตั้งเวลานับถอยหลัง">
+        <span>TIMER</span>
+        <button class="pill-btn" data-timer="3">3s</button>
+        <button class="pill-btn is-on" data-timer="5">5s</button>
+        <button class="pill-btn" data-timer="10">10s</button>
+      </div>
+      <div class="pb-actions">
+        <button class="pb-btn pb-ghost" data-go="frame">BACK</button>
+        <button class="pb-btn pb-shoot" id="pb-shoot">SHOOT</button>
+      </div>
+    </div>
+
+    <!-- 4 · the print -->
+    <div class="pb-step" data-step="result" hidden>
+      <h2 class="pb-tit">YOUR 4 CUT<small>บันทึกรูปเก็บไว้ หรือแชร์ได้เลย</small></h2>
+      <div class="pb-result">
+        <canvas class="pb-print" id="pb-print" role="img" aria-label="รูป 4 cut photo ที่ถ่าย"></canvas>
+        <div class="pb-edit">
+          <p class="pb-label">FILTER</p>
+          <div class="pb-filters" role="group" aria-label="ฟิลเตอร์">
+            <button class="pill-btn is-on" data-pbfilter="normal">NORMAL</button>
+            <button class="pill-btn" data-pbfilter="mono">MONO</button>
+            <button class="pill-btn" data-pbfilter="warm">WARM</button>
+            <button class="pill-btn" data-pbfilter="soft">SOFT</button>
+          </div>
+          <label class="pb-label" for="pb-caption">CAPTION</label>
+          <input class="pb-input" id="pb-caption" maxlength="24" placeholder="ข้อความบนเฟรม (ไม่ใส่ก็ได้)">
+          <div class="pb-actions pb-actions-col">
+            <button class="pb-btn pb-shoot" id="pb-save">SAVE</button>
+            <button class="pb-btn" id="pb-share" hidden>SHARE</button>
+            <button class="pb-btn pb-ghost" id="pb-retake">RETAKE</button>
+            <button class="pb-btn pb-ghost" data-go="frame">CHANGE FRAME</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="pb-note">รูปทั้งหมดอยู่ในเครื่องของคุณเท่านั้น ไม่มีการอัปโหลดขึ้นเว็บ</p>
+  </section>
+
+  <dialog class="pb-howto" id="pb-howto" aria-labelledby="pb-howto-tit">
+    <h2 id="pb-howto-tit">HOW TO USE</h2>
+    <ol>
+      <li><b>เลือกเฟรมที่ชอบ</b>มีทั้งเฟรม 2×2 แถบยาว และเฟรมถ่ายคู่กับเอ็มมี่</li>
+      <li><b>วางโทรศัพท์ให้มั่นคง</b>พิงกับของหรือถือให้ตรง ไม่ต้องเอียง</li>
+      <li><b>หาแสงที่ส่องหน้าชัด ๆ</b>หันหน้าเข้าหาหน้าต่างหรือไฟ</li>
+      <li><b>กด SHOOT แล้วโพสท่า</b>นับถอยหลังแล้วถ่ายต่อกันจนครบทุกช่อง</li>
+      <li><b>บันทึกรูปเก็บไว้</b>เลือกฟิลเตอร์ ใส่ข้อความ แล้วกด SAVE</li>
+    </ol>
+    <form method="dialog"><button class="pb-btn pb-shoot">OK</button></form>
+  </dialog>
+
+  <nav class="page-nav" aria-label="หน้าอื่น">
+    <a class="pn-prev" href="/champ"><small>PREV</small>CHAMP OF THE MONTH</a>
+    <a class="pn-next" href="/notifications"><small>NEXT</small>NOTIFICATIONS</a>
+  </nav>
+
+  </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="notify.js"></script>
+  <script src="layout.js"></script>
+  <script src="script.js"></script>
+  <script src="photobooth.js"></script>
+</body>
+</html>
