@@ -322,17 +322,35 @@
     $("pb-emmy").hidden = emmySlot() == null;
     $("pb-cam-hint").textContent = `ถ่าย ${slotsToShoot().length} รูปต่อกัน · วางกล้องให้มั่นคง แล้วกด SHOOT`;
     camError.hidden = true;
-    shootBtn.disabled = true;
     renderShots();
+    // camera already on (e.g. back from a retake): just show it
+    if (stream?.active) { attach(stream); return; }
+    shootBtn.disabled = true;
     if (!navigator.mediaDevices?.getUserMedia) { showCamError(); return; }
+    // one request at a time: iOS hides the page for the permission sheet, and a second request
+    // (or a stale failure) must not cover a camera that is actually running
+    if (pending) return;
+    pending = true;
+    const id = ++camReq;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1440 } }, audio: false });
-      video.srcObject = stream;
-      await video.play().catch(() => {});
-      shootBtn.disabled = false;
+      const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1440 } }, audio: false });
+      if (id !== camReq || video.closest("[data-step]").hidden) { s.getTracks().forEach((t) => t.stop()); return; }
+      stream = s;
+      s.getVideoTracks()[0]?.addEventListener("ended", () => { if (stream === s) { stream = null; shootBtn.disabled = true; showCamError({ name: "Ended" }); } });
+      attach(s);
     } catch (err) {
-      showCamError(err);
+      if (id === camReq && !stream?.active) showCamError(err);
+    } finally {
+      if (id === camReq) pending = false;
     }
+  };
+  let camReq = 0;
+  let pending = false;
+  const attach = async (s) => {
+    camError.hidden = true;
+    if (video.srcObject !== s) video.srcObject = s;
+    await video.play().catch(() => {});
+    shootBtn.disabled = false;
   };
   // say why the camera didn't open — in-app browsers (LINE, IG, FB, TikTok) often block it
   const IN_APP = /\bLine\/|Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance/i.test(navigator.userAgent);
@@ -345,17 +363,21 @@
       : name === "NotAllowedError" || name === "SecurityError" ? "ยังไม่ได้อนุญาตให้เว็บใช้กล้อง กดไอคอนกล้องหรือแม่กุญแจที่แถบที่อยู่ แล้วเลือกอนุญาต จากนั้นกด “ลองเปิดกล้องอีกครั้ง”"
       : name === "NotFoundError" || name === "OverconstrainedError" ? "ไม่พบกล้องในเครื่องนี้ เลือกรูปจากเครื่องแทนได้เลย"
       : name === "NotReadableError" ? "กล้องกำลังถูกใช้อยู่ในแอปอื่น ปิดแอปนั้นแล้วกด “ลองเปิดกล้องอีกครั้ง”"
-      : "อนุญาตให้เว็บใช้กล้องในการตั้งค่าเบราว์เซอร์ หรือเลือกรูปจากเครื่องแทน";
+      : name === "Ended" ? "กล้องหยุดทำงาน กด “ลองเปิดกล้องอีกครั้ง”"
+      : `กด “ลองเปิดกล้องอีกครั้ง” หรือเลือกรูปจากเครื่องแทน${name ? ` (${name})` : ""}`;
   }
   function stopCamera() {
     abort = true;
+    camReq++; // a request still waiting for the camera is now stale
+    pending = false;
     stream?.getTracks().forEach((t) => t.stop());
     stream = null;
     video.srcObject = null;
   }
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopCamera();
-    else if (!$("pb-video").closest("[data-step]").hidden && !stream) openCamera();
+    // free the camera when the tab goes away, but leave a request that is waiting on the permission sheet
+    if (document.hidden) { if (stream) stopCamera(); }
+    else if (!video.closest("[data-step]").hidden && !stream && !pending) openCamera();
   });
 
   const cutCanvas = () => {

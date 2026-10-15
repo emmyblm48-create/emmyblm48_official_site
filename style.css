@@ -531,6 +531,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ===== PHOTOBOOTH ===== */
 .pb { max-width: 1040px; margin: 0 auto; scroll-margin-top: 0; }
+.pb [hidden] { display: none !important; } /* the camera error box and SHARE set their own display */
 .pb-step:not([hidden]) { animation: fade .45s ease both; }
 .pb-tit { font-family: var(--en); font-weight: 400; font-size: 1rem; letter-spacing: .32em; text-align: center; margin-bottom: 28px; }
 .pb-tit small { display: block; font-family: var(--th); font-size: .82rem; letter-spacing: .02em; color: var(--ink-3); margin-top: 6px; }
