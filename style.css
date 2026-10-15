@@ -666,35 +666,43 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* ===== FAV SONGS (CD cases standing in a row) ===== */
 .fav-count { text-align: center; font-family: var(--en); font-size: .75rem; letter-spacing: .3em; color: var(--ink-3); margin: -4px auto 18px; }
 .fav-hint { text-align: center; font-size: .8rem; color: var(--ink-3); margin-top: 6px; }
+.fav-from { text-align: center; margin-top: 18px; }
+.fav-from a { display: inline-flex; flex-direction: column; font-family: var(--en); font-size: .85rem; letter-spacing: .24em; transition: color .2s; }
+.fav-from small { font-family: var(--th); font-size: .72rem; letter-spacing: 0; color: var(--ink-3); }
+.fav-from a:hover { color: var(--accent); }
 #favsongs > .fav-shelf { max-width: none; width: 100vw; margin-left: calc(50% - 50vw); }
 .fav-shelf {
-  --w: clamp(190px, 46vw, 330px);   /* CD face */
-  --step: clamp(58px, 15vw, 118px); /* distance between CDs on the shelf */
-  display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  --h: clamp(230px, 64vw, 470px);   /* CD height (cover is square, plus the spine strip) */
+  --step: calc(var(--h) * .17);     /* distance between CDs on the shelf */
+  position: relative; display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
   padding: 34px calc(50% - var(--step) / 2) 40px;
 }
 .fav-shelf::-webkit-scrollbar { display: none; }
-.cd-slot { position: relative; flex: none; width: var(--step); height: calc(var(--w) * 1.04); scroll-snap-align: center; }
+.cd-slot { position: relative; flex: none; width: var(--step); height: var(--h); scroll-snap-align: center; }
+/* each CD stands on its outer edge and turns its inner edge away, towards the middle of the shelf */
 .cd {
-  position: absolute; top: 0; left: 50%; width: var(--w); height: 100%; margin-left: calc(var(--w) / -2);
-  display: flex; background: var(--paper); border-radius: 2px;
-  transform: perspective(1100px) rotateY(var(--ry, 0deg)); transition: transform .12s linear;
-  box-shadow: 0 22px 34px -16px #000000b3, inset -1px 0 0 #00000026; transform-style: preserve-3d;
+  position: absolute; top: 0; left: 0; width: calc(var(--h) + 26px); height: 100%;
+  display: flex; flex-direction: row-reverse; background: var(--bg, var(--paper)); border-radius: 2px;
+  transform-origin: 0 50%; transform: var(--tf, none); transform-style: preserve-3d;
+  box-shadow: 0 calc(22px + var(--lift, 0) * 26px) calc(34px + var(--lift, 0) * 30px) -16px #000000b3;
+  -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none;
 }
+.cd-slot.is-right .cd { left: auto; right: 0; flex-direction: row; transform-origin: 100% 50%; }
 /* case thickness: the side edge you see as a CD turns */
 .cd::before, .cd::after {
-  content: ""; position: absolute; top: 0; bottom: 0; width: 9px; background: linear-gradient(90deg, #d9cdbb, #f3ebde 40%, #c8b9a3);
+  content: ""; position: absolute; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, #0000002e, #ffffff59 40%, #00000038), var(--bg, #e9dfcf);
 }
 .cd::before { left: 0; transform-origin: 0 50%; transform: rotateY(90deg); }
 .cd::after { right: 0; transform-origin: 100% 50%; transform: rotateY(-90deg); }
-.cd-cover { flex: 1; min-width: 0; height: 100%; object-fit: cover; background: var(--brown-card); }
+.cd-cover { flex: none; width: var(--h); height: 100%; object-fit: cover; background: var(--bg, var(--brown-card)); pointer-events: none; -webkit-user-drag: none; }
 .cd-spine {
-  flex: none; width: 26px; padding: 10px 0; overflow: hidden; color: var(--brown);
+  flex: none; width: 26px; padding: 10px 0; overflow: hidden; color: var(--fg, var(--brown));
   writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; text-overflow: ellipsis;
   font-family: var(--en); font-size: .72rem; line-height: 26px; letter-spacing: .02em; text-align: center;
 }
 .cd-spine b { font-weight: 600; }
-.cd:hover .cd-spine, .cd:focus-visible .cd-spine { color: #c4566f; }
+.cd-spine { color: var(--fg2, var(--brown)); }
+.cd-spine b { color: var(--fg, var(--brown)); }
 
 .fav-detail { position: fixed; inset: 0; z-index: 300; background: #2a1208e6; display: grid; place-items: center; padding: 16px; }
 .fav-detail[hidden] { display: none; }
@@ -705,7 +713,38 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   background: var(--paper); color: var(--brown); border-radius: 6px; box-shadow: 0 30px 60px -20px #000000b3;
 }
 .fd-close { position: absolute; top: 8px; right: 8px; color: var(--brown); }
-.fd-cover { width: 100%; aspect-ratio: 1; object-fit: cover; box-shadow: 0 16px 30px -14px #00000080; }
+.fd-art { position: relative; }
+.fd-cover { position: relative; width: 100%; aspect-ratio: 1; object-fit: cover; box-shadow: 0 16px 30px -14px #00000080; }
+.fd-disc, .cf-disc {
+  position: absolute; inset: 5%; border-radius: 50%; background: var(--bg) center / cover no-repeat;
+  -webkit-mask: radial-gradient(circle, #0000 0 7%, #000 7.5%); mask: radial-gradient(circle, #0000 0 7%, #000 7.5%);
+  box-shadow: 0 6px 18px #00000059;
+}
+.fd-disc::after, .cf-disc::after { /* silver rim, centre ring and rainbow sheen */
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, #0000 0 15%, #ffffffb3 15.5% 17%, #0000 17.5% 94%, #ffffffd9 95% 100%),
+    conic-gradient(from 30deg, #ffffff00, #ffffff66 8%, #ffffff00 16%, #ffd6f633 30%, #ffffff00 40%, #c8f0ff4d 58%, #ffffff00 66%, #ffffff59 80%, #ffffff00 90%);
+}
+.fd-disc { transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+.fav-detail.is-playing .fd-disc { transform: translateX(34%); }
+.fav-detail.is-playing .fd-disc::after { animation: disc-spin 2.2s linear infinite; }
+@keyframes disc-spin { to { transform: rotate(360deg); } }
+.fd-heart { display: inline-flex; color: #d9576f; vertical-align: -.1em; }
+.fd-heart .ico { width: .95em; height: .95em; }
+.fd-track.is-fav .fd-name { font-weight: 600; }
+
+/* opening the CD case */
+.cd-fly { position: fixed; inset: 0; z-index: 310; display: grid; place-items: center; perspective: 1400px; pointer-events: none; }
+.cd-fly[hidden] { display: none; }
+.cf-case { position: relative; width: var(--size); height: var(--size); transform-style: preserve-3d; }
+.cf-tray {
+  position: absolute; inset: 0; border-radius: 3px; background: radial-gradient(circle, #0000 0 47%, #00000014 48% 49%, #0000 50%), var(--bg);
+  box-shadow: 0 30px 60px -20px #000000cc, inset 0 0 0 1px #ffffff40;
+}
+.cf-lid { position: absolute; inset: 0; transform-origin: 0 50%; transform-style: preserve-3d; }
+.cf-lid::before, .cf-lid::after { content: ""; position: absolute; inset: 0; border-radius: 3px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.cf-lid::before { background: var(--img) center / cover; box-shadow: inset 0 0 0 1px #ffffff33, inset 10px 0 12px -10px #0000004d; }
+.cf-lid::after { transform: rotateY(180deg); background: linear-gradient(120deg, #ffffff47, #ffffff14 45%, #ffffff33), var(--bg); opacity: .92; }
 .fd-title { font-family: var(--en); font-weight: 600; font-size: 1.05rem; line-height: 1.45; text-align: center; margin-top: 18px; }
 .fd-artist { text-align: center; font-family: var(--en); color: #7a5440; margin-top: 2px; }
 .fd-meta { text-align: center; font-family: var(--en); font-size: .78rem; color: #9a7a66; }
@@ -729,6 +768,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @media (max-width: 700px) {
   .fd-box { grid-template-columns: 1fr; }
   .fd-head { width: min(320px, 100%); margin-inline: auto; }
+  .fd-art { width: 76%; }
+  .fav-detail.is-playing .fd-disc { transform: translateX(28%); }
 }
 
 @media (max-width: 900px) {
