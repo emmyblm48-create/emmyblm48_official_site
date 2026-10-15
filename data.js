@@ -237,14 +237,16 @@ window.GALLERY = [
   }
 ];
 
-// เพลงโปรด (Apple Music) — เพิ่มเพลงใหม่ไว้บนสุด · cover: ลิงก์ปกจาก Apple Music (เปลี่ยนขนาดได้ที่ท้าย .../600x600bb.jpg)
+// เพลงโปรด (Apple Music) — เพิ่มอัลบั้มใหม่ไว้บนสุด
+// id: เลขท้ายลิงก์ music.apple.com/<store>/album/... · store: "th" | "jp" · cover: ลิงก์ปก (ขนาดเปลี่ยนได้ที่ .../600x600bb.jpg)
+// รายชื่อเพลงในอัลบั้มดึงจาก Apple Music ตอนกดเปิด
 window.FAV_SONGS = [
-  { title: "Yume de Kiss me! - Single", artist: "Pancake BNK48", url: "https://music.apple.com/th/album/6802622482", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/08/57/85/085785c4-bc42-bc4a-7798-2b1f1bf77597/cover.jpg/600x600bb.jpg" },
-  { title: "Wish - Single", artist: "JASP.ER", url: "https://music.apple.com/th/album/6800997143", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/51/e8/ff/51e8ff49-0e8a-3a12-7f19-e7bc165d02bf/888332881715.jpg/600x600bb.jpg" },
-  { title: "Teacher Teacher - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/1383122261", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d5/ba/a7/d5baa70d-dcf7-5fd8-5250-d58087bd67da/KIZM-90557-1400.jpg/600x600bb.jpg" },
-  { title: "Green Flash (Type N) - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/966769111", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/0c/17/a9/0c17a9fa-15c3-806b-65a0-a855d5bb047d/KIZM90327-8_type_N_shokai.jpg/600x600bb.jpg" },
-  { title: "Heart Electric (Type B) - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/721451596", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/da/11/73/da11738a-1bbe-cfa1-8c40-908d3ae0315a/03_HE_TypeB_syokai.jpg/600x600bb.jpg" },
-  { title: "Suzukake no Ki no Michi de \"Kimi no Hohoemi wo Yume ni Miru\" to Itteshimattara Bokutachi no Kankei wa Dou Kawatte Shimau no ka, Bokunari ni Nan-nichi ka Kangaeta Ue de no Yaya Kihazukashii Ketsuron no You na Mono (Type A) - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/762061731", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/d2/5b/26/d25b26ce-ca1a-f515-c6ea-d266fcf53ebf/1_Suzukake_TypeA_JK.jpg/600x600bb.jpg" },
-  { title: "Green Flash (Type H) - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/968597750", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/c6/c2/e3/c6c2e3a0-783f-7b64-69ca-73128a69fc71/KIZM-90329-H-1400.jpg/600x600bb.jpg" },
-  { title: "Hashtag Sukinanda (Type E) - EP", artist: "AKB48", url: "https://music.apple.com/jp/album/1272037322", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/20/96/29/209629a9-c223-5e3f-61f6-b09bfeed7095/KIZM-90507-1400.jpg/600x600bb.jpg" },
+  { title: "Yume de Kiss me! - Single", artist: "Pancake BNK48", store: "th", id: 6802622482, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/08/57/85/085785c4-bc42-bc4a-7798-2b1f1bf77597/cover.jpg/600x600bb.jpg" },
+  { title: "Wish - Single", artist: "JASP.ER", store: "th", id: 6800997143, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/51/e8/ff/51e8ff49-0e8a-3a12-7f19-e7bc165d02bf/888332881715.jpg/600x600bb.jpg" },
+  { title: "Teacher Teacher - EP", artist: "AKB48", store: "jp", id: 1383122261, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d5/ba/a7/d5baa70d-dcf7-5fd8-5250-d58087bd67da/KIZM-90557-1400.jpg/600x600bb.jpg" },
+  { title: "Green Flash (Type N) - EP", artist: "AKB48", store: "jp", id: 966769111, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/0c/17/a9/0c17a9fa-15c3-806b-65a0-a855d5bb047d/KIZM90327-8_type_N_shokai.jpg/600x600bb.jpg" },
+  { title: "Heart Electric (Type B) - EP", artist: "AKB48", store: "jp", id: 721451596, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/da/11/73/da11738a-1bbe-cfa1-8c40-908d3ae0315a/03_HE_TypeB_syokai.jpg/600x600bb.jpg" },
+  { title: "Suzukake no Ki no Michi de [Kimi no Hohoemi wo Yume ni Miru] to Itteshimattara Bokutachi no Kankei wa Dou Kawatteshimaunoka, Bokunari ni Nannichi ka Kangaeta Ue deno Yaya Kihazukashii Ketsuron no You na Mono - EP", artist: "AKB48", store: "jp", id: 765361954, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/8c/4d/96/8c4d9648-e7f5-1d46-023c-6f927800a8fa/5_Suzukake_Gekijo.jpg/600x600bb.jpg" },
+  { title: "Green Flash (Type H) - EP", artist: "AKB48", store: "jp", id: 968597750, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/c6/c2/e3/c6c2e3a0-783f-7b64-69ca-73128a69fc71/KIZM-90329-H-1400.jpg/600x600bb.jpg" },
+  { title: "Hashtag Sukinanda (Type E) - EP", artist: "AKB48", store: "jp", id: 1272037322, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/20/96/29/209629a9-c223-5e3f-61f6-b09bfeed7095/KIZM-90507-1400.jpg/600x600bb.jpg" },
 ];

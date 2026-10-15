@@ -29,8 +29,29 @@
   <section class="section" id="favsongs">
     <h1 class="sec-tit">FAV SONGS<small>เพลงโปรด</small></h1>
     <p class="fav-count" id="fav-count"></p>
-    <ol class="fav-stack" id="fav-list"></ol>
+    <div class="fav-shelf" id="fav-list" role="list" aria-label="อัลบั้มเพลงโปรด"></div>
+    <p class="fav-hint">เลื่อนซ้าย–ขวา · แตะ CD เพื่อดูรายชื่อเพลง</p>
   </section>
+
+  <div class="fav-detail" id="fav-detail" hidden role="dialog" aria-modal="true" aria-labelledby="fd-title">
+    <div class="fd-box">
+      <button class="lb-btn fd-close" aria-label="ปิด"></button>
+      <div class="fd-head">
+        <img class="fd-cover" alt="" width="600" height="600">
+        <h2 class="fd-title" id="fd-title"></h2>
+        <p class="fd-artist"></p>
+        <p class="fd-meta"></p>
+        <div class="fd-actions">
+          <button class="fd-btn fd-play" type="button">PLAY<small>ฟังตัวอย่าง</small></button>
+          <a class="fd-btn fd-open" target="_blank" rel="noopener">APPLE MUSIC<small>ฟังเต็มเพลง</small></a>
+        </div>
+      </div>
+      <div class="fd-body">
+        <ol class="fd-tracks"></ol>
+        <p class="fd-total"></p>
+      </div>
+    </div>
+  </div>
 
   <nav class="page-nav" aria-label="หน้าอื่น">
     <a class="pn-prev" href="/discography"><small>PREV</small>DISCOGRAPHY</a>
