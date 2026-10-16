@@ -10,16 +10,13 @@
   document.getElementById("fav-count").textContent = `${songCount} SONGS · ${ALBUMS.length} ALBUMS`;
   if (window.FAV_PLAYLIST) document.getElementById("fav-playlist").href = window.FAV_PLAYLIST;
   const colours = (a) => `--bg:#${a.bg};--fg:#${a.fg};--fg2:#${a.fg2}`;
-  // "Believers - EP" → title "Believers", kind "EP" (printed at the foot of the spine, like "12TH SINGLE")
-  const parts = (a) => {
-    const m = a.title.match(/^(.*?)\s+-\s+(Single|EP)$/i);
-    return { name: m ? m[1] : a.title, kind: m ? m[2].toUpperCase() : "ALBUM" };
-  };
+  // "Believers - EP" → "Believers" (printed inside the booklet in the opening)
+  const parts = (a) => ({ name: a.title.replace(/\s+-\s+(Single|EP)$/i, "") });
   shelf.innerHTML = ALBUMS.map((a, i) => `
     <div class="cd-slot" role="listitem">
       <button class="cd" type="button" data-i="${i}" style="${colours(a)}" aria-label="${esc(a.title)} · ${esc(a.artist)} — ดูรายชื่อเพลง">
         <img class="cd-cover" src="${esc(a.cover)}" alt="" width="600" height="600" loading="lazy" decoding="async" referrerpolicy="no-referrer">
-        <span class="cd-spine" aria-hidden="true"><i>${esc(a.artist)}</i><b>${esc(parts(a).name)}</b><small>${parts(a).kind}</small></span>
+        <span class="cd-spine"><b>${esc(a.title)}</b> ${esc(a.artist)}</span>
       </button>
     </div>`).join("");
 

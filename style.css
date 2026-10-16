@@ -671,52 +671,37 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .fav-from a:hover { color: var(--accent); }
 #favsongs > .fav-shelf { max-width: none; width: 100vw; margin-left: calc(50% - 50vw); }
 .fav-shelf {
-  --h: clamp(230px, 64vw, 470px);   /* CD height (the case is square) */
+  --h: clamp(230px, 64vw, 470px);   /* CD height (cover is square, plus the spine strip) */
   --step: calc(var(--h) * .17);     /* distance between CDs on the shelf */
-  --spine: calc(var(--h) * .075);   /* case thickness */
   position: relative; display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
   padding: 34px calc(50% - var(--step) / 2) 40px;
 }
 .fav-shelf::-webkit-scrollbar { display: none; }
 .cd-slot { position: relative; flex: none; width: var(--step); height: var(--h); scroll-snap-align: center; }
 /* each CD stands on its outer edge and turns its inner edge away, towards the middle of the shelf */
-/* clear plastic jewel case: the booklet sits under the plastic, a glossy frame and a light streak on top */
 .cd {
-  position: absolute; top: 0; left: 0; width: var(--h); height: 100%; padding: 2.4%;
-  background: linear-gradient(135deg, #ffffffd9, #ffffff8c 40%, #ffffffbf); border-radius: 3px;
+  position: absolute; top: 0; left: 0; width: calc(var(--h) + 26px); height: 100%;
+  display: flex; flex-direction: row-reverse; background: var(--bg, var(--paper)); border-radius: 2px;
   transform-origin: 0 50%; transform: var(--tf, none); transform-style: preserve-3d;
-  box-shadow: 0 calc(22px + var(--lift, 0) * 26px) calc(34px + var(--lift, 0) * 30px) -16px #000000b3, inset 0 0 0 1px #ffffffe6;
+  box-shadow: 0 calc(22px + var(--lift, 0) * 26px) calc(34px + var(--lift, 0) * 30px) -16px #000000b3;
   -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none;
 }
-.cd::after {
-  content: ""; position: absolute; inset: 0; border-radius: 3px; pointer-events: none;
-  background: linear-gradient(115deg, #ffffff00 28%, #ffffff5c 40%, #ffffff00 52%, #ffffff00 70%, #ffffff26 78%, #ffffff00 84%);
-  box-shadow: inset 0 0 0 1px #ffffff, inset 0 0 0 3px #ffffff40, inset 0 -6px 10px -8px #0000004d;
+.cd-slot.is-right .cd { left: auto; right: 0; flex-direction: row; transform-origin: 100% 50%; }
+/* case thickness: the side edge you see as a CD turns */
+.cd::before, .cd::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, #0000002e, #ffffff59 40%, #00000038), var(--bg, #e9dfcf);
 }
-.cd-slot.is-right .cd { left: auto; right: 0; transform-origin: 100% 50%; }
-.cd-cover { width: 100%; height: 100%; object-fit: cover; border-radius: 1px; background: var(--bg, var(--brown-card)); pointer-events: none; -webkit-user-drag: none; }
-/* the spine: the case's side on the outer edge, turned towards you — the coloured insert seen through clear plastic */
+.cd::before { left: 0; transform-origin: 0 50%; transform: rotateY(90deg); }
+.cd::after { right: 0; transform-origin: 100% 50%; transform: rotateY(-90deg); }
+.cd-cover { flex: none; width: var(--h); height: 100%; object-fit: cover; background: var(--bg, var(--brown-card)); pointer-events: none; -webkit-user-drag: none; }
 .cd-spine {
-  position: absolute; top: 0; right: 100%; width: var(--spine); height: 100%; transform-origin: 100% 50%; transform: rotateY(-90deg);
-  display: flex; flex-direction: column; align-items: center; gap: 6%; overflow: hidden; padding: 3px 0;
-  background:
-    linear-gradient(90deg, #ffffffcc 0 9%, #ffffff00 14% 86%, #ffffffcc 91%),
-    linear-gradient(#ffffffd9, #ffffff00 3% 97%, #ffffffd9),
-    linear-gradient(90deg, #ffffff00 30%, #ffffff47 45%, #ffffff00 60%),
-    var(--bg, var(--paper));
-  color: var(--fg, var(--brown)); font-family: var(--en); line-height: 1;
+  flex: none; width: 26px; padding: 10px 0; overflow: hidden; color: var(--fg, var(--brown));
+  writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; text-overflow: ellipsis;
+  font-family: var(--en); font-size: .72rem; line-height: 26px; letter-spacing: .02em; text-align: center;
 }
-.cd-slot.is-right .cd-spine { right: auto; left: 100%; transform-origin: 0 50%; transform: rotateY(90deg); }
-.cd-spine i {
-  flex: none; width: 78%; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden;
-  background: var(--fg, var(--brown)); color: var(--bg, var(--paper));
-  font-style: normal; font-weight: 600; font-size: calc(var(--spine) * .22); letter-spacing: -.02em; text-align: center; word-break: break-all; line-height: .95; padding: 2px;
-}
-.cd-spine b {
-  flex: 1; min-height: 0; overflow: hidden; writing-mode: vertical-rl; white-space: nowrap; text-overflow: ellipsis;
-  font-weight: 600; font-size: calc(var(--spine) * .42); letter-spacing: .04em;
-}
-.cd-spine small { flex: none; writing-mode: vertical-rl; margin-bottom: 8%; font-size: calc(var(--spine) * .26); letter-spacing: .18em; color: var(--fg2, var(--brown)); }
+.cd-spine b { font-weight: 600; }
+.cd-spine { color: var(--fg2, var(--brown)); }
+.cd-spine b { color: var(--fg, var(--brown)); }
 
 /* the disc: the cover printed edge to edge, clear hub, black stacking ring, light streaks
    (same disc in the opening animation and in the album sheet; the cover comes from --img) */
@@ -780,31 +765,28 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .fd-note { padding: 14px 4px; color: var(--fg2, #9a7a66); }
 .fd-total { text-align: center; font-family: var(--en); font-size: .78rem; letter-spacing: .06em; color: var(--fg2, #9a7a66); margin-top: 18px; }
 
-/* opening: the plastic case opens like a book → disc */
+/* opening: the paper case opens like a book → disc */
 .cd-fly { position: fixed; inset: 0; z-index: 310; display: grid; place-items: center; perspective: 1600px; cursor: pointer; }
 .cd-fly[hidden] { display: none; }
 .cf-stage { position: relative; width: var(--size); height: var(--size); transform-style: preserve-3d; }
 .cf-jewel { position: absolute; inset: 0; transform-style: preserve-3d; }
-.cf-tray { /* back of the jewel case: tinted tray, spine strip on the left, disc in the middle */
-  position: absolute; inset: 0; border-radius: 3px;
-  background: linear-gradient(90deg, var(--bg) 0 7%, #ffffff40 7% 7.6%, #0000 7.6%), radial-gradient(circle at 54% 50%, #0000 0 44%, #00000012 44.5% 45.5%, #0000 46%), color-mix(in srgb, var(--bg) 55%, #fff);
-  box-shadow: 0 30px 60px -20px #000000cc, inset 0 0 0 1px #ffffff80;
+.cf-tray { /* inside of the case: the album colour, a soft fold at the hinge, the disc in the middle */
+  position: absolute; inset: 0; border-radius: 2px;
+  background: linear-gradient(90deg, #00000026, #0000 6%), var(--bg);
+  box-shadow: 0 30px 60px -20px #000000cc;
 }
 .cf-disc { --d: calc(var(--size) * .86); width: var(--d); height: var(--d); left: calc(54% - var(--d) / 2); top: calc(50% - var(--d) / 2); }
 .cf-lid { position: absolute; inset: 0; transform-origin: 0 50%; transform-style: preserve-3d; }
-.cf-lid::before, .cf-lid::after { content: ""; position: absolute; inset: 0; border-radius: 3px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.cf-lid::before { /* front: booklet under clear plastic, coloured spine strip on the hinge */
-  background:
-    linear-gradient(115deg, #ffffff00 30%, #ffffff47 42%, #ffffff00 52%),
-    linear-gradient(90deg, var(--bg) 0 7%, #ffffff59 7% 7.6%, #0000 7.6%),
-    var(--img) 62% 50% / 88% auto no-repeat, #fffffff2;
-  box-shadow: inset 0 0 0 1px #ffffffb3, inset 0 0 0 4px #ffffff40;
+.cf-lid::before, .cf-lid::after { content: ""; position: absolute; inset: 0; border-radius: 2px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.cf-lid::before { /* front: the cover, edge to edge */
+  background: var(--img) center / cover no-repeat, var(--bg);
+  box-shadow: inset 0 0 0 1px #ffffff26;
 }
 .cf-lid::after { /* inside: back page of the booklet with the album title, like the sky page in the photo */
   content: attr(data-title); transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; padding: 14% 18%;
   writing-mode: vertical-rl; font-family: var(--jp); font-size: calc(var(--size) * .045); letter-spacing: .2em; line-height: 2; text-align: center; overflow: hidden;
   background: linear-gradient(170deg, #ffffff 0%, color-mix(in srgb, var(--bg) 35%, #fff) 100%); color: color-mix(in srgb, var(--fg) 70%, #fff);
-  box-shadow: inset 0 0 0 1px #ffffffb3, inset -10px 0 14px -10px #00000040;
+  box-shadow: inset -10px 0 14px -10px #00000040;
 }
 
 @media (max-width: 700px) {
