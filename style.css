@@ -664,6 +664,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* ===== RESPONSIVE ===== */
 /* ===== FAV SONGS (CD cases standing in a row) ===== */
 .fav-count { text-align: center; font-family: var(--en); font-size: .75rem; letter-spacing: .3em; color: var(--ink-3); margin: -4px auto 18px; }
+.fav-play { max-width: 660px !important; margin: 26px auto 0; }
+.fav-play iframe { display: block; width: 100%; height: 450px; border: 0; border-radius: 12px; overflow: hidden; background: #ffffff14; }
+.fav-play-note { margin-top: 8px; text-align: center; font-size: .75rem; line-height: 1.5; color: var(--ink-3); }
 .fav-from { text-align: center; margin-top: 18px; }
 .fav-from a { display: inline-flex; flex-direction: column; font-family: var(--en); font-size: .85rem; letter-spacing: .24em; transition: color .2s; }
 .fav-from small { font-family: var(--th); font-size: .72rem; letter-spacing: 0; color: var(--ink-3); }
@@ -761,9 +764,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .fd-track button:hover:not(:disabled) .fd-name, .fd-track.is-playing .fd-name { text-decoration: underline; text-underline-offset: 4px; }
 .fd-no, .fd-time { font-family: var(--en); font-size: .82rem; color: var(--fg2, #9a7a66); }
 .fd-name { font-family: var(--jp); font-weight: 500; line-height: 1.5; }
-.fd-heart { display: inline-flex; color: #d9576f; vertical-align: -.1em; }
-.fd-heart .ico { width: .95em; height: .95em; }
-.fd-track.is-fav .fd-name { font-weight: 600; }
 .fd-note { padding: 14px 4px; color: var(--fg2, #9a7a66); }
 .fd-total { text-align: center; font-family: var(--en); font-size: .78rem; letter-spacing: .06em; color: var(--fg2, #9a7a66); margin-top: 18px; }
 
