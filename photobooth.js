@@ -53,8 +53,8 @@
   const SEASONS = DESIGNS.filter((d) => d.season).sort((x, y) => (inSeason(y) - inSeason(x)) || daysUntil(x) - daysUntil(y));
   const COLORS = DESIGNS.filter((d) => !d.season);
 
-  // EMMY photos for WITH EMMY (latest profiles first, one per image)
-  const EMMY_PICS = [...new Set((window.ERAS || []).slice().reverse().map((e) => e.img))].slice(0, 8);
+  // EMMY photos for WITH EMMY: Emmy's own booth shots for taking pictures with fans (images/photobooth/)
+  const EMMY_PICS = ["emmy-01.webp", "emmy-02.webp", "emmy-03.webp", "emmy-04.webp"].map((f) => `images/photobooth/${f}`);
 
   const S = 1.5; // print resolution multiplier
   let design = SEASONS.find((d) => inSeason(d)) || COLORS[0];
@@ -266,7 +266,7 @@
     </button>`;
   $("pb-frames-season").innerHTML = SEASONS.map(card).join("");
   $("pb-frames-color").innerHTML = COLORS.map(card).join("");
-  const previewPics = Promise.all([fontsReady, ...EMMY_PICS.slice(0, 4).map((p) => loadImg(`images/profiles/${p}`).catch(() => null))]).then(([, ...pics]) => pics);
+  const previewPics = Promise.all([fontsReady, ...EMMY_PICS.slice(0, 4).map((p) => loadImg(p).catch(() => null))]).then(([, ...pics]) => pics);
   const renderPreviews = async () => {
     const pics = await previewPics;
     root.querySelectorAll(".pb-frames").forEach((box) => box.classList.toggle("is-strip", layout === "strip"));
@@ -298,7 +298,7 @@
   const emmyList = $("pb-emmy-list");
   emmyList.innerHTML = EMMY_PICS.map((p, i) => `
     <button class="pb-emmy-pic${i ? "" : " is-on"}" role="radio" aria-checked="${!i}" data-pic="${p}" aria-label="รูปเอ็มมี่ ${i + 1}">
-      <img src="images/profiles/${p}" alt="" loading="lazy" width="120" height="160">
+      <img src="${p}" alt="" loading="lazy" width="120" height="150">
     </button>`).join("");
   emmyList.addEventListener("click", (e) => {
     const b = e.target.closest("[data-pic]");
@@ -460,7 +460,7 @@
     const L = LAYOUTS[layout];
     shotsBox.style.setProperty("--ar", `${L.cw} / ${L.ch}`);
     shotsBox.innerHTML = shots.map((s, i) => `<li class="${i === just ? "is-new" : ""}${emmySlot() === i ? " is-emmy" : ""}" aria-label="ช่อง ${i + 1}${s ? " ถ่ายแล้ว" : ""}">${
-      emmySlot() === i ? `<img src="images/profiles/${emmyPic}" alt="">` : s ? "" : `<span>${i + 1}</span>`}</li>`).join("");
+      emmySlot() === i ? `<img src="${emmyPic}" alt="">` : s ? "" : `<span>${i + 1}</span>`}</li>`).join("");
     shots.forEach((s, i) => { if (s && emmySlot() !== i) { const c = cutCanvas(); c.getContext("2d").drawImage(s, 0, 0); shotsBox.children[i].append(c); } });
   }
 
@@ -477,7 +477,7 @@
     await fontsReady;
     const cuts = shots.map((s) => s && filtered(s));
     if (emmySlot() != null) {
-      const im = await loadImg(`images/profiles/${emmyPic}`).catch(() => null);
+      const im = await loadImg(emmyPic).catch(() => null);
       if (im) {
         const c = cutCanvas();
         drawCover(c.getContext("2d"), im, 0, 0, c.width, c.height, { fy: 0.25 });
