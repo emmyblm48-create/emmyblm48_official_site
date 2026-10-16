@@ -329,7 +329,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ===== PHOTO (booth cells) ===== */
 .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 22px; }
-.photo { text-align: left; display: block; }
+.photo { text-align: left; display: block; align-self: start; }
 .photo[hidden] { display: none; }
 .photo-img { overflow: hidden; background: #2c140a; }
 .photo-img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 20%; transition: transform .6s ease; }
