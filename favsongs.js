@@ -1,6 +1,6 @@
 // Fav Songs: CD cases standing in a row (like Apple Music's album shelf), sorted by cover colour (favsongs-data.js).
 // Scroll → the CDs turn with a little easing · press and hold → that CD is pulled out of the row
-// Tap → the case flies to the middle, opens, and the album sheet comes up (tracklist from the iTunes lookup API, 30s previews).
+// Tap → the case flies to the middle, opens, and the album sheet comes up (tracklist from the iTunes lookup API, Apple Music player).
 (() => {
   const shelf = document.getElementById("fav-list");
   if (!shelf) return;
@@ -96,9 +96,11 @@
   const sheet = document.getElementById("fav-detail");
   const $ = (sel) => sheet.querySelector(sel);
   const tracksEl = $(".fd-tracks");
-  const audio = new Audio();
+  // the Apple Music web player (embed.music.apple.com): full songs for anyone signed in to Apple Music, 30s previews otherwise
+  const player = $(".fd-player iframe");
+  let store = "th";
   let tracks = [];
-  let playing = -1;
+  let playing = -1; // track loaded in the player
   let opener = null;
   let current = null;
   $(".fd-close").innerHTML = icon("close");
@@ -110,15 +112,16 @@
     });
     sheet.classList.toggle("is-playing", playing !== -1);
   };
-  const play = (i) => {
-    if (i === playing) { audio.pause(); playing = -1; markPlaying(); return; }
-    if (!tracks[i]?.previewUrl) return;
-    audio.src = tracks[i].previewUrl;
-    audio.play().catch(() => {});
+  const play = (i, { scroll = true } = {}) => {
+    const t = tracks[i];
+    if (!t?.trackId || !current) return;
+    if (i !== playing) player.src = `https://embed.music.apple.com/${store}/album/${current.id}?i=${t.trackId}`;
+    $(".fd-player").hidden = false;
     playing = i;
     markPlaying();
+    if (scroll) $(".fd-player").scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
   };
-  audio.addEventListener("ended", () => { playing = -1; markPlaying(); });
+  const stop = () => { player.src = "about:blank"; $(".fd-player").hidden = true; playing = -1; markPlaying(); };
 
   const fill = async (a) => {
     current = a;
@@ -131,6 +134,8 @@
     $(".fd-total").textContent = "";
     tracksEl.innerHTML = '<li class="fd-note">กำลังโหลดรายชื่อเพลง…</li>';
     tracks = [];
+    stop();
+    store = "th";
     const favIds = a.fav.map(([id]) => id);
     try {
       // the Thai store leaves out the songs of some Japanese releases; the same ids work in the Japan store
@@ -139,7 +144,7 @@
         const [info, ...songs] = (await (await fetch(`https://itunes.apple.com/lookup?id=${a.id}&entity=song&country=${country}`)).json()).results;
         album = album || info;
         tracks = songs.filter((t) => t.wrapperType === "track");
-        if (tracks.length) break;
+        if (tracks.length) { store = country; break; }
       }
       if (current !== a) return;
       tracks.sort((x, y) => (x.discNumber - y.discNumber) || (x.trackNumber - y.trackNumber));
@@ -150,7 +155,7 @@
         const fav = favIds.includes(t.trackId);
         return `
         <li class="fd-track${fav ? " is-fav" : ""}">
-          <button type="button" aria-pressed="false" ${t.previewUrl ? "" : "disabled"}>
+          <button type="button" aria-pressed="false" ${t.trackId ? "" : "disabled"}>
             <span class="fd-no">${String(t.trackNumber).padStart(2, "0")}</span>
             <span class="fd-name">${esc(t.trackName)}${fav ? ` <span class="fd-heart" title="อยู่ในเพลย์ลิสต์ Emmy's Favorite">${icon("heart")}</span>` : ""}</span>
             <span class="fd-time">${mmss(t.trackTimeMillis)}</span>
@@ -159,6 +164,9 @@
       }).join("");
       const total = tracks.reduce((sum, t) => sum + t.trackTimeMillis, 0);
       $(".fd-total").textContent = `${tracks.length} SONGS, ${Math.floor(total / 60000)} MIN, ${Math.round(total / 1000) % 60} SECS`;
+      // ready in the player: the first of Emmy's favourites on this album
+      const first = tracks.findIndex((t) => favIds.includes(t.trackId));
+      play(first === -1 ? 0 : first, { scroll: false });
     } catch {
       if (current === a) tracksEl.innerHTML = '<li class="fd-note">โหลดรายชื่อเพลงไม่ได้ · ลองเปิดใน Apple Music</li>';
     }
@@ -228,9 +236,7 @@
     flying = false;
   };
   const close = () => {
-    audio.pause();
-    playing = -1;
-    markPlaying();
+    stop();
     current = null;
     sheet.hidden = true;
     document.body.style.overflow = "";
@@ -246,9 +252,8 @@
     if (li) play([...tracksEl.children].indexOf(li));
   });
   $(".fd-play").addEventListener("click", () => {
-    if (playing !== -1) return play(playing);
     const first = tracks.findIndex((t) => current?.fav.some(([id]) => id === t.trackId));
-    play(first === -1 ? 0 : first);
+    play(playing !== -1 ? playing : first === -1 ? 0 : first);
   });
   $(".fd-close").addEventListener("click", close);
   sheet.addEventListener("click", (e) => { if (e.target === sheet) close(); });

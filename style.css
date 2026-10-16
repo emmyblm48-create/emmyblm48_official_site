@@ -751,6 +751,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .fd-btn small { font-family: var(--th); font-weight: 400; font-size: .68rem; letter-spacing: 0; }
 .fd-btn:hover { background: var(--fg, var(--brown)); color: var(--bg, var(--paper)); }
+.fd-player { margin-bottom: 14px; }
+.fd-player iframe { display: block; width: 100%; height: 175px; border: 0; border-radius: 10px; overflow: hidden; background: color-mix(in srgb, currentColor 8%, transparent); }
+.fd-player-note { margin-top: 6px; font-size: .72rem; line-height: 1.5; color: var(--fg2, #9a7a66); }
 .fd-tracks { list-style: none; }
 .fd-track { border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
 .fd-track button { width: 100%; display: grid; grid-template-columns: 2.2em 1fr auto; gap: 10px; align-items: baseline; padding: 13px 4px; text-align: left; color: inherit; }

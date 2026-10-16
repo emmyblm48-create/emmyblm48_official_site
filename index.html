@@ -85,11 +85,15 @@
         <p class="fd-artist"></p>
         <p class="fd-meta"></p>
         <div class="fd-actions">
-          <button class="fd-btn fd-play" type="button">PLAY<small>ฟังตัวอย่าง</small></button>
-          <a class="fd-btn fd-open" target="_blank" rel="noopener">APPLE MUSIC<small>ฟังเต็มเพลง</small></a>
+          <button class="fd-btn fd-play" type="button">PLAY<small>เปิดในตัวเล่น</small></button>
+          <a class="fd-btn fd-open" target="_blank" rel="noopener">APPLE MUSIC<small>เปิดในแอป</small></a>
         </div>
       </div>
       <div class="fd-body">
+        <div class="fd-player" hidden>
+          <iframe title="ตัวเล่น Apple Music" height="175" loading="lazy" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+          <p class="fd-player-note">ฟังเต็มเพลงได้เมื่อกด Sign In เข้า Apple Music ในตัวเล่น · ถ้ายังไม่ได้สมัครจะได้ฟังตัวอย่าง 30 วินาที</p>
+        </div>
         <ol class="fd-tracks"></ol>
         <p class="fd-total"></p>
       </div>
